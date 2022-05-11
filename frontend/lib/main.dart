@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:uniuti/screens/splash.dart';
+import 'screens/signin.dart';
+import 'screens/splash.dart';
 
 import 'styles.dart';
 
@@ -16,7 +17,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'UniUti',
       theme: uniUtiThemeData,
-      routes: {},
+      routes: {
+        '/login': (_) => const LoginScreen(),
+      },
       home: const SplashScreen(),
     );
   }

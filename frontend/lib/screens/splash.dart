@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:uniuti/styles.dart';
+import '../styles.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -24,7 +24,11 @@ class _SplashScreenState extends State<SplashScreen> {
         child: FutureBuilder(
           future: initializer(),
           builder: (context, snap) {
-            // TODO: redirect
+            if (snap.connectionState == ConnectionState.done) {
+              Future.microtask(
+                () => Navigator.pushReplacementNamed(context, '/login'),
+              );
+            }
             return Center(child: SvgPicture.asset('assets/logo.svg'));
           },
         ),
