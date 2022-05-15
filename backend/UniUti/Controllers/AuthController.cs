@@ -4,9 +4,11 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using ProjetoApi.Models.DTOs.Responses;
 using UniUti.Database;
 using UniUti.models;
 using UniUti.models.dtos;
+using UniUti.Utils;
 
 namespace UniUti.Controllers
 {
@@ -25,44 +27,82 @@ namespace UniUti.Controllers
         [Route("register")]
         public async Task<ActionResult<Usuario>> Register(UsuarioDto userDto)
         {
-            Usuario usuarioBd = new Usuario();
-            usuarioBd.Nome = userDto.Nome;
-            usuarioBd.Email = userDto.Email;
-            usuarioBd.Senha = userDto.Senha;
-            usuarioBd.Celular = userDto.Celular;
-
-            await _database.Usuarios.AddAsync(usuarioBd);
-            await _database.SaveChangesAsync();
-
-            return Ok(usuarioBd);
-        }
-
-        [HttpPost]
-        [Route("login")]
-        public async Task<ActionResult<string>> Login(LoginDto login)
-        {
-            Usuario UsuarioBd = _database.Usuarios.FirstOrDefault(Usuario =>
-                Usuario.Email == login.Email && Usuario.Senha == login.Senha
-            );
-
-            if (UsuarioBd != null)
+            if (ModelState.IsValid)
             {
-                return Ok("TOKEN JWT");
+                var emailExistente = _database.Usuarios.FirstOrDefault(user => user.Email == userDto.Email);
+
+                if (emailExistente != null)
+                {
+                    return BadRequest(new RegistrationResponse()
+                    {
+                        Errors = new List<string>()
+                        {
+                            "Email já cadastrado."
+                        },
+                        Success = false
+                    });
+                }
+
+                SenhaService.CreatePasswordHash(userDto.Senha, out byte[] passwordHash, out byte[] passwordSalt);
+
+                Usuario usuarioBd = new Usuario()
+                {
+                    Nome = userDto.Nome,
+                    Email = userDto.Email,
+                    SenhaHash = passwordHash,
+                    SenhaSalt = passwordSalt,
+                    Celular = userDto.Celular
+                };
+
+                try
+                {
+                    await _database.Usuarios.AddAsync(usuarioBd);
+                    await _database.SaveChangesAsync();
+                    return Ok(usuarioBd);
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
             }
             else
             {
-                return NotFound("Usuário não encontrado com os dados informados");
+                return BadRequest(ModelState.Values);
             }
-
         }
 
-        // private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
-        // {
-        //     using (var hmac = new HMACSHA512())
-        //     {
-        //         passwordSalt = hmac.Key;
-        //         passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-        //     }
 
+        [HttpPost("login")]
+        public async Task<ActionResult<string>> Login(LoginDto userDto)
+        {
+            var usuarioBd = _database.Usuarios.FirstOrDefault(user => user.Email == userDto.Email);
+            if (usuarioBd != null)
+            {
+                if (!SenhaService.VerifyPasswordHash(userDto.Senha, usuarioBd.SenhaHash, usuarioBd.SenhaSalt))
+                {
+                    return BadRequest(new RegistrationResponse()
+                    {
+                        Errors = new List<string>()
+                        {
+                            "Senha incorreta."
+                        },
+                        Success = false
+                    });
+                }
+
+                return Ok(usuarioBd);
+            }
+            else
+            {
+                return NotFound(new RegistrationResponse()
+                {
+                    Errors = new List<string>()
+                        {
+                            "Email já cadastrado."
+                        },
+                    Success = false
+                });
+            }
+        }
     }
 }
