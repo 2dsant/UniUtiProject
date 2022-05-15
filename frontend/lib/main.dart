@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/signin.dart';
-import 'screens/splash.dart';
+import 'screens/screens.dart';
 
 import 'styles.dart';
 
@@ -18,7 +17,8 @@ class MyApp extends StatelessWidget {
       title: 'UniUti',
       theme: uniUtiThemeData,
       routes: {
-        '/login': (_) => const LoginScreen(),
+        '/signin': (_) => const SigninScreen(),
+        '/register': (_) => const RegisterScreen(),
       },
       home: const SplashScreen(),
     );

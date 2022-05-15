@@ -1,18 +1,21 @@
+import 'dart:developer' as dev;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:uniuti/screens/register.dart';
 import '../components/buttons.dart'
     show UniUtiPrimaryButton, UniUtiSecondaryButton;
 import '../styles.dart' show UniUtiBgGradient;
+import '../transicao.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class SigninScreen extends StatefulWidget {
+  const SigninScreen({Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SigninScreen> createState() => _SigninScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SigninScreenState extends State<SigninScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,12 +41,16 @@ class _LoginScreenState extends State<LoginScreen> {
             const Spacer(),
             UniUtiPrimaryButton(
               title: 'Entrar',
-              onTap: () => print('entrar'),
+              onTap: () => Navigator.of(context).push(
+                CustomTransition(target: const SigninScreen()),
+              ),
             ),
             const SizedBox(height: 16),
             UniUtiSecondaryButton(
               title: 'Registrar',
-              onTap: () => print('registrar'),
+              onTap: () => Navigator.of(context).push(
+                CustomTransition(target: const RegisterScreen()),
+              ),
             ),
           ],
         ),
