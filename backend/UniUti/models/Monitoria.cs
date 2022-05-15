@@ -7,7 +7,8 @@ namespace UniUti.models
     public class Monitoria
     {
         public int Id { get; set; }
-        public Usuario? Autor { get; set; }
+        public Usuario? Solicitante { get; set; }
+        public Usuario? Prestador { get; set; }
         public string? Descricao { get; set; }
         public Disciplina? Disciplina { get; set; }
         public DateTime? DataCriacao { get; set; }
