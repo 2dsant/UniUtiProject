@@ -28,11 +28,11 @@ class _SigninScreenState extends State<SigninScreen> {
           children: [
             SvgPicture.asset('assets/logo.svg'),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 60),
+              padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Text(
                 'Sua vida acadêmica pode ser mais fácil.',
                 style: TextStyle(
-                  fontSize: 24,
+                  fontSize: 18,
                   fontFamily: GoogleFonts.inter().fontFamily,
                   color: Colors.white,
                 ),

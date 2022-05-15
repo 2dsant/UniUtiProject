@@ -56,7 +56,7 @@ final uniUtiPrimaryBtn = ElevatedButton.styleFrom(
 
 final uniUtiPrimaryBtnLbl = TextStyle(
   fontWeight: FontWeight.bold,
-  fontSize: 24,
+  fontSize: 18,
   color: Colors.white,
 );
 
@@ -71,6 +71,19 @@ final uniUtiSecondaryBtn = ElevatedButton.styleFrom(
 
 final uniUtiSecondaryBtnLbl = TextStyle(
   fontWeight: FontWeight.bold,
-  fontSize: 24,
+  fontSize: 18,
   color: Colors.black,
 );
+
+InputDecoration uniUtiInputDecoration(String placeholder) => InputDecoration(
+      filled: true,
+      fillColor: Colors.white,
+      floatingLabelBehavior: FloatingLabelBehavior.never,
+      labelText: placeholder,
+      contentPadding: const EdgeInsets.fromLTRB(25, 20, 25, 20),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: BorderSide.none,
+        gapPadding: 8,
+      ),
+    );
