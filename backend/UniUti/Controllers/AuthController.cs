@@ -1,14 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using ProjetoApi.Models.DTOs.Responses;
+using Microsoft.AspNetCore.Mvc;
+using UniUti.models.dtos;
 using UniUti.Database;
 using UniUti.models;
-using UniUti.models.dtos;
 using UniUti.Utils;
+using UniUti.Configuration;
 
 namespace UniUti.Controllers
 {
@@ -17,10 +13,13 @@ namespace UniUti.Controllers
     public class AuthController : ControllerBase
     {
         private readonly ApplicationDbContext _database;
+        private readonly IConfiguration _configuration;
 
-        public AuthController(ApplicationDbContext database)
+
+        public AuthController(ApplicationDbContext database, IConfiguration configuration)
         {
             _database = database;
+            _configuration = configuration;
         }
 
         [HttpPost]
@@ -89,8 +88,13 @@ namespace UniUti.Controllers
                         Success = false
                     });
                 }
-
-                return Ok(usuarioBd);
+                string token = TokenService.CreateToken(usuarioBd, _configuration);
+                return Ok(new AuthResult()
+                {
+                    Token = token,
+                    Usuario = usuarioBd,
+                    Success = true,
+                });
             }
             else
             {
