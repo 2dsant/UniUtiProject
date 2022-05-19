@@ -2,8 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
-import 'disciplina.dart';
-import 'instituicao.dart';
+import 'models.dart';
 
 class Curso {
   int id;

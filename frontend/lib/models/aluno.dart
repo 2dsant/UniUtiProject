@@ -2,9 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
-import 'contato.dart';
-import 'curso.dart';
-import 'usuario.dart';
+import 'models.dart';
 
 class Aluno {
   int id;

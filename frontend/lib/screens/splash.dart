@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get_it/get_it.dart';
+import '../models/models.dart';
 import 'signin.dart';
 import '../transicao.dart';
 import '../styles.dart';
@@ -14,6 +16,8 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   Future<void> initializer() async {
     await Future.delayed(const Duration(milliseconds: 2000));
+    GetIt.I.registerSingleton(Usuario(id: 1, login: '', senha: '', token: ''));
+    await GetIt.I.allReady();
   }
 
   @override
