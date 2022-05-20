@@ -7,14 +7,12 @@ import 'models.dart';
 class Aluno {
   int id;
   String nome;
-  List<Curso> cursos;
-  List<Contato> contatos;
+  List<Curso> cursos = [];
+  List<Contato> contatos = [];
   Usuario usuario;
   Aluno({
     required this.id,
     required this.nome,
-    required this.cursos,
-    required this.contatos,
     required this.usuario,
   });
 
@@ -28,8 +26,6 @@ class Aluno {
     return Aluno(
       id: id ?? this.id,
       nome: nome ?? this.nome,
-      cursos: cursos ?? this.cursos,
-      contatos: contatos ?? this.contatos,
       usuario: usuario ?? this.usuario,
     );
   }
@@ -48,11 +44,14 @@ class Aluno {
     return Aluno(
       id: map['id']?.toInt() ?? 0,
       nome: map['nome'] ?? '',
-      cursos: List<Curso>.from(map['cursos']?.map((x) => Curso.fromMap(x))),
-      contatos:
-          List<Contato>.from(map['contatos']?.map((x) => Contato.fromMap(x))),
       usuario: Usuario.fromMap(map['usuario']),
-    );
+    )
+      ..cursos.addAll(
+        List<Curso>.from(map['cursos']?.map((x) => Curso.fromMap(x))),
+      )
+      ..contatos.addAll(
+        List<Contato>.from(map['contatos']?.map((x) => Contato.fromMap(x))),
+      );
   }
 
   String toJson() => json.encode(toMap());
