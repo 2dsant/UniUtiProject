@@ -1,6 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'screens/signin.dart';
-import 'screens/splash.dart';
+import 'screens/screens.dart';
 
 import 'styles.dart';
 
@@ -17,8 +17,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'UniUti',
       theme: uniUtiThemeData,
+      scrollBehavior: const CupertinoScrollBehavior(),
       routes: {
-        '/login': (_) => const LoginScreen(),
+        '/signin': (_) => const SigninScreen(),
+        '/register': (_) => const RegisterScreen(),
       },
       home: const SplashScreen(),
     );

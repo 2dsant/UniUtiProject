@@ -1,7 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.github.frisney.uniuti">
-   <application
-        android:label="uniuti"
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <application
+        android:label="UniUti"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
