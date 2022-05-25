@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -25,6 +27,7 @@ abstract class UniUtiColors {
   static MaterialColor green = createMaterialColor(const Color(0xFF03D161));
   static MaterialColor blue = createMaterialColor(const Color(0xFF4796E5));
   static MaterialColor purple = createMaterialColor(const Color(0xFF8458EF));
+  static MaterialColor orange = createMaterialColor(const Color(0xFFE57447));
 }
 
 class UniUtiBgGradient extends LinearGradient {
@@ -81,6 +84,36 @@ InputDecoration uniUtiInputDecoration(String placeholder) => InputDecoration(
       floatingLabelBehavior: FloatingLabelBehavior.never,
       labelText: placeholder,
       contentPadding: const EdgeInsets.fromLTRB(25, 20, 25, 20),
+      floatingLabelAlignment: FloatingLabelAlignment.center,
+      errorStyle: const TextStyle(
+        color: Colors.white,
+        fontWeight: FontWeight.bold,
+        fontSize: 14,
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(20),
+        borderSide: BorderSide(
+          color: UniUtiColors.orange,
+          width: 4,
+          style: BorderStyle.solid,
+        ),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: BorderSide(
+          color: UniUtiColors.orange,
+          width: 2,
+          style: BorderStyle.solid,
+        ),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(20),
+        borderSide: BorderSide(
+          color: UniUtiColors.green,
+          width: 4,
+        ),
+        gapPadding: 8,
+      ),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(10),
         borderSide: BorderSide.none,
