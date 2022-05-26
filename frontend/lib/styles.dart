@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -57,7 +55,7 @@ final uniUtiPrimaryBtn = ElevatedButton.styleFrom(
   ),
 );
 
-final uniUtiPrimaryBtnLbl = TextStyle(
+const uniUtiPrimaryBtnLbl = TextStyle(
   fontWeight: FontWeight.bold,
   fontSize: 18,
   color: Colors.white,
@@ -72,7 +70,7 @@ final uniUtiSecondaryBtn = ElevatedButton.styleFrom(
   ),
 );
 
-final uniUtiSecondaryBtnLbl = TextStyle(
+const uniUtiSecondaryBtnLbl = TextStyle(
   fontWeight: FontWeight.bold,
   fontSize: 18,
   color: Colors.black,
