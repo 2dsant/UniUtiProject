@@ -1,18 +1,16 @@
 import 'dart:developer' as dev;
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../repositories/curso_repository.dart';
-import 'screens.dart';
-import '../transicao.dart';
-import '../components/buttons.dart';
+import '../components/components.dart';
 import '../models/models.dart';
+import '../repositories/curso_repository.dart';
 import '../styles.dart';
+import '../transicao.dart';
+import 'screens.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -55,7 +53,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ),
                 dropdown(placeholder: 'Curso'),
-                formField(
+                UniUtiInput(
                   placeholder: 'Nome',
                   save: (str) => _user.nome = str ?? '',
                   valid: (text) => (text == null ||
@@ -64,7 +62,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ? 'Nome inválido'
                       : null,
                 ),
-                formField(
+                UniUtiInput(
                   placeholder: 'Telefone',
                   type: TextInputType.phone,
                   save: (str) => _user.contatos.add(
@@ -79,7 +77,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         : null;
                   },
                 ),
-                formField(
+                UniUtiInput(
                   placeholder: 'Email',
                   type: TextInputType.emailAddress,
                   controller: _emailController,
@@ -89,9 +87,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     if (text == null || text.isEmpty || !(rgx.hasMatch(text))) {
                       return 'Email inválido';
                     }
+                    return null;
                   },
                 ),
-                formField(
+                UniUtiInput(
                   placeholder: 'Confirme seu email',
                   type: TextInputType.emailAddress,
                   valid: (text) {
@@ -101,11 +100,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     } else if (_emailController.text != text) {
                       return 'Email não corresponde';
                     }
+                    return null;
                   },
                 ),
-                formField(
+                UniUtiInput(
                   placeholder: 'Senha',
                   password: true,
+                  last: true,
+                  editingComplete: _validateForm,
                   save: (str) => _user.usuario.senha = str ?? '',
                   valid: (text) => (text == null || text.length < 8)
                       ? 'Senha deve ter mais que 8 caracteres'
@@ -147,27 +149,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
         );
       },
-    );
-  }
-
-  formField(
-      {required String placeholder,
-      bool password = false,
-      TextInputType? type,
-      TextEditingController? controller,
-      FormFieldSetter<String>? save,
-      FormFieldValidator<String>? valid}) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 25),
-      child: TextFormField(
-        textInputAction: TextInputAction.next,
-        decoration: uniUtiInputDecoration(placeholder),
-        controller: controller,
-        obscureText: password,
-        keyboardType: type,
-        onSaved: save,
-        validator: valid,
-      ),
     );
   }
 
