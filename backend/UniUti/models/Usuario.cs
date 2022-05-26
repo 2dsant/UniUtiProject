@@ -15,5 +15,6 @@ namespace UniUti.models
         public string? Celular { get; set; }
         public Instituicao? Instituicao { get; set; }
         public Curso? Curso { get; set; }
+        public Boolean Deletado { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-using ProjetoApi.Models.DTOs.Responses;
+using UniUti.models.dtos.responses;
 using Microsoft.AspNetCore.Mvc;
 using UniUti.models.dtos;
 using UniUti.Database;

@@ -11,8 +11,7 @@ namespace UniUti.Utils
         {
             List<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, user.Nome),
-                new Claim(ClaimTypes.Role, "Admin")
+                new Claim(ClaimTypes.Name, user.Nome)
             };
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
@@ -22,7 +21,6 @@ namespace UniUti.Utils
 
             var token = new JwtSecurityToken(
                 claims: claims,
-                expires: DateTime.Now.AddDays(1),
                 signingCredentials: creds);
 
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);

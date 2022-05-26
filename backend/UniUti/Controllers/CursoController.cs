@@ -11,6 +11,7 @@ namespace UniUti.Controllers
     [Route("api/v1/[controller]")]
     public class CursoController : ControllerBase
     {
+        //FERNANDO TENTARA IMPLEMENTAR
         private readonly ApplicationDbContext _database;
 
         public CursoController(ApplicationDbContext database)

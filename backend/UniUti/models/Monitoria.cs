@@ -13,5 +13,6 @@ namespace UniUti.models
         public Disciplina? Disciplina { get; set; }
         public DateTime? DataCriacao { get; set; }
         public StatusSolicitacao? StatusSolicitacaco { get; set; }
+        public Boolean Deletado { get; set; }
     }
 }
