@@ -41,6 +41,42 @@ class UniUtiBgGradient extends LinearGradient {
         );
 }
 
+class UniUtiBgGradient2 extends LinearGradient {
+  UniUtiBgGradient2()
+      : super(
+          colors: [
+            UniUtiColors.purple,
+            UniUtiColors.purple.shade900,
+          ],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        );
+}
+
+class UniUtiBgGradient3 extends LinearGradient {
+  UniUtiBgGradient3()
+      : super(
+          colors: [
+            UniUtiColors.purple,
+            UniUtiColors.blue,
+          ],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        );
+}
+
+class UniUtiBgGradient4 extends LinearGradient {
+  UniUtiBgGradient4()
+      : super(
+          colors: [
+            UniUtiColors.blue,
+            UniUtiColors.green,
+          ],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        );
+}
+
 final uniUtiThemeData = ThemeData(
   textTheme: GoogleFonts.rajdhaniTextTheme(),
   primarySwatch: UniUtiColors.green,

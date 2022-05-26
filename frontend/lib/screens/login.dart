@@ -93,8 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
     Navigator.of(context).pushReplacement(
-      // TODO: Redirecionar para tela principal
-      CustomTransition(target: const SigninScreen()),
+      CustomTransition(target: const DashboardScreen()),
     );
   }
 }
