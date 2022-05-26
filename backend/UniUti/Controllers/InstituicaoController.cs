@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using UniUti.Database;
 using UniUti.models;
 using UniUti.models.dtos;
@@ -18,13 +20,11 @@ namespace UniUti.Controllers
         }
 
         [HttpGet]
-        async Task<ActionResult<Instituicao>> Get()
+        public async Task<ActionResult<List<Instituicao>>> Get()
         {
             try
             {
-                var instituicoes = _database.Instituicoes.ToList();
-
-                return Ok(instituicoes);
+                return Ok(await _database.Instituicoes?.ToListAsync());
             }
             catch (Exception ex)
             {
@@ -39,11 +39,11 @@ namespace UniUti.Controllers
         }
 
         [HttpGet("{id:int}")]
-        async Task<ActionResult<Instituicao>> Get(int id)
+        public async Task<ActionResult<Instituicao>> Get(int id)
         {
             try
             {
-                var instituicao = _database.Instituicoes.FirstOrDefault(inst => inst.Id == id);
+                var instituicao = await _database.Instituicoes.FirstOrDefaultAsync(inst => inst.Id == id);
 
                 if (instituicao != null)
                 {
@@ -67,7 +67,7 @@ namespace UniUti.Controllers
         }
 
         [HttpPost]
-        async Task<ActionResult<Instituicao>> Post(InstituicaoDto instituicaoDto)
+        public async Task<ActionResult<Instituicao>> AddInstituicao(InstituicaoDto instituicaoDto)
         {
             if (ModelState.IsValid)
             {
@@ -105,7 +105,7 @@ namespace UniUti.Controllers
         }
 
         [HttpPut]
-        async Task<ActionResult<Instituicao>> Put(InstituicaoDto instituicaoDto)
+        public async Task<ActionResult<Instituicao>> EditarInstituicao(InstituicaoDto instituicaoDto)
         {
             if (ModelState.IsValid)
             {
@@ -135,8 +135,8 @@ namespace UniUti.Controllers
             }
         }
 
-        [HttpDelete]
-        async Task<ActionResult<string>> Delete(int id)
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult<string>> Delete(int id)
         {
             if (id > 0)
             {
