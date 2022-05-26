@@ -1,12 +1,10 @@
-import 'dart:developer' as dev;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:uniuti/screens/register.dart';
 import '../components/buttons.dart'
     show UniUtiPrimaryButton, UniUtiSecondaryButton;
 import '../styles.dart' show UniUtiBgGradient;
 import '../transicao.dart';
+import 'screens.dart';
 
 class SigninScreen extends StatefulWidget {
   const SigninScreen({Key? key}) : super(key: key);
@@ -27,13 +25,12 @@ class _SigninScreenState extends State<SigninScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             SvgPicture.asset('assets/logo.svg'),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 30),
               child: Text(
                 'Sua vida acadêmica pode ser mais fácil.',
                 style: TextStyle(
                   fontSize: 18,
-                  fontFamily: GoogleFonts.inter().fontFamily,
                   color: Colors.white,
                 ),
               ),
@@ -42,7 +39,7 @@ class _SigninScreenState extends State<SigninScreen> {
             UniUtiPrimaryButton(
               title: 'Entrar',
               onTap: () => Navigator.of(context).push(
-                CustomTransition(target: const SigninScreen()),
+                CustomTransition(target: const LoginScreen()),
               ),
             ),
             const SizedBox(height: 16),
