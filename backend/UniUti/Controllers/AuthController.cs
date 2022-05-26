@@ -1,12 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Threading.Tasks;
+using UniUti.models.dtos.responses;
 using Microsoft.AspNetCore.Mvc;
+using UniUti.models.dtos;
 using UniUti.Database;
 using UniUti.models;
-using UniUti.models.dtos;
+using UniUti.Utils;
+using UniUti.Configuration;
 
 namespace UniUti.Controllers
 {
@@ -15,54 +13,100 @@ namespace UniUti.Controllers
     public class AuthController : ControllerBase
     {
         private readonly ApplicationDbContext _database;
+        private readonly IConfiguration _configuration;
 
-        public AuthController(ApplicationDbContext database)
+
+        public AuthController(ApplicationDbContext database, IConfiguration configuration)
         {
             _database = database;
+            _configuration = configuration;
         }
 
         [HttpPost]
         [Route("register")]
         public async Task<ActionResult<Usuario>> Register(UsuarioDto userDto)
         {
-            Usuario usuarioBd = new Usuario();
-            usuarioBd.Nome = userDto.Nome;
-            usuarioBd.Email = userDto.Email;
-            usuarioBd.Senha = userDto.Senha;
-            usuarioBd.Celular = userDto.Celular;
-
-            await _database.Usuarios.AddAsync(usuarioBd);
-            await _database.SaveChangesAsync();
-
-            return Ok(usuarioBd);
-        }
-
-        [HttpPost]
-        [Route("login")]
-        public async Task<ActionResult<string>> Login(LoginDto login)
-        {
-            Usuario UsuarioBd = _database.Usuarios.FirstOrDefault(Usuario =>
-                Usuario.Email == login.Email && Usuario.Senha == login.Senha
-            );
-
-            if (UsuarioBd != null)
+            if (ModelState.IsValid)
             {
-                return Ok("TOKEN JWT");
+                var emailExistente = _database.Usuarios.FirstOrDefault(user => user.Email == userDto.Email);
+
+                if (emailExistente != null)
+                {
+                    return BadRequest(new RegistrationResponse()
+                    {
+                        Errors = new List<string>()
+                        {
+                            "Email já cadastrado."
+                        },
+                        Success = false
+                    });
+                }
+
+                SenhaService.CreatePasswordHash(userDto.Senha, out byte[] passwordHash, out byte[] passwordSalt);
+
+                Usuario usuarioBd = new Usuario()
+                {
+                    Nome = userDto.Nome,
+                    Email = userDto.Email,
+                    SenhaHash = passwordHash,
+                    SenhaSalt = passwordSalt,
+                    Celular = userDto.Celular
+                };
+
+                try
+                {
+                    await _database.Usuarios.AddAsync(usuarioBd);
+                    await _database.SaveChangesAsync();
+                    return Ok(usuarioBd);
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
             }
             else
             {
-                return NotFound("Usuário não encontrado com os dados informados");
+                return BadRequest(ModelState.Values);
             }
-
         }
 
-        // private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
-        // {
-        //     using (var hmac = new HMACSHA512())
-        //     {
-        //         passwordSalt = hmac.Key;
-        //         passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-        //     }
 
+        [HttpPost("login")]
+        public async Task<ActionResult<string>> Login(LoginDto userDto)
+        {
+            var usuarioBd = _database.Usuarios.FirstOrDefault(user => user.Email == userDto.Email);
+            if (usuarioBd != null)
+            {
+                if (!SenhaService.VerifyPasswordHash(userDto.Senha, usuarioBd.SenhaHash, usuarioBd.SenhaSalt))
+                {
+                    return BadRequest(new RegistrationResponse()
+                    {
+                        Errors = new List<string>()
+                        {
+                            "Senha incorreta."
+                        },
+                        Success = false
+                    });
+                }
+                string token = TokenService.CreateToken(usuarioBd, _configuration);
+                return Ok(new AuthResult()
+                {
+                    Token = token,
+                    Usuario = usuarioBd,
+                    Success = true,
+                });
+            }
+            else
+            {
+                return NotFound(new RegistrationResponse()
+                {
+                    Errors = new List<string>()
+                        {
+                            "Email já cadastrado."
+                        },
+                    Success = false
+                });
+            }
+        }
     }
 }

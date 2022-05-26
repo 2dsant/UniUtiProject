@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UniUti.Database;
 
@@ -10,9 +11,10 @@ using UniUti.Database;
 namespace UniUti.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220515224507_MudancasModel")]
+    partial class MudancasModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,9 +42,6 @@ namespace UniUti.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<bool>("Deletado")
-                        .HasColumnType("tinyint(1)");
-
                     b.Property<int?>("InstituicaoId")
                         .HasColumnType("int");
 
@@ -61,9 +60,6 @@ namespace UniUti.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    b.Property<bool>("Deletado")
-                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Descricao")
                         .HasColumnType("longtext");
@@ -113,9 +109,6 @@ namespace UniUti.Migrations
                     b.Property<string>("Celular")
                         .HasColumnType("longtext");
 
-                    b.Property<bool>("Deletado")
-                        .HasColumnType("tinyint(1)");
-
                     b.Property<string>("Email")
                         .HasColumnType("longtext");
 
@@ -143,9 +136,6 @@ namespace UniUti.Migrations
 
                     b.Property<DateTime?>("DataCriacao")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<bool>("Deletado")
-                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Descricao")
                         .HasColumnType("longtext");
@@ -184,9 +174,6 @@ namespace UniUti.Migrations
 
                     b.Property<int?>("CursoId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("Deletado")
-                        .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Email")
                         .HasColumnType("longtext");

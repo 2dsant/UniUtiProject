@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../components/buttons.dart'
     show UniUtiPrimaryButton, UniUtiSecondaryButton;
 import '../styles.dart' show UniUtiBgGradient;
+import '../transicao.dart';
+import 'screens.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class SigninScreen extends StatefulWidget {
+  const SigninScreen({Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SigninScreen> createState() => _SigninScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SigninScreenState extends State<SigninScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,13 +25,12 @@ class _LoginScreenState extends State<LoginScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             SvgPicture.asset('assets/logo.svg'),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 60),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 30),
               child: Text(
                 'Sua vida acadêmica pode ser mais fácil.',
                 style: TextStyle(
-                  fontSize: 24,
-                  fontFamily: GoogleFonts.inter().fontFamily,
+                  fontSize: 18,
                   color: Colors.white,
                 ),
               ),
@@ -38,12 +38,16 @@ class _LoginScreenState extends State<LoginScreen> {
             const Spacer(),
             UniUtiPrimaryButton(
               title: 'Entrar',
-              onTap: () => print('entrar'),
+              onTap: () => Navigator.of(context).push(
+                CustomTransition(target: const LoginScreen()),
+              ),
             ),
             const SizedBox(height: 16),
             UniUtiSecondaryButton(
               title: 'Registrar',
-              onTap: () => print('registrar'),
+              onTap: () => Navigator.of(context).push(
+                CustomTransition(target: const RegisterScreen()),
+              ),
             ),
           ],
         ),

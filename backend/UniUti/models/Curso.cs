@@ -9,7 +9,7 @@ namespace UniUti.models
     {
         public int Id { get; set; }
         public string? Nome { get; set; }
-        public Instituicao? Instituicao { get; set; }
         public ICollection<Disciplina>? Disciplinas { get; set; }
+        public Boolean Deletado { get; set; }
     }
 }
