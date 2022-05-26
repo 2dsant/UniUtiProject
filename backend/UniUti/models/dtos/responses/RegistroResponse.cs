@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using UniUti.Configuration;
 
-namespace ProjetoApi.Models.DTOs.Responses
+namespace UniUti.models.dtos.responses
 {
     public class RegistrationResponse : AuthResult
     {

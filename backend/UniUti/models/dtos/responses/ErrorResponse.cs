@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace UniUti.Configuration
+namespace UniUti.models.dtos.responses
 {
-    public class AuthResult
+    public class ErrorResponse
     {
-        public string Token { get; set; }
-        public bool Success { get; set; }
         public List<string> Errors { get; set; }
     }
 }
