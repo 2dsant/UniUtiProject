@@ -1,10 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using UniUti.models;
+using UniUti.Models;
 
-namespace UniUti.Configuration
+namespace UniUti.Data.Responses
 {
     public class AuthResult
     {

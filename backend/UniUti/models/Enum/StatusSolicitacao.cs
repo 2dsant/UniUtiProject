@@ -1,4 +1,4 @@
-namespace UniUti.models.enums
+namespace UniUti.models.Enum
 {
     public enum StatusSolicitacao
     {

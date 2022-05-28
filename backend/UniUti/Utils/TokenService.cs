@@ -1,7 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
-using UniUti.models;
+using UniUti.Models;
 
 namespace UniUti.Utils
 {

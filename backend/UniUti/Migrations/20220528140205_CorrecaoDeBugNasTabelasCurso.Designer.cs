@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UniUti.Database;
 
@@ -10,9 +11,10 @@ using UniUti.Database;
 namespace UniUti.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220528140205_CorrecaoDeBugNasTabelasCurso")]
+    partial class CorrecaoDeBugNasTabelasCurso
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -246,7 +248,7 @@ namespace UniUti.Migrations
                         .HasColumnType("varchar(11)")
                         .HasColumnName("celular");
 
-                    b.Property<long?>("CursoId")
+                    b.Property<long>("CursoId")
                         .HasColumnType("bigint");
 
                     b.Property<bool>("Deletado")
@@ -259,7 +261,7 @@ namespace UniUti.Migrations
                         .HasColumnType("varchar(100)")
                         .HasColumnName("email");
 
-                    b.Property<long?>("InstituicaoId")
+                    b.Property<long>("InstituicaoId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Nome")
@@ -359,11 +361,15 @@ namespace UniUti.Migrations
                 {
                     b.HasOne("UniUti.Models.Curso", "Curso")
                         .WithMany()
-                        .HasForeignKey("CursoId");
+                        .HasForeignKey("CursoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("UniUti.Models.Instituicao", "Instituicao")
                         .WithMany("Usuarios")
-                        .HasForeignKey("InstituicaoId");
+                        .HasForeignKey("InstituicaoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Curso");
 

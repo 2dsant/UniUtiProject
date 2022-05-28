@@ -1,9 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using UniUti.Database;
+using UniUti.Data.Responses;
+using UniUti.Data.ValueObjects;
+using UniUti.Repository;
 
 namespace UniUti.Controllers
 {
@@ -11,23 +9,90 @@ namespace UniUti.Controllers
     [Route("api/v1/[controller]")]
     public class MonitoriaController : ControllerBase
     {
-        private readonly ApplicationDbContext _database;
+        private IMonitoriaRepository _repository;
 
-        public MonitoriaController(ApplicationDbContext database)
+        public MonitoriaController(IMonitoriaRepository repository)
         {
-            _database = database;
+            _repository = repository ??
+                throw new ArgumentNullException(nameof(repository));
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<ActionResult<IEnumerable<MonitoriaVO>>> FindAll()
         {
-            return Ok("GET MONITORIA FUNCIONA.");
+            var monitorias = await _repository.FindAll();
+            if (monitorias == null) return NotFound();
+            return Ok(monitorias);
+        }
+
+        [HttpGet("GetById/{id}")]
+        public async Task<ActionResult<InstituicaoVO>> FindById(long id)
+        {
+            var monitoria = await _repository.FindById(id);
+            if (monitoria == null) return NotFound();
+            return Ok(monitoria);
+        }
+
+        [HttpGet("GetByStatus/{status}")]
+        public async Task<ActionResult<MonitoriaVO>> FindByStatus(long status)
+        {
+            var monitoria = await _repository.FindByStatus(status);
+            if (monitoria == null) return NotFound();
+            return Ok(monitoria);
         }
 
         [HttpPost]
-        public IActionResult Post(string nome)
+        public async Task<ActionResult<MonitoriaVO>> Create([FromBody] CriarMonitoriaVO vo)
         {
-            return Ok($"Nome: {nome}");
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var monitoria = await _repository.Create(vo);
+                    return Ok(monitoria);
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(new ErrorResponse()
+                    {
+                        Errors = new List<string>()
+                        {
+                            ex.Message
+                        }
+                    });
+                }
+            }
+            else
+            {
+                return BadRequest(ModelState.Values);
+            }
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<MonitoriaVO>> Update([FromBody] MonitoriaVO vo)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var monitoria = await _repository.Update(vo);
+                    return Ok(monitoria);
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(new ErrorResponse()
+                    {
+                        Errors = new List<string>()
+                        {
+                            ex.Message
+                        }
+                    });
+                }
+            }
+            else
+            {
+                return BadRequest(ModelState.Values);
+            }
         }
     }
 }

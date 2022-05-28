@@ -1,10 +1,6 @@
-using UniUti.models.dtos.responses;
 using Microsoft.AspNetCore.Mvc;
-using UniUti.models.dtos;
-using UniUti.Database;
-using UniUti.models;
-using UniUti.Utils;
-using UniUti.Configuration;
+using UniUti.Repository;
+using UniUti.Data.ValueObjects;
 
 namespace UniUti.Controllers
 {
@@ -12,57 +8,22 @@ namespace UniUti.Controllers
     [Route("api/v1/[controller]")]
     public class AuthController : ControllerBase
     {
-        private readonly ApplicationDbContext _database;
-        private readonly IConfiguration _configuration;
+        private IAuthRepository _repository;
 
-
-        public AuthController(ApplicationDbContext database, IConfiguration configuration)
+        public AuthController(IAuthRepository repository)
         {
-            _database = database;
-            _configuration = configuration;
+            _repository = repository ??
+                throw new ArgumentNullException(nameof(repository));
         }
 
         [HttpPost]
         [Route("register")]
-        public async Task<ActionResult<Usuario>> Register(UsuarioDto userDto)
+        public async Task<IActionResult> Register([FromBody] UsuarioVO vo)
         {
             if (ModelState.IsValid)
             {
-                var emailExistente = _database.Usuarios.FirstOrDefault(user => user.Email == userDto.Email);
-
-                if (emailExistente != null)
-                {
-                    return BadRequest(new RegistrationResponse()
-                    {
-                        Errors = new List<string>()
-                        {
-                            "Email já cadastrado."
-                        },
-                        Success = false
-                    });
-                }
-
-                SenhaService.CreatePasswordHash(userDto.Senha, out byte[] passwordHash, out byte[] passwordSalt);
-
-                Usuario usuarioBd = new Usuario()
-                {
-                    Nome = userDto.Nome,
-                    Email = userDto.Email,
-                    SenhaHash = passwordHash,
-                    SenhaSalt = passwordSalt,
-                    Celular = userDto.Celular
-                };
-
-                try
-                {
-                    await _database.Usuarios.AddAsync(usuarioBd);
-                    await _database.SaveChangesAsync();
-                    return Ok(usuarioBd);
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
+                var result = await _repository.Register(vo);
+                return Ok(result);
             }
             else
             {
@@ -72,40 +33,16 @@ namespace UniUti.Controllers
 
 
         [HttpPost("login")]
-        public async Task<ActionResult<string>> Login(LoginDto userDto)
+        public async Task<ActionResult> Login([FromBody] LoginVO vo)
         {
-            var usuarioBd = _database.Usuarios.FirstOrDefault(user => user.Email == userDto.Email);
-            if (usuarioBd != null)
+            if (ModelState.IsValid)
             {
-                if (!SenhaService.VerifyPasswordHash(userDto.Senha, usuarioBd.SenhaHash, usuarioBd.SenhaSalt))
-                {
-                    return BadRequest(new RegistrationResponse()
-                    {
-                        Errors = new List<string>()
-                        {
-                            "Senha incorreta."
-                        },
-                        Success = false
-                    });
-                }
-                string token = TokenService.CreateToken(usuarioBd, _configuration);
-                return Ok(new AuthResult()
-                {
-                    Token = token,
-                    Usuario = usuarioBd,
-                    Success = true,
-                });
+                var usuario = await _repository.Login(vo);
+                return Ok(usuario);
             }
             else
             {
-                return NotFound(new RegistrationResponse()
-                {
-                    Errors = new List<string>()
-                        {
-                            "Email já cadastrado."
-                        },
-                    Success = false
-                });
+                return BadRequest(ModelState.Values);
             }
         }
     }
