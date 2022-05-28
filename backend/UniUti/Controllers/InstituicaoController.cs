@@ -1,10 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using UniUti.Database;
-using UniUti.models;
-using UniUti.models.dtos;
-using UniUti.models.dtos.responses;
+using UniUti.Data.Responses;
+using UniUti.Data.ValueObjects;
+using UniUti.Repository;
 
 namespace UniUti.Controllers
 {
@@ -12,80 +9,39 @@ namespace UniUti.Controllers
     [Route("api/v1/[controller]")]
     public class InstituicaoController : ControllerBase
     {
-        private readonly ApplicationDbContext _database;
+        private IInstituicaoRepository _repository;
 
-        public InstituicaoController(ApplicationDbContext database)
+        public InstituicaoController(IInstituicaoRepository repository)
         {
-            _database = database;
+            _repository = repository ??
+                throw new ArgumentNullException(nameof(repository));
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Instituicao>>> Get()
+        public async Task<ActionResult<IEnumerable<InstituicaoVO>>> FindAll()
         {
-            try
-            {
-                return Ok(await _database.Instituicoes?.ToListAsync());
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ErrorResponse()
-                {
-                    Errors = new List<string>()
-                        {
-                            ex.Message
-                        }
-                });
-            }
+            var instituicoes = await _repository.FindAll();
+            if (instituicoes == null) return NotFound();
+            return Ok(instituicoes);
         }
 
-        [HttpGet("{id:int}")]
-        public async Task<ActionResult<Instituicao>> Get(int id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<InstituicaoVO>> FindById(long id)
         {
-            try
-            {
-                var instituicao = await _database.Instituicoes.FirstOrDefaultAsync(inst => inst.Id == id);
-
-                if (instituicao != null)
-                {
-                    return Ok(instituicao);
-                }
-                else
-                {
-                    return NotFound("Instituição não encontrada.");
-                }
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ErrorResponse()
-                {
-                    Errors = new List<string>()
-                        {
-                            ex.Message
-                        }
-                });
-            }
+            var instituicao = await _repository.FindById(id);
+            if (instituicao == null) return NotFound();
+            return Ok(instituicao);
         }
 
         [HttpPost]
-        public async Task<ActionResult<Instituicao>> AddInstituicao(InstituicaoDto instituicaoDto)
+        public async Task<ActionResult<InstituicaoVO>> Create([FromBody] InstituicaoVO vo)
         {
             if (ModelState.IsValid)
             {
-                Instituicao instituicaoBd = new Instituicao()
-                {
-                    Nome = instituicaoDto.Nome,
-                    Cursos = instituicaoDto.Cursos,
-                    Endereco = instituicaoDto.Endereco,
-                    Telefone = instituicaoDto.Telefone,
-                    Email = instituicaoDto.Email,
-                    Celular = instituicaoDto.Celular
-                };
-
                 try
                 {
-                    await _database.Instituicoes.AddAsync(instituicaoBd);
-                    await _database.SaveChangesAsync();
-                    return Ok(instituicaoBd);
+                    var instituicao = await _repository.Create(vo);
+                    return Ok(instituicao);
                 }
                 catch (Exception ex)
                 {
@@ -105,60 +61,14 @@ namespace UniUti.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult<Instituicao>> EditarInstituicao(InstituicaoDto instituicaoDto)
+        public async Task<ActionResult<InstituicaoVO>> Update([FromBody] InstituicaoVO vo)
         {
             if (ModelState.IsValid)
             {
-                var instituicaoDb = _database.Instituicoes.First(i => i.Id == instituicaoDto.Id);
-
-                if (instituicaoDb != null)
-                {
-                    instituicaoDb.Id = instituicaoDto.Id;
-                    instituicaoDb.Nome = instituicaoDto.Nome;
-                    instituicaoDb.Cursos = instituicaoDto.Cursos;
-                    instituicaoDb.Endereco = instituicaoDto.Endereco;
-                    instituicaoDb.Telefone = instituicaoDto.Telefone;
-                    instituicaoDb.Email = instituicaoDto.Email;
-                    instituicaoDb.Celular = instituicaoDto.Celular;
-
-                    await _database.SaveChangesAsync();
-                    return Ok(instituicaoDb);
-                }
-                else
-                {
-                    return NotFound("Instituição não encontrada.");
-                }
-            }
-            else
-            {
-                return BadRequest(ModelState.Values);
-            }
-        }
-
-        [HttpDelete("{id:int}")]
-        public async Task<ActionResult<string>> Delete(int id)
-        {
-            if (id > 0)
-            {
                 try
                 {
-                    Instituicao instituicao = _database.Instituicoes.First(inst => inst.Id == id);
-                    if (instituicao != null)
-                    {
-                        instituicao.Deletado = true;
-                        await _database.SaveChangesAsync();
-                        return Ok("Registro Excluido.");
-                    }
-                    else
-                    {
-                        return BadRequest(new ErrorResponse()
-                        {
-                            Errors = new List<string>()
-                        {
-                            "Instituição não encontrada."
-                        }
-                        });
-                    }
+                    var instituicao = await _repository.Update(vo);
+                    return Ok(instituicao);
                 }
                 catch (Exception ex)
                 {
@@ -173,8 +83,16 @@ namespace UniUti.Controllers
             }
             else
             {
-                return BadRequest("Id não informado.");
+                return BadRequest(ModelState.Values);
             }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<GenericResponse>> Delete(long id)
+        {
+            var response = await _repository.Delete(id);
+            if (!response.Success) return BadRequest();
+            return Ok(response);
         }
     }
 }

@@ -1,15 +1,22 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using UniUti.Models.Base;
 
-namespace UniUti.models
+namespace UniUti.Models
 {
-    public class Curso
+    [Table("cursos")]
+    public class Curso : EntidadeBase
     {
-        public int Id { get; set; }
+        [Column("nome")]
+        [Required]
+        [StringLength(100)]
         public string? Nome { get; set; }
-        public ICollection<Disciplina>? Disciplinas { get; set; }
-        public Boolean Deletado { get; set; }
+
+        public virtual ICollection<Disciplina>? Disciplinas { get; set; }
+
+        public virtual ICollection<Instituicao>? Instituicoes { get; set; }
+
+        [Column("deletado")]
+        public Boolean Deletado { get; set; } = false;
     }
 }
