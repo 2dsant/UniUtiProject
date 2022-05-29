@@ -1,18 +1,40 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using UniUti.Models.Base;
 
-namespace UniUti.models
+namespace UniUti.Models
 {
-    public class Endereco
+    [Table("enderecos")]
+    public class Endereco : EntidadeBase
     {
-        public string? Id { get; set; }
+        [Required]
+        [Column("cep")]
+        [StringLength(8)]
         public string? Cep { get; set; }
+
+        [Required]
+        [Column("rua")]
+        [StringLength(100)]
         public string? Rua { get; set; }
+
+        [Required]
+        [Column("numero")]
+        [StringLength(8)]
         public string? Numero { get; set; }
+
+        [Required]
+        [Column("cidade")]
+        [StringLength(50)]
         public string? Cidade { get; set; }
+
+        [Required]
+        [Column("estado")]
+        [StringLength(2)]
         public string? Estado { get; set; }
+
+        [Required]
+        [Column("pais")]
+        [StringLength(50)]
         public string? Pais { get; set; }
     }
 }
