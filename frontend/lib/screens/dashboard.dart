@@ -1,7 +1,10 @@
 import 'dart:developer' as dev;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get_it/get_it.dart';
 import 'package:uniuti/components/components.dart';
+import 'package:uniuti/components/recents_list_item.dart';
+import 'package:uniuti/models/aluno.dart';
 import 'package:uniuti/styles.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -14,6 +17,16 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
+    var _aluno = GetIt.I.get<Aluno>();
+    var _menuItems = [
+      const SizedBox(width: 30),
+      FixedMenuItem(
+        text: 'Monitorias',
+        icon: const Icon(Icons.menu_book_sharp, size: 35),
+        onTap: () => dev.log('LOL'),
+      ),
+      const SizedBox(width: 30),
+    ];
     return Scaffold(
       drawer: Drawer(
         child: SingleChildScrollView(
@@ -62,7 +75,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   children: [
                     const TextSpan(text: 'Bem-vindo, '),
                     TextSpan(
-                        text: 'NOME',
+                        text: _aluno.nome,
                         style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                             color: Colors.white, fontWeight: FontWeight.bold)),
                   ],
@@ -84,12 +97,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       child: const Center(child: Text('FOTO')),
                     ),
                     const SizedBox(height: 8),
-                    Text('NOME',
+                    Text(_aluno.nome,
                         style: Theme.of(context)
                             .textTheme
                             .titleLarge!
                             .copyWith(color: Colors.white)),
-                    Text('INSTITUICAO',
+                    Text(_aluno.getInstituicao(),
                         style: Theme.of(context)
                             .textTheme
                             .titleMedium!
@@ -114,16 +127,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ),
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
-                    child: Row(children: [
-                      const SizedBox(width: 30),
-                      FixedMenuItem(
-                        text: 'Mono',
-                        icon: Container(
-                            height: 40, width: 40, color: Colors.black54),
-                        onTap: () => dev.log('LOL'),
-                      ),
-                      const SizedBox(width: 30),
-                    ]),
+                    child: Row(children: _menuItems),
                   ),
                 ],
               ),
@@ -142,12 +146,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
           ),
           SliverFixedExtentList(
-            itemExtent: 100,
+            itemExtent: 105,
             delegate: SliverChildListDelegate([
-              const Text('Sim1'),
-              const Text('Sim2'),
-              const Text('Sim3'),
-              const Text('Sim4'),
+              // TODO: Recentes Builder
+              const RecentsListItem(),
+              const RecentsListItem(),
+              const RecentsListItem(),
+              const RecentsListItem(),
+              const RecentsListItem(),
+              const RecentsListItem(),
             ]),
           ),
         ],
