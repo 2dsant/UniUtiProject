@@ -1,15 +1,18 @@
+import 'dart:developer' as dev;
+
 import 'package:flutter/material.dart';
 
+import '../models/models.dart';
 import '../styles.dart';
 
 class RecentsListItem extends StatelessWidget {
-  const RecentsListItem({Key? key}) : super(key: key);
-
+  const RecentsListItem({Key? key, required this.model}) : super(key: key);
+  final Monitoria model;
   @override
   Widget build(BuildContext context) {
     return Material(
       child: InkWell(
-        onTap: () => print('lol'),
+        onTap: () => dev.log('lol'),
         child: Container(
           margin: const EdgeInsets.fromLTRB(33, 10, 16, 10),
           child: Row(
@@ -28,15 +31,15 @@ class RecentsListItem extends StatelessWidget {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // TODO: Recuperar dados da Model/LocalStorage
                     Text(
-                      'TITULO',
+                      model.titulo,
                       maxLines: 1,
                       overflow: TextOverflow.fade,
                       style: Theme.of(context).textTheme.titleMedium!.copyWith(
                           fontWeight: FontWeight.bold, color: Colors.black87),
                     ),
                     Text(
+                      // TODO: Guardar data de anuncio
                       'Anunciado em: 00/00/0000',
                       style: Theme.of(context).textTheme.titleSmall!.copyWith(
                             fontWeight: FontWeight.bold,
@@ -45,9 +48,9 @@ class RecentsListItem extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.fade,
                     ),
-                    const Text(
-                      'Um produto/monitoria com uma Descricao bem descrita e que parece que nao acaba nunca',
-                      overflow: TextOverflow.fade,
+                    Text(
+                      model.descricao,
+                      overflow: TextOverflow.ellipsis,
                       maxLines: 2,
                     ),
                     Divider(

@@ -9,13 +9,12 @@ class Disciplina {
   String nome;
   String descricao;
   String periodicidade;
-  List<Curso> cursos;
+  List<Curso> cursos = [];
   Disciplina({
     required this.id,
     required this.nome,
     required this.descricao,
     required this.periodicidade,
-    required this.cursos,
   });
 
   Disciplina copyWith({
@@ -30,8 +29,7 @@ class Disciplina {
       nome: nome ?? this.nome,
       descricao: descricao ?? this.descricao,
       periodicidade: periodicidade ?? this.periodicidade,
-      cursos: cursos ?? this.cursos,
-    );
+    )..cursos = cursos ?? this.cursos;
   }
 
   Map<String, dynamic> toMap() {
@@ -50,8 +48,7 @@ class Disciplina {
       nome: map['nome'] ?? '',
       descricao: map['descricao'] ?? '',
       periodicidade: map['periodicidade'] ?? '',
-      cursos: List<Curso>.from(map['cursos']?.map((x) => Curso.fromMap(x))),
-    );
+    )..cursos = List<Curso>.from(map['cursos']?.map((x) => Curso.fromMap(x)));
   }
 
   String toJson() => json.encode(toMap());
