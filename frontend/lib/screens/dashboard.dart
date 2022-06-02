@@ -5,6 +5,7 @@ import 'package:get_it/get_it.dart';
 import '../components/components.dart';
 import '../components/recents_list_item.dart';
 import '../models/aluno.dart';
+import '../stores/dashboard_store.dart';
 import '../styles.dart';
 import '../transicao.dart';
 import 'screens.dart';
@@ -150,17 +151,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
             ),
           ),
-          SliverFixedExtentList(
-            itemExtent: 105,
-            delegate: SliverChildListDelegate([
-              // TODO: Recentes Builder
-              const RecentsListItem(),
-              const RecentsListItem(),
-              const RecentsListItem(),
-              const RecentsListItem(),
-              const RecentsListItem(),
-              const RecentsListItem(),
-            ]),
+          FutureBuilder<List<RecentsListItem>>(
+            future: getRecentes(),
+            builder: (context, snap) {
+              if (snap.connectionState == ConnectionState.done) {
+                if (snap.hasData && snap.data!.isNotEmpty) {
+                  return SliverFixedExtentList(
+                    itemExtent: 105,
+                    delegate: SliverChildListDelegate(snap.data!),
+                  );
+                }
+                return const SliverToBoxAdapter(
+                    child: Center(child: Text('Sem Monitorias')));
+              }
+              return const SliverToBoxAdapter(
+                  child: Center(child: CircularProgressIndicator()));
+            },
           ),
         ],
       ),
