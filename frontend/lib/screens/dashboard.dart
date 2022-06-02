@@ -2,10 +2,13 @@ import 'dart:developer' as dev;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_it/get_it.dart';
-import 'package:uniuti/components/components.dart';
-import 'package:uniuti/components/recents_list_item.dart';
-import 'package:uniuti/models/aluno.dart';
-import 'package:uniuti/styles.dart';
+import '../components/components.dart';
+import '../components/recents_list_item.dart';
+import '../models/aluno.dart';
+import '../stores/dashboard_store.dart';
+import '../styles.dart';
+import '../transicao.dart';
+import 'screens.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
@@ -22,8 +25,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
       const SizedBox(width: 30),
       FixedMenuItem(
         text: 'Monitorias',
-        icon: const Icon(Icons.menu_book_sharp, size: 35),
-        onTap: () => dev.log('LOL'),
+        icon: Icons.menu_book_sharp,
+        onTap: () => Navigator.push(
+          context,
+          CustomTransition(target: const MonitoriasScreen()),
+        ),
       ),
       const SizedBox(width: 30),
     ];
@@ -145,17 +151,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
             ),
           ),
-          SliverFixedExtentList(
-            itemExtent: 105,
-            delegate: SliverChildListDelegate([
-              // TODO: Recentes Builder
-              const RecentsListItem(),
-              const RecentsListItem(),
-              const RecentsListItem(),
-              const RecentsListItem(),
-              const RecentsListItem(),
-              const RecentsListItem(),
-            ]),
+          FutureBuilder<List<RecentsListItem>>(
+            future: getRecentes(),
+            builder: (context, snap) {
+              if (snap.connectionState == ConnectionState.done) {
+                if (snap.hasData && snap.data!.isNotEmpty) {
+                  return SliverFixedExtentList(
+                    itemExtent: 105,
+                    delegate: SliverChildListDelegate(snap.data!),
+                  );
+                }
+                return const SliverToBoxAdapter(
+                    child: Center(child: Text('Sem Monitorias')));
+              }
+              return const SliverToBoxAdapter(
+                  child: Center(child: CircularProgressIndicator()));
+            },
           ),
         ],
       ),
