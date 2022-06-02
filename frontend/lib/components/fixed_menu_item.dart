@@ -8,7 +8,7 @@ class FixedMenuItem extends StatelessWidget {
       : super(key: key);
 
   final String text;
-  final Widget icon;
+  final IconData icon;
   final GestureTapCallback onTap;
 
   @override
@@ -33,13 +33,27 @@ class FixedMenuItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(9),
         child: InkWell(
           onTap: onTap,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              icon,
-              Text(text),
-            ],
+          child: Container(
+            padding: const EdgeInsets.only(top: 12, bottom: 5),
+            child: Column(
+              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Icon(
+                  icon,
+                  size: 35,
+                ),
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      text,
+                      style: Theme.of(context).textTheme.titleMedium,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
