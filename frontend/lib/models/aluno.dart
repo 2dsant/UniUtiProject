@@ -83,4 +83,9 @@ class Aluno {
         contatos.hashCode ^
         usuario.hashCode;
   }
+
+  String getInstituicao() {
+    // TODO: recuperar instituicao
+    return 'Instituicao';
+  }
 }
