@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'transicao.dart';
+
 MaterialColor createMaterialColor(Color color) {
   List strengths = <double>[.05];
   Map<int, Color> swatch = {};
@@ -80,6 +82,12 @@ class UniUtiBgGradient4 extends LinearGradient {
 final uniUtiThemeData = ThemeData(
   textTheme: GoogleFonts.rajdhaniTextTheme(),
   primarySwatch: UniUtiColors.green,
+  pageTransitionsTheme: PageTransitionsTheme(
+    builders: Map<TargetPlatform, PageTransitionsBuilder>.fromIterable(
+      TargetPlatform.values,
+      value: (dynamic _) => UniUtiSlideTransition(),
+    ),
+  ),
 );
 
 final uniUtiPrimaryBtn = ElevatedButton.styleFrom(
