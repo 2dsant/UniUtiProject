@@ -39,14 +39,14 @@ class _SigninScreenState extends State<SigninScreen> {
             UniUtiPrimaryButton(
               title: 'Entrar',
               onTap: () => Navigator.of(context).push(
-                CustomTransition(target: const LoginScreen()),
+                MaterialPageRoute(builder: (_) => const LoginScreen()),
               ),
             ),
             const SizedBox(height: 16),
             UniUtiSecondaryButton(
               title: 'Registrar',
               onTap: () => Navigator.of(context).push(
-                CustomTransition(target: const RegisterScreen()),
+                MaterialPageRoute(builder: (_) => const RegisterScreen()),
               ),
             ),
           ],

@@ -93,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
     Navigator.of(context).pushReplacement(
-      CustomTransition(target: const DashboardScreen()),
+      MaterialPageRoute(builder: (_) => const DashboardScreen()),
     );
   }
 }

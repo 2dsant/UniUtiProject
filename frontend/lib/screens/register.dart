@@ -161,7 +161,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
     _formKey.currentState!.save();
     dev.log(_user.toString());
-    Navigator.of(context)
-        .pushReplacement(CustomTransition(target: const SigninScreen()));
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (context) => const SigninScreen()),
+    );
   }
 }

@@ -26,10 +26,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
       FixedMenuItem(
         text: 'Monitorias',
         icon: Icons.menu_book_sharp,
-        onTap: () => Navigator.push(
-          context,
-          CustomTransition(target: const MonitoriasScreen()),
-        ),
+        onTap: () => Navigator.push(context,
+            MaterialPageRoute(builder: (_) => const MonitoriasScreen())),
       ),
       const SizedBox(width: 30),
     ];
