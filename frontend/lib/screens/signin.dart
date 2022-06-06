@@ -3,8 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../components/buttons.dart'
     show UniUtiPrimaryButton, UniUtiSecondaryButton;
 import '../styles.dart' show UniUtiBgGradient;
-import '../transicao.dart';
-import 'screens.dart';
 
 class SigninScreen extends StatefulWidget {
   const SigninScreen({Key? key}) : super(key: key);
@@ -38,16 +36,12 @@ class _SigninScreenState extends State<SigninScreen> {
             const Spacer(),
             UniUtiPrimaryButton(
               title: 'Entrar',
-              onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => const LoginScreen()),
-              ),
+              onTap: () => Navigator.of(context).pushNamed('/login'),
             ),
             const SizedBox(height: 16),
             UniUtiSecondaryButton(
               title: 'Registrar',
-              onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => const RegisterScreen()),
-              ),
+              onTap: () => Navigator.of(context).pushNamed('/register'),
             ),
           ],
         ),

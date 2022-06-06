@@ -9,8 +9,6 @@ import '../components/components.dart';
 import '../models/models.dart';
 import '../repositories/curso_repository.dart';
 import '../styles.dart';
-import '../transicao.dart';
-import 'screens.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -161,8 +159,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
     _formKey.currentState!.save();
     dev.log(_user.toString());
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => const SigninScreen()),
-    );
+    Navigator.of(context).pushReplacementNamed('/signin');
   }
 }

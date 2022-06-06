@@ -7,8 +7,6 @@ import '../components/recents_list_item.dart';
 import '../models/aluno.dart';
 import '../stores/dashboard_store.dart';
 import '../styles.dart';
-import '../transicao.dart';
-import 'screens.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
@@ -26,8 +24,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       FixedMenuItem(
         text: 'Monitorias',
         icon: Icons.menu_book_sharp,
-        onTap: () => Navigator.push(context,
-            MaterialPageRoute(builder: (_) => const MonitoriasScreen())),
+        onTap: () => Navigator.of(context).pushNamed('/monitorias'),
       ),
       const SizedBox(width: 30),
     ];
