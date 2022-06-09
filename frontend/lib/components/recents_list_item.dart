@@ -13,7 +13,8 @@ class RecentsListItem extends StatelessWidget {
     final _th = Theme.of(context).textTheme;
     return Material(
       child: InkWell(
-        onTap: () => dev.log('lol'),
+        onTap: () =>
+            Navigator.of(context).pushNamed('/monitoria', arguments: model),
         child: Container(
           margin: const EdgeInsets.fromLTRB(33, 10, 16, 10),
           child: Row(
