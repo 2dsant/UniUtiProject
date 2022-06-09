@@ -18,6 +18,7 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
+    final _th = Theme.of(context).textTheme;
     var _aluno = GetIt.I.get<Aluno>();
     var _menuItems = [
       const SizedBox(width: 30),
@@ -65,19 +66,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
             floating: true,
             snap: true,
             pinned: true,
+            iconTheme: Theme.of(context)
+                .appBarTheme
+                .iconTheme!
+                .copyWith(color: Colors.white),
             flexibleSpace: FlexibleSpaceBar(
               collapseMode: CollapseMode.pin,
               title: RichText(
                 text: TextSpan(
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyLarge!
-                      .copyWith(color: Colors.white),
+                  style: _th.bodyLarge!.copyWith(color: Colors.white),
                   children: [
                     const TextSpan(text: 'Bem-vindo, '),
                     TextSpan(
                         text: _aluno.nome,
-                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                        style: _th.bodyLarge!.copyWith(
                             color: Colors.white, fontWeight: FontWeight.bold)),
                   ],
                 ),
@@ -123,7 +125,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     padding: const EdgeInsets.only(left: 40, bottom: 10),
                     child: Text(
                       'Para onde deseja ir?',
-                      style: Theme.of(context).textTheme.headlineSmall,
+                      style: _th.headlineSmall,
                     ),
                   ),
                   SingleChildScrollView(
@@ -141,7 +143,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 padding: const EdgeInsets.only(left: 40, bottom: 10),
                 child: Text(
                   'Ultimos itens vistos',
-                  style: Theme.of(context).textTheme.headlineSmall,
+                  style: _th.headlineSmall,
                 ),
               ),
             ),

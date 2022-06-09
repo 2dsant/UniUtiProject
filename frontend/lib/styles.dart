@@ -80,7 +80,43 @@ class UniUtiBgGradient4 extends LinearGradient {
 }
 
 final uniUtiThemeData = ThemeData(
-  textTheme: GoogleFonts.rajdhaniTextTheme(),
+  textTheme: GoogleFonts.rajdhaniTextTheme().copyWith(
+    displaySmall: GoogleFonts.rajdhaniTextTheme().displaySmall!.copyWith(
+          fontWeight: FontWeight.bold,
+          color: Colors.black87,
+        ),
+    headlineLarge: GoogleFonts.rajdhaniTextTheme().headlineLarge!.copyWith(
+          // fontSize: 24,
+          fontWeight: FontWeight.bold,
+          color: Colors.black54,
+        ),
+    headlineSmall: GoogleFonts.rajdhaniTextTheme().headlineSmall!.copyWith(
+          // fontSize: 24,
+          fontWeight: FontWeight.bold,
+          color: Colors.black54,
+        ),
+    titleLarge: GoogleFonts.rajdhaniTextTheme().titleLarge!.copyWith(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          color: Colors.black54,
+        ),
+    titleMedium: GoogleFonts.rajdhaniTextTheme().titleMedium!.copyWith(
+          fontWeight: FontWeight.bold,
+          color: Colors.black87,
+        ),
+    titleSmall: GoogleFonts.rajdhaniTextTheme().titleSmall!.copyWith(
+          fontWeight: FontWeight.bold,
+          color: Colors.black54,
+        ),
+    bodyMedium: GoogleFonts.rajdhaniTextTheme().bodyMedium!.copyWith(
+          fontSize: 16,
+        ),
+  ),
+  appBarTheme: AppBarTheme(
+    iconTheme: IconThemeData(
+      color: UniUtiColors.green,
+    ),
+  ),
   primarySwatch: UniUtiColors.green,
   pageTransitionsTheme: PageTransitionsTheme(
     builders: Map<TargetPlatform, PageTransitionsBuilder>.fromIterable(

@@ -16,11 +16,13 @@ class MonitoriasScreen extends StatefulWidget {
 class _MonitoriasScreenState extends State<MonitoriasScreen> {
   @override
   Widget build(BuildContext context) {
+    final _th = Theme.of(context).textTheme;
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          const SliverAppBar(
-            backgroundColor: Colors.transparent,
+          SliverAppBar(
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            // elevation: 0,
             collapsedHeight: 80,
             floating: true,
             primary: true,
@@ -31,8 +33,7 @@ class _MonitoriasScreenState extends State<MonitoriasScreen> {
               padding: const EdgeInsets.only(left: 40, bottom: 10, top: 10),
               child: Text(
                 'Monitorias',
-                style: Theme.of(context).textTheme.displaySmall!.copyWith(
-                    fontWeight: FontWeight.bold, color: Colors.black87),
+                style: _th.displaySmall,
               ),
             ),
           ),
@@ -72,7 +73,7 @@ class _MonitoriasScreenState extends State<MonitoriasScreen> {
                 padding: const EdgeInsets.only(left: 40, bottom: 10),
                 child: Text(
                   'Monitorias em aberto',
-                  style: Theme.of(context).textTheme.headlineSmall!.copyWith(
+                  style: _th.headlineSmall!.copyWith(
                       fontWeight: FontWeight.bold, color: Colors.black87),
                 ),
               ),
