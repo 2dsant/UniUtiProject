@@ -1,13 +1,14 @@
+using UniUti.Data.Responses;
 using UniUti.Data.ValueObjects;
 
 namespace UniUti.Repository
 {
     public interface ICursoRepository
     {
-        Task<IEnumerable<CursoVO>> FindAll();
-        Task<CursoVO> FindById(long id);
-        Task<CursoVO> Create(CursoVO vo);
-        Task<CursoVO> Update(CursoVO vo);
-        Task<Boolean> Delete(long id);
+        Task<IEnumerable<NovoCursoVO>> FindAll();
+        Task<NovoCursoVO> FindById(long id);
+        Task<NovoCursoVO> Create(NovoCursoVO vo);
+        Task<NovoCursoVO> Update(NovoCursoVO vo);
+        Task<GenericResponse> Delete(long id);
     }
 }

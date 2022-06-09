@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UniUti.Data.Responses;
 using UniUti.Data.ValueObjects;

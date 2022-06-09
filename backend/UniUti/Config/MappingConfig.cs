@@ -10,8 +10,8 @@ namespace UniUti.Config
         {
             var mappingConfig = new MapperConfiguration(config =>
             {
-                config.CreateMap<CursoVO, Curso>();
-                config.CreateMap<Curso, CursoVO>();
+                config.CreateMap<NovoCursoVO, Curso>();
+                config.CreateMap<Curso, NovoCursoVO>();
                 config.CreateMap<DisciplinaVO, Disciplina>();
                 config.CreateMap<Disciplina, DisciplinaVO>();
                 config.CreateMap<EnderecoVO, Endereco>();

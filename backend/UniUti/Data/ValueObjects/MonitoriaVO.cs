@@ -21,7 +21,6 @@ namespace UniUti.Data.ValueObjects
 
         [Required(ErrorMessage = "Disciplina é obrigatório.")]
         public Disciplina? Disciplina { get; set; }
-
         public DateTime? DataCriacao { get; set; }
         public StatusSolicitacao? StatusSolicitacaco { get; set; }
     }

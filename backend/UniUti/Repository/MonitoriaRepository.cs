@@ -1,10 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using UniUti.Data.Responses;
 using UniUti.Data.ValueObjects;
 using UniUti.Database;
 using UniUti.models.Enum;
