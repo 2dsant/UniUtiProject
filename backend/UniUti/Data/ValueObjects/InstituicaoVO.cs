@@ -11,7 +11,6 @@ namespace UniUti.Data.ValueObjects
         [MaxLength(100, ErrorMessage = "Nome inválido. O nome deve conter até 100 caracteres.")]
         public string? Nome { get; set; }
 
-
         [Required(ErrorMessage = "Endereço é obrigatório.")]
         public EnderecoVO? Endereco { get; set; }
 

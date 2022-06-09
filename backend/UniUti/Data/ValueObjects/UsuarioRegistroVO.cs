@@ -10,6 +10,6 @@ namespace UniUti.Data.ValueObjects
         public byte[]? SenhaSalt { get; set; }
         public string? Celular { get; set; }
         public InstituicaoVO? Instituicao { get; set; }
-        public CursoVO? Curso { get; set; }
+        public NovoCursoVO? Curso { get; set; }
     }
 }
