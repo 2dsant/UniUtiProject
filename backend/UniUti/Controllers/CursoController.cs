@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using UniUti.Database;
+using UniUti.Data.Responses;
+using UniUti.Data.ValueObjects;
+using UniUti.Repository;
 
 namespace UniUti.Controllers
 {
@@ -7,24 +9,90 @@ namespace UniUti.Controllers
     [Route("api/v1/[controller]")]
     public class CursoController : ControllerBase
     {
-        //FERNANDO TENTARA IMPLEMENTAR
-        private readonly ApplicationDbContext _database;
+        private ICursoRepository _repository;
 
-        public CursoController(ApplicationDbContext database)
+        public CursoController(ICursoRepository repository)
         {
-            _database = database;
+            _repository = repository ??
+                throw new ArgumentNullException(nameof(repository));
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<ActionResult<IEnumerable<NovoCursoVO>>> FindAll()
         {
-            return Ok("GET CURSO FUNCIONA.");
+            var cursos = await _repository.FindAll();
+            if (cursos == null) return NotFound();
+            return Ok(cursos);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<NovoCursoVO>> FindById(long id)
+        {
+            var curso = await _repository.FindById(id);
+            if (curso == null) return NotFound();
+            return Ok(curso);
         }
 
         [HttpPost]
-        public IActionResult Post(string nome)
+        public async Task<ActionResult<NovoCursoVO>> Create([FromBody] NovoCursoVO vo)
         {
-            return Ok($"Nome: {nome}");
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var curso = await _repository.Create(vo);
+                    return Ok(curso);
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(new ErrorResponse()
+                    {
+                        Errors = new List<string>()
+                        {
+                            ex.Message
+                        }
+                    });
+                }
+            }
+            else
+            {
+                return BadRequest(ModelState.Values);
+            }
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<NovoCursoVO>> Update([FromBody] NovoCursoVO vo)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var curso = await _repository.Update(vo);
+                    return Ok(curso);
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(new ErrorResponse()
+                    {
+                        Errors = new List<string>()
+                        {
+                            ex.Message
+                        }
+                    });
+                }
+            }
+            else
+            {
+                return BadRequest(ModelState.Values);
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<GenericResponse>> Delete(long id)
+        {
+            var response = await _repository.Delete(id);
+            if (!response.Success) return BadRequest();
+            return Ok(response);
         }
     }
 }
