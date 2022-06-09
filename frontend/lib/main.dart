@@ -24,6 +24,7 @@ class MyApp extends StatelessWidget {
         '/login': (_) => const LoginScreen(),
         '/monitorias': (_) => const MonitoriasScreen(),
         '/dashboard': (_) => const DashboardScreen(),
+        '/monitoria': (_) => const MonitoriaScreen(),
       },
       home: const SplashScreen(),
     );

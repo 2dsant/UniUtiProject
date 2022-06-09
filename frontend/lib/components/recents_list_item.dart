@@ -10,9 +10,11 @@ class RecentsListItem extends StatelessWidget {
   final Monitoria model;
   @override
   Widget build(BuildContext context) {
+    final _th = Theme.of(context).textTheme;
     return Material(
       child: InkWell(
-        onTap: () => dev.log('lol'),
+        onTap: () =>
+            Navigator.of(context).pushNamed('/monitoria', arguments: model),
         child: Container(
           margin: const EdgeInsets.fromLTRB(33, 10, 16, 10),
           child: Row(
@@ -35,16 +37,12 @@ class RecentsListItem extends StatelessWidget {
                       model.titulo,
                       maxLines: 1,
                       overflow: TextOverflow.fade,
-                      style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                          fontWeight: FontWeight.bold, color: Colors.black87),
+                      style: _th.titleMedium,
                     ),
                     Text(
                       // TODO: Guardar data de anuncio
                       'Anunciado em: 00/00/0000',
-                      style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black54,
-                          ),
+                      style: _th.titleSmall,
                       maxLines: 1,
                       overflow: TextOverflow.fade,
                     ),
