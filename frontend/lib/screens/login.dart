@@ -6,8 +6,6 @@ import 'package:uniuti/models/usuario.dart';
 
 import '../components/buttons.dart';
 import '../styles.dart';
-import '../transicao.dart';
-import 'screens.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -92,9 +90,6 @@ class _LoginScreenState extends State<LoginScreen> {
       });
       return;
     }
-    Navigator.of(context).pushReplacement(
-      // TODO: Redirecionar para tela principal
-      CustomTransition(target: const SigninScreen()),
-    );
+    Navigator.of(context).pushReplacementNamed('/dashboard');
   }
 }

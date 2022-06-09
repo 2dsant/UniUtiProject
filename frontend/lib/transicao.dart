@@ -1,6 +1,23 @@
 import 'package:flutter/material.dart';
 
-class CustomTransition<T> extends PageRouteBuilder {
+class UniUtiSlideTransition implements PageTransitionsBuilder {
+  @override
+  Widget buildTransitions<T>(
+      PageRoute<T> route,
+      BuildContext context,
+      Animation<double> animation,
+      Animation<double> secondaryAnimation,
+      Widget child) {
+    return CustomTransition.slide(
+      context,
+      animation,
+      secondaryAnimation,
+      child,
+    );
+  }
+}
+
+class CustomTransition extends PageRouteBuilder {
   CustomTransition({
     required Widget target,
     int miliseconds = 400,

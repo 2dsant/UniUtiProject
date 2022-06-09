@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'transicao.dart';
+
 MaterialColor createMaterialColor(Color color) {
   List strengths = <double>[.05];
   Map<int, Color> swatch = {};
@@ -41,9 +43,87 @@ class UniUtiBgGradient extends LinearGradient {
         );
 }
 
+class UniUtiBgGradient2 extends LinearGradient {
+  UniUtiBgGradient2()
+      : super(
+          colors: [
+            UniUtiColors.purple,
+            UniUtiColors.purple.shade900,
+          ],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        );
+}
+
+class UniUtiBgGradient3 extends LinearGradient {
+  UniUtiBgGradient3()
+      : super(
+          colors: [
+            UniUtiColors.purple,
+            UniUtiColors.blue,
+          ],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        );
+}
+
+class UniUtiBgGradient4 extends LinearGradient {
+  UniUtiBgGradient4()
+      : super(
+          colors: [
+            UniUtiColors.blue,
+            UniUtiColors.green,
+          ],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        );
+}
+
 final uniUtiThemeData = ThemeData(
-  textTheme: GoogleFonts.rajdhaniTextTheme(),
+  textTheme: GoogleFonts.rajdhaniTextTheme().copyWith(
+    displaySmall: GoogleFonts.rajdhaniTextTheme().displaySmall!.copyWith(
+          fontWeight: FontWeight.bold,
+          color: Colors.black87,
+        ),
+    headlineLarge: GoogleFonts.rajdhaniTextTheme().headlineLarge!.copyWith(
+          // fontSize: 24,
+          fontWeight: FontWeight.bold,
+          color: Colors.black54,
+        ),
+    headlineSmall: GoogleFonts.rajdhaniTextTheme().headlineSmall!.copyWith(
+          // fontSize: 24,
+          fontWeight: FontWeight.bold,
+          color: Colors.black54,
+        ),
+    titleLarge: GoogleFonts.rajdhaniTextTheme().titleLarge!.copyWith(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+          color: Colors.black54,
+        ),
+    titleMedium: GoogleFonts.rajdhaniTextTheme().titleMedium!.copyWith(
+          fontWeight: FontWeight.bold,
+          color: Colors.black87,
+        ),
+    titleSmall: GoogleFonts.rajdhaniTextTheme().titleSmall!.copyWith(
+          fontWeight: FontWeight.bold,
+          color: Colors.black54,
+        ),
+    bodyMedium: GoogleFonts.rajdhaniTextTheme().bodyMedium!.copyWith(
+          fontSize: 16,
+        ),
+  ),
+  appBarTheme: AppBarTheme(
+    iconTheme: IconThemeData(
+      color: UniUtiColors.green,
+    ),
+  ),
   primarySwatch: UniUtiColors.green,
+  pageTransitionsTheme: PageTransitionsTheme(
+    builders: Map<TargetPlatform, PageTransitionsBuilder>.fromIterable(
+      TargetPlatform.values,
+      value: (dynamic _) => UniUtiSlideTransition(),
+    ),
+  ),
 );
 
 final uniUtiPrimaryBtn = ElevatedButton.styleFrom(
