@@ -5,10 +5,10 @@ namespace UniUti.Repository
 {
     public interface ICursoRepository
     {
-        Task<IEnumerable<NovoCursoVO>> FindAll();
-        Task<NovoCursoVO> FindById(long id);
-        Task<NovoCursoVO> Create(NovoCursoVO vo);
-        Task<NovoCursoVO> Update(NovoCursoVO vo);
+        Task<IEnumerable<CursoResponseVO>> FindAll();
+        Task<CursoResponseVO> FindById(long id);
+        Task<CursoResponseVO> Create(CursoCreateVO vo);
+        Task<CursoResponseVO> Update(CursoResponseVO vo);
         Task<GenericResponse> Delete(long id);
     }
 }

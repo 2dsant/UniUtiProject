@@ -13,7 +13,6 @@ namespace UniUti.Models
         [Column("solicitante")]
         public virtual Usuario? Solicitante { get; set; }
 
-        [Required]
         [Column("prestador")]
         public virtual Usuario? Prestador { get; set; }
 

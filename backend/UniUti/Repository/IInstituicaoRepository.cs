@@ -5,10 +5,10 @@ namespace UniUti.Repository
 {
     public interface IInstituicaoRepository
     {
-        Task<IEnumerable<InstituicaoVO>> FindAll();
-        Task<InstituicaoVO> FindById(long id);
-        Task<InstituicaoVO> Create(InstituicaoVO vo);
-        Task<InstituicaoVO> Update(InstituicaoVO vo);
+        Task<IEnumerable<InstituicaoResponseVO>> FindAll();
+        Task<InstituicaoResponseVO> FindById(long id);
+        Task<InstituicaoResponseVO> Create(InstituicaoCreateVO vo);
+        Task<InstituicaoResponseVO> Update(InstituicaoResponseVO vo);
         Task<GenericResponse> Delete(long id);
     }
 }

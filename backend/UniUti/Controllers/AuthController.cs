@@ -17,8 +17,8 @@ namespace UniUti.Controllers
         }
 
         [HttpPost]
-        [Route("register")]
-        public async Task<IActionResult> Register([FromBody] UsuarioVO vo)
+        [Route("Register")]
+        public async Task<IActionResult> Register([FromBody] UsuarioRegistroVO vo)
         {
             if (ModelState.IsValid)
             {
@@ -32,8 +32,8 @@ namespace UniUti.Controllers
         }
 
 
-        [HttpPost("login")]
-        public async Task<ActionResult> Login([FromBody] LoginVO vo)
+        [HttpPost("Login")]
+        public async Task<ActionResult> Login([FromBody] UsuarioLoginVO vo)
         {
             if (ModelState.IsValid)
             {

@@ -5,7 +5,7 @@ namespace UniUti.Repository
 {
     public interface IAuthRepository
     {
-        Task<AuthResult> Register(UsuarioVO vo);
-        Task<AuthResult> Login(LoginVO vo);
+        Task<AuthResult> Register(UsuarioRegistroVO vo);
+        Task<AuthResult> Login(UsuarioLoginVO vo);
     }
 }

@@ -18,38 +18,44 @@ namespace UniUti.Repository
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<MonitoriaVO>> FindAll()
+        public async Task<IEnumerable<MonitoriaResponseVO>> FindAll()
         {
             List<Monitoria> monitorias = await _context.Monitorias.ToListAsync();
-            return _mapper.Map<List<MonitoriaVO>>(monitorias);
+            return _mapper.Map<List<MonitoriaResponseVO>>(monitorias);
         }
 
-        public async Task<MonitoriaVO> FindById(long id)
+        public async Task<MonitoriaResponseVO> FindById(long id)
         {
             Monitoria monitoria = await _context.Monitorias.Where(i =>
                 i.Id == id).FirstOrDefaultAsync();
-            return _mapper.Map<MonitoriaVO>(monitoria);
+            return _mapper.Map<MonitoriaResponseVO>(monitoria);
         }
 
-        public async Task<MonitoriaVO> FindByStatus(long status)
+        public async Task<MonitoriaResponseVO> FindByStatus(long status)
         {
-            Monitoria monitoria = await _context.Monitorias.Where(i =>
-                i.StatusSolicitacaco == (StatusSolicitacao)status).FirstOrDefaultAsync();
-            return _mapper.Map<MonitoriaVO>(monitoria);
+            List<Monitoria> monitoria = await _context.Monitorias.Where(m =>
+                m.StatusSolicitacaco == (StatusSolicitacao)status).ToListAsync();
+            return _mapper.Map<MonitoriaResponseVO>(monitoria);
         }
 
-        public async Task<MonitoriaVO> Create(CriarMonitoriaVO vo)
+        public async Task<MonitoriaResponseVO> FindByUser(long idUser)
+        {
+            List<Monitoria> monitoria = await _context.Monitorias.Where(m => m.Solicitante.Id == idUser).ToListAsync();
+            return _mapper.Map<MonitoriaResponseVO>(monitoria);
+        }
+
+        public async Task<MonitoriaResponseVO> Create(MonitoriaCreateVO vo)
         {
             try
             {
                 Monitoria monitoria = _mapper.Map<Monitoria>(vo);
-                monitoria.Prestador = await _context.Usuarios.Where(u => u.Id == vo.PrestadorId).FirstOrDefaultAsync();
                 monitoria.Solicitante = await _context.Usuarios.Where(u => u.Id == vo.SolicitanteId).FirstOrDefaultAsync();
                 monitoria.Disciplina = await _context.Disciplinas.Where(d => d.Id == vo.DisciplinaId).FirstOrDefaultAsync();
                 monitoria.DataCriacao = DateTime.Now;
+                monitoria.StatusSolicitacaco = StatusSolicitacao.Aberto;
                 _context.Monitorias.Add(monitoria);
                 await _context.SaveChangesAsync();
-                return _mapper.Map<MonitoriaVO>(monitoria);
+                return _mapper.Map<MonitoriaResponseVO>(monitoria);
             }
             catch (Exception ex)
             {
@@ -57,12 +63,23 @@ namespace UniUti.Repository
             }
         }
 
-        public async Task<MonitoriaVO> Update(MonitoriaVO vo)
+        public async Task<MonitoriaResponseVO> Update(MonitoriaUpdateVO vo)
         {
-            Monitoria monitoria = _mapper.Map<Monitoria>(vo);
-            _context.Monitorias.Update(monitoria);
-            await _context.SaveChangesAsync();
-            return _mapper.Map<MonitoriaVO>(monitoria);
+            try
+            {
+                Monitoria monitoria = _context.Monitorias.FirstOrDefault(m => m.Id == vo.Id);
+                monitoria.Prestador = await _context.Usuarios.Where(u => u.Id == vo.PrestadorId).FirstOrDefaultAsync();
+                monitoria.Disciplina = await _context.Disciplinas.Where(d => d.Id == vo.DisciplinaId).FirstOrDefaultAsync();
+                monitoria.Descricao = vo.Descricao;
+                monitoria.StatusSolicitacaco = vo.StatusSolicitacaco;
+
+                await _context.SaveChangesAsync();
+                return _mapper.Map<MonitoriaResponseVO>(monitoria);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
     }
