@@ -4,8 +4,6 @@ import 'package:uniuti/styles.dart';
 
 import '../models/models.dart';
 
-void main() => runApp(const MonitoriaScreen());
-
 class MonitoriaScreen extends StatefulWidget {
   const MonitoriaScreen({Key? key}) : super(key: key);
 
