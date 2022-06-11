@@ -23,6 +23,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IInstituicaoRepository, InstituicaoRepository>();
 builder.Services.AddScoped<IMonitoriaRepository, MonitoriaRepository>();
+builder.Services.AddScoped<ICursoRepository, CursoRepository>();
 
 
 builder.Services.AddControllers();

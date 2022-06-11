@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace UniUti.Data.ValueObjects
 {
-    public class UsuarioRegistroVO
+    public class UsuarioResponseVO
     {
         [Required(ErrorMessage = "Nome é obrigatório.")]
         [MaxLength(100, ErrorMessage = "Nome inválido. Nome deve possuir até 100 caracteres.")]
@@ -13,15 +13,14 @@ namespace UniUti.Data.ValueObjects
         [MaxLength(100, ErrorMessage = "Email inválido. Email deve possuir até 100 caracteres.")]
         public string? Email { get; set; }
 
-        [Required(ErrorMessage = "Senha é obrigatório.")]
-        public string? Senha { get; set; }
-
         [Required(ErrorMessage = "Celular é obrigatório.")]
         [MaxLength(11, ErrorMessage = "Celular inválido. Celular deve possuir até 11 caracteres.")]
         public string? Celular { get; set; }
 
-        public long? InstituicaoId { get; set; }
+        [Required(ErrorMessage = "instituição é obrigatório.")]
+        public InstituicaoResponseVO? Instituicao { get; set; }
 
-        public long? CursoId { get; set; }
+        [Required(ErrorMessage = "Curso é obrigatório.")]
+        public CursoResponseVO? Curso { get; set; }
     }
 }

@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using UniUti.Data.Responses;
 using UniUti.Data.ValueObjects;
@@ -18,8 +17,8 @@ namespace UniUti.Controllers
                 throw new ArgumentNullException(nameof(repository));
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<MonitoriaVO>>> FindAll()
+        [HttpGet("FindAll")]
+        public async Task<ActionResult<IEnumerable<MonitoriaResponseVO>>> FindAll()
         {
             var monitorias = await _repository.FindAll();
             if (monitorias == null) return NotFound();
@@ -27,7 +26,7 @@ namespace UniUti.Controllers
         }
 
         [HttpGet("GetById/{id}")]
-        public async Task<ActionResult<InstituicaoVO>> FindById(long id)
+        public async Task<ActionResult<MonitoriaResponseVO>> FindById(long id)
         {
             var monitoria = await _repository.FindById(id);
             if (monitoria == null) return NotFound();
@@ -35,15 +34,24 @@ namespace UniUti.Controllers
         }
 
         [HttpGet("GetByStatus/{status}")]
-        public async Task<ActionResult<MonitoriaVO>> FindByStatus(long status)
+        public async Task<ActionResult<MonitoriaResponseVO>> FindByStatus(long status)
         {
             var monitoria = await _repository.FindByStatus(status);
             if (monitoria == null) return NotFound();
             return Ok(monitoria);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<MonitoriaVO>> Create([FromBody] CriarMonitoriaVO vo)
+        [HttpGet("FindByUser/{idUser}")]
+        public async Task<ActionResult<MonitoriaResponseVO>> FindByUser(long idUser)
+        {
+            var monitoria = await _repository.FindByUser(idUser);
+            if (monitoria == null) return NotFound();
+            return Ok(monitoria);
+        }
+
+        [HttpPost("Create")]
+        public async Task<ActionResult<MonitoriaResponseVO>> Create
+        ([FromBody] MonitoriaCreateVO vo)
         {
             if (ModelState.IsValid)
             {
@@ -69,8 +77,9 @@ namespace UniUti.Controllers
             }
         }
 
-        [HttpPut]
-        public async Task<ActionResult<MonitoriaVO>> Update([FromBody] MonitoriaVO vo)
+        [HttpPatch("Update")]
+        public async Task<ActionResult<MonitoriaResponseVO>> Update
+        ([FromBody] MonitoriaUpdateVO vo)
         {
             if (ModelState.IsValid)
             {

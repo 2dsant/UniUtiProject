@@ -18,36 +18,36 @@ namespace UniUti.Repository
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<NovoCursoVO>> FindAll()
+        public async Task<IEnumerable<CursoResponseVO>> FindAll()
         {
             List<Curso> cursos = await _context.Cursos.Where(i =>
                 i.Deletado == false).ToListAsync();
 
-            return _mapper.Map<List<NovoCursoVO>>(cursos);
+            return _mapper.Map<List<CursoResponseVO>>(cursos);
         }
 
-        public async Task<NovoCursoVO> FindById(long id)
+        public async Task<CursoResponseVO> FindById(long id)
         {
             Curso curso = await _context.Cursos.Where(i =>
                 i.Id == id && i.Deletado == false).FirstOrDefaultAsync();
 
-            return _mapper.Map<NovoCursoVO>(curso);
+            return _mapper.Map<CursoResponseVO>(curso);
         }
 
-        public async Task<NovoCursoVO> Create(NovoCursoVO vo)
+        public async Task<CursoResponseVO> Create(CursoCreateVO vo)
         {
             Curso curso = _mapper.Map<Curso>(vo);
             _context.Cursos.Add(curso);
             await _context.SaveChangesAsync();
-            return _mapper.Map<NovoCursoVO>(curso);
+            return _mapper.Map<CursoResponseVO>(curso);
         }
 
-        public async Task<NovoCursoVO> Update(NovoCursoVO vo)
+        public async Task<CursoResponseVO> Update(CursoResponseVO vo)
         {
             Curso curso = _mapper.Map<Curso>(vo);
             _context.Cursos.Update(curso);
             await _context.SaveChangesAsync();
-            return _mapper.Map<NovoCursoVO>(curso);
+            return _mapper.Map<CursoResponseVO>(curso);
         }
 
         public async Task<GenericResponse> Delete(long id)

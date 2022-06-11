@@ -21,7 +21,7 @@ namespace UniUti.Repository
             _configuration = configuration;
         }
 
-        public async Task<AuthResult> Login(LoginVO vo)
+        public async Task<AuthResult> Login(UsuarioLoginVO vo)
         {
             Usuario usuario = await _context.Usuarios.Where(user => user.Email == vo.Email && user.Deletado == false)
                 .FirstOrDefaultAsync();
@@ -43,7 +43,7 @@ namespace UniUti.Repository
                 return (new AuthResult()
                 {
                     Token = token,
-                    Usuario = usuario,
+                    Usuario = _mapper.Map<UsuarioResponseVO>(_context.Usuarios.FirstOrDefault(u => u.Email == vo.Email)),
                     Success = true,
                 });
             }
@@ -60,7 +60,7 @@ namespace UniUti.Repository
             }
         }
 
-        public async Task<AuthResult> Register(UsuarioVO vo)
+        public async Task<AuthResult> Register(UsuarioRegistroVO vo)
         {
             Usuario usuarioExistente = _context.Usuarios.FirstOrDefault(user => user.Email == vo.Email && user.Deletado == false);
 
@@ -85,7 +85,9 @@ namespace UniUti.Repository
                     Email = vo.Email,
                     SenhaHash = passwordHash,
                     SenhaSalt = passwordSalt,
-                    Celular = vo.Celular
+                    Celular = vo.Celular,
+                    Instituicao = _context.Instituicoes.FirstOrDefault(i => i.Id == vo.InstituicaoId),
+                    Curso = _context.Cursos.FirstOrDefault(c => c.Id == vo.CursoId)
                 };
 
                 _context.Usuarios.Add(usuario);
@@ -93,7 +95,7 @@ namespace UniUti.Repository
                 return (new AuthResult()
                 {
                     Success = true,
-                    Usuario = usuario
+                    Usuario = _mapper.Map<UsuarioResponseVO>(usuario),
                 });
             }
             catch (Exception ex)

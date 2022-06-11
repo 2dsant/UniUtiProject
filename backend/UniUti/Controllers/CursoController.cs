@@ -17,24 +17,24 @@ namespace UniUti.Controllers
                 throw new ArgumentNullException(nameof(repository));
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<NovoCursoVO>>> FindAll()
+        [HttpGet("FindAll")]
+        public async Task<ActionResult<IEnumerable<CursoResponseVO>>> FindAll()
         {
             var cursos = await _repository.FindAll();
             if (cursos == null) return NotFound();
             return Ok(cursos);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<NovoCursoVO>> FindById(long id)
+        [HttpGet("FindById/{id}")]
+        public async Task<ActionResult<CursoResponseVO>> FindById(long id)
         {
             var curso = await _repository.FindById(id);
             if (curso == null) return NotFound();
             return Ok(curso);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<NovoCursoVO>> Create([FromBody] NovoCursoVO vo)
+        [HttpPost("Create")]
+        public async Task<ActionResult<CursoResponseVO>> Create([FromBody] CursoCreateVO vo)
         {
             if (ModelState.IsValid)
             {
@@ -60,8 +60,8 @@ namespace UniUti.Controllers
             }
         }
 
-        [HttpPut]
-        public async Task<ActionResult<NovoCursoVO>> Update([FromBody] NovoCursoVO vo)
+        [HttpPut("Update")]
+        public async Task<ActionResult<CursoResponseVO>> Update([FromBody] CursoResponseVO vo)
         {
             if (ModelState.IsValid)
             {
@@ -87,7 +87,7 @@ namespace UniUti.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("Delete/{id}")]
         public async Task<ActionResult<GenericResponse>> Delete(long id)
         {
             var response = await _repository.Delete(id);

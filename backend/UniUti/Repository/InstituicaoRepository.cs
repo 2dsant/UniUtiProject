@@ -18,34 +18,34 @@ namespace UniUti.Repository
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<InstituicaoVO>> FindAll()
+        public async Task<IEnumerable<InstituicaoResponseVO>> FindAll()
         {
             List<Instituicao> instituicoes = await _context.Instituicoes.Where(i =>
                 i.Deletado == false).ToListAsync();
-            return _mapper.Map<List<InstituicaoVO>>(instituicoes);
+            return _mapper.Map<List<InstituicaoResponseVO>>(instituicoes);
         }
 
-        public async Task<InstituicaoVO> FindById(long id)
+        public async Task<InstituicaoResponseVO> FindById(long id)
         {
             Instituicao instituicao = await _context.Instituicoes.Where(i =>
                 i.Id == id && i.Deletado == false).FirstOrDefaultAsync();
-            return _mapper.Map<InstituicaoVO>(instituicao);
+            return _mapper.Map<InstituicaoResponseVO>(instituicao);
         }
 
-        public async Task<InstituicaoVO> Create(InstituicaoVO vo)
+        public async Task<InstituicaoResponseVO> Create(InstituicaoCreateVO vo)
         {
             Instituicao instituicao = _mapper.Map<Instituicao>(vo);
             _context.Instituicoes.Add(instituicao);
             await _context.SaveChangesAsync();
-            return _mapper.Map<InstituicaoVO>(instituicao);
+            return _mapper.Map<InstituicaoResponseVO>(instituicao);
         }
 
-        public async Task<InstituicaoVO> Update(InstituicaoVO vo)
+        public async Task<InstituicaoResponseVO> Update(InstituicaoResponseVO vo)
         {
             Instituicao instituicao = _mapper.Map<Instituicao>(vo);
             _context.Instituicoes.Update(instituicao);
             await _context.SaveChangesAsync();
-            return _mapper.Map<InstituicaoVO>(instituicao);
+            return _mapper.Map<InstituicaoResponseVO>(instituicao);
         }
 
         public async Task<GenericResponse> Delete(long id)

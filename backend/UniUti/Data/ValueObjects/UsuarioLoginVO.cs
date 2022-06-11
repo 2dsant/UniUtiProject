@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace UniUti.Data.ValueObjects
 {
-    public class LoginVO
+    public class UsuarioLoginVO
     {
         [Required(ErrorMessage = "Email é obrigatório.")]
         public string? Email { get; set; }
