@@ -49,7 +49,7 @@ namespace UniUti.Repository
             try
             {
                 Monitoria monitoria = _mapper.Map<Monitoria>(vo);
-                monitoria.Solicitante = await _context.Usuarios.Where(u => u.Id == vo.SolicitanteId).FirstOrDefaultAsync();
+                monitoria.Solicitante = await _context.Usuarios.Where(u => u.Id == vo.SolicitanteId).FirstAsync();
                 monitoria.Disciplina = await _context.Disciplinas.Where(d => d.Id == vo.DisciplinaId).FirstOrDefaultAsync();
                 monitoria.DataCriacao = DateTime.Now;
                 monitoria.StatusSolicitacaco = StatusSolicitacao.Aberto;
@@ -59,7 +59,7 @@ namespace UniUti.Repository
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw ex;
             }
         }
 
