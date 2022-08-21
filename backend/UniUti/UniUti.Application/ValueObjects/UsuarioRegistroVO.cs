@@ -6,7 +6,7 @@ namespace UniUti.Application.ValueObjects
     {
         [Required(ErrorMessage = "Nome é obrigatório.")]
         [MaxLength(100, ErrorMessage = "Nome inválido. Nome deve possuir até 100 caracteres.")]
-        public string? Nome { get; set; }
+        public string? NomeCompleto { get; set; }
 
         [Required(ErrorMessage = "Email é obrigatório.")]
         [EmailAddress]
@@ -14,7 +14,7 @@ namespace UniUti.Application.ValueObjects
         public string? Email { get; set; }
 
         [Required(ErrorMessage = "Senha é obrigatório.")]
-        public string? Senha { get; set; }
+        public string? Password { get; set; }
 
         [Required(ErrorMessage = "Celular é obrigatório.")]
         [MaxLength(11, ErrorMessage = "Celular inválido. Celular deve possuir até 11 caracteres.")]

@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace UniUti.WebAPI.ViewModels
+﻿namespace UniUti.Application.ValueObjects
 {
-    public class UserToken
+    public class TokenJwt
     {
         public string Token { get; set; }
         public DateTime Expiration { get; set; }

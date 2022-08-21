@@ -44,6 +44,7 @@ namespace UniUti.Infra.IoC
             services.AddScoped<IMonitoriaService, MonitoriaService>();
             services.AddScoped<IInstituicaoService, InstituicaoService>();
             services.AddScoped<IAuthenticateRepository, AuthenticateRepository>();
+            services.AddScoped<IAuthenticateService, AuthenticateService>();
             return services;
         }
     }

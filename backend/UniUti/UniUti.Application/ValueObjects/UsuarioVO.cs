@@ -2,7 +2,7 @@ namespace UniUti.Application.ValueObjects
 {
     public class UsuarioVO
     {
-        public string? Nome { get; set; }
+        public string? NomeCompleto { get; set; }
         public string? Email { get; set; }
         public byte[]? SenhaHash { get; set; }
         public byte[]? SenhaSalt { get; set; }

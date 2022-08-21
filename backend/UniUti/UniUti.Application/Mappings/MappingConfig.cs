@@ -12,6 +12,10 @@ namespace UniUti.Config
             {
                 config.CreateMap<CursoResponseVO, Curso>().ReverseMap();
                 config.CreateMap<Curso, CursoCreateVO>().ReverseMap();
+                config.CreateMap<Usuario, UsuarioRegistroVO>().ReverseMap();
+                config.CreateMap<Usuario, UsuarioResponseVO>().ReverseMap();
+                config.CreateMap<Usuario, UsuarioLoginVO>().ReverseMap();
+                config.CreateMap<Usuario, UsuarioVO>().ReverseMap();
                 config.CreateMap<DisciplinaResponseVO, Disciplina>().ReverseMap();
                 config.CreateMap<Disciplina, DisciplinaCreateVO>().ReverseMap();
                 config.CreateMap<Disciplina, DisciplinaUpdateVO>().ReverseMap();
