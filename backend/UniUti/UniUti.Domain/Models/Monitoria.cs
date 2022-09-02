@@ -35,6 +35,6 @@ namespace UniUti.Domain.Models
 
         [Required]
         [Column("tipo_solicitacao")]
-        public StatusSolicitacao? TipoSolicitacao { get; set; }
+        public TipoSolicitacao? TipoSolicitacao { get; set; }
     }
 }

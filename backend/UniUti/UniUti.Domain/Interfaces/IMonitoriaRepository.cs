@@ -8,7 +8,7 @@ namespace UniUti.Domain.Interfaces
         Task<Monitoria> FindById(long id);
         Task<IEnumerable<Monitoria>> FindByStatus(long status);
         Task<IEnumerable<Monitoria>> FindByUser(string idUser);
-        Task Create(Monitoria monitoria);
-        Task Update(Monitoria monitoria);
+        Task<Monitoria> Create(Monitoria monitoria);
+        Task<Monitoria> Update(Monitoria monitoria);
     }
 }
