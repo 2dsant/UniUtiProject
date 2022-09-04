@@ -25,7 +25,7 @@ namespace UniUti.Controllers
             try
             {
                 var cursos = await _service.FindAll();
-                if (cursos == null) return NotFound();
+                if (!cursos.Any()) return NotFound();
                 return Ok(cursos);
             }
             catch(Exception ex)
@@ -121,7 +121,7 @@ namespace UniUti.Controllers
             try
             {
                 var response = await _service.Delete(id);
-                if (!response) return BadRequest();
+                if (!response) return NotFound();
                 return Ok("Curso deletado.");
             }
             catch(Exception ex)

@@ -121,7 +121,7 @@ namespace UniUti.Controllers
             try
             {
                 var response = await _service.Delete(id);
-                if (!response) return BadRequest();
+                if (!response) return NotFound();
                 return Ok("Disciplina deletada.");
             }
             catch(Exception ex)

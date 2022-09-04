@@ -43,7 +43,7 @@ namespace UniUti.Infra.Data.Repositories
             return monitorias;
         }
 
-        public async Task Create(Monitoria monitoria)
+        public async Task<Monitoria> Create(Monitoria monitoria)
         {
             monitoria.SolicitanteId = monitoria.SolicitanteId;
             monitoria.Disciplina = await _context.Disciplinas.Where(d => d.Id == monitoria.Disciplina.Id).FirstOrDefaultAsync();
@@ -51,9 +51,10 @@ namespace UniUti.Infra.Data.Repositories
             monitoria.StatusSolicitacaco = StatusSolicitacao.Aberto;
             _context.Monitorias.Add(monitoria);
             await _context.SaveChangesAsync();
+            return monitoria;
         }
 
-        public async Task Update(Monitoria monitoria)
+        public async Task<Monitoria> Update(Monitoria monitoria)
         {
             monitoria.PrestadorId = monitoria.PrestadorId;
             monitoria.Disciplina = await _context.Disciplinas.Where(d => d.Id == monitoria.Disciplina.Id).FirstOrDefaultAsync();
@@ -61,6 +62,7 @@ namespace UniUti.Infra.Data.Repositories
             monitoria.StatusSolicitacaco = monitoria.StatusSolicitacaco;
             _context.Monitorias.Update(monitoria);
             await _context.SaveChangesAsync();
+            return monitoria;
         }
     }
 }
