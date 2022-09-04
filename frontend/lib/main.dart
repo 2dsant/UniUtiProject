@@ -1,10 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'models/models.dart';
-import 'screens/screens.dart';
-import 'stores/stores.dart';
-import 'styles.dart';
+import 'aluno/domain/aluno.dart';
+import 'aluno/presentation/dashboard.dart';
+import 'aluno/presentation/dashboard_store.dart';
+import 'auth/domain/usuario.dart';
+import 'auth/presentation/login.dart';
+import 'auth/presentation/register.dart';
+import 'auth/presentation/register_store.dart';
+import 'auth/presentation/signin.dart';
+import 'auth/presentation/splash.dart';
+import 'monitoria/presentation/form_monitoria.dart';
+import 'monitoria/presentation/form_monitoria_store.dart';
+import 'monitoria/presentation/monitoria.dart';
+import 'monitoria/presentation/monitorias.dart';
+import 'monitoria/presentation/monitorias_store.dart';
+import 'shared/presentation/styles.dart';
 
 void main() {
   runApp(const MyApp());
