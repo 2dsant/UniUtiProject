@@ -6,17 +6,14 @@ import '../components/components.dart';
 import '../components/recents_list_item.dart';
 import '../stores/monitorias_store.dart';
 
-class MonitoriasScreen extends StatefulWidget {
-  const MonitoriasScreen({Key? key}) : super(key: key);
-
-  @override
-  _MonitoriasScreenState createState() => _MonitoriasScreenState();
-}
-
-class _MonitoriasScreenState extends State<MonitoriasScreen> {
+class MonitoriasScreen extends StatelessWidget {
+  const MonitoriasScreen({Key? key, required this.controller})
+      : super(key: key);
+  final MonitoriaController controller;
   @override
   Widget build(BuildContext context) {
     final _th = Theme.of(context).textTheme;
+    final _nav = Navigator.of(context);
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -81,7 +78,7 @@ class _MonitoriasScreenState extends State<MonitoriasScreen> {
           ),
           // TODO: Utilizar outro metodo de build da lista a fim de mostrar itens sob demanda
           FutureBuilder<List<RecentsListItem>>(
-            future: getMonitorias(),
+            future: controller.getMonitorias(),
             builder: (context, snap) {
               if (snap.connectionState == ConnectionState.done) {
                 if (snap.hasData && snap.data!.isNotEmpty) {

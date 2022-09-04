@@ -1,15 +1,15 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
-
 import 'models.dart';
 
 class Aluno {
   int id;
   String nome;
-  List<Curso> cursos = [];
-  List<Contato> contatos = [];
+  final List<int> _cursos = [];
+  final List<int> _contatos = [];
   Usuario usuario;
+  int? instituicaoId;
   Aluno({
     required this.id,
     required this.nome,
@@ -34,8 +34,8 @@ class Aluno {
     return {
       'id': id,
       'nome': nome,
-      'cursos': cursos.map((x) => x.toMap()).toList(),
-      'contatos': contatos.map((x) => x.toMap()).toList(),
+      'cursos': _cursos,
+      'contatos': _contatos,
       'usuario': usuario.toMap(),
     };
   }
@@ -46,12 +46,8 @@ class Aluno {
       nome: map['nome'] ?? '',
       usuario: Usuario.fromMap(map['usuario']),
     )
-      ..cursos.addAll(
-        List<Curso>.from(map['cursos']?.map((x) => Curso.fromMap(x))),
-      )
-      ..contatos.addAll(
-        List<Contato>.from(map['contatos']?.map((x) => Contato.fromMap(x))),
-      );
+      ..setContatosId(map['contatos']!)
+      ..setCursosId(map['cursos']);
   }
 
   String toJson() => json.encode(toMap());
@@ -60,7 +56,7 @@ class Aluno {
 
   @override
   String toString() {
-    return 'Aluno(id: $id, nome: $nome, cursos: $cursos, contatos: $contatos, usuario: $usuario)';
+    return 'Aluno(id: $id, nome: $nome, cursos: $_cursos, contatos: $_contatos, usuario: $usuario)';
   }
 
   @override
@@ -70,8 +66,8 @@ class Aluno {
     return other is Aluno &&
         other.id == id &&
         other.nome == nome &&
-        listEquals(other.cursos, cursos) &&
-        listEquals(other.contatos, contatos) &&
+        listEquals(other._cursos, _cursos) &&
+        listEquals(other._contatos, _contatos) &&
         other.usuario == usuario;
   }
 
@@ -79,13 +75,46 @@ class Aluno {
   int get hashCode {
     return id.hashCode ^
         nome.hashCode ^
-        cursos.hashCode ^
-        contatos.hashCode ^
+        _cursos.hashCode ^
+        _contatos.hashCode ^
         usuario.hashCode;
   }
 
-  String getInstituicao() {
-    // TODO: recuperar instituicao
-    return 'Instituicao';
+  void setCursosId(List<int> cursos) {
+    cursos.map((id) => _cursos.add(id));
   }
+
+  void setCursos(List<Curso> cursos) {
+    for (var curso in cursos) {
+      _cursos.add(curso.id);
+    }
+  }
+
+  void addCurso(Curso curso) {
+    _cursos.add(curso.id);
+  }
+
+  void addIdCurso(int id) {
+    _cursos.add(id);
+  }
+
+  List<int> getCursos() => _cursos;
+
+  void setContatosId(List<int> contatos) {
+    contatos.map((id) => addIdContato(id));
+  }
+
+  void setContatos(List<Contato> contatos) {
+    contatos.map((id) => addContato(id));
+  }
+
+  void addContato(Contato contato) {
+    _contatos.add(contato.id);
+  }
+
+  void addIdContato(int id) {
+    _contatos.add(id);
+  }
+
+  List<int> getContatos() => _contatos;
 }

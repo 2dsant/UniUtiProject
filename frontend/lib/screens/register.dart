@@ -2,17 +2,18 @@ import 'dart:developer' as dev;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:uniuti/stores/register_store.dart';
 
 import '../components/components.dart';
 import '../models/models.dart';
-import '../repositories/curso_repository.dart';
 import '../styles.dart';
 
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({Key? key}) : super(key: key);
-
+  const RegisterScreen({Key? key, required this.controller, required this.user})
+      : super(key: key);
+  final RegisterController controller;
+  final Aluno user;
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
@@ -20,7 +21,6 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
-  final _user = GetIt.I.get<Aluno>();
 
   var _autoValidMode = AutovalidateMode.disabled;
   @override
@@ -53,7 +53,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 dropdown(placeholder: 'Curso'),
                 UniUtiInput(
                   placeholder: 'Nome',
-                  save: (str) => _user.nome = str ?? '',
+                  save: (str) => widget.user.nome = str ?? '',
                   valid: (text) => (text == null ||
                           text.isEmpty ||
                           (text.split(' ').length < 2))
@@ -63,7 +63,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 UniUtiInput(
                   placeholder: 'Telefone',
                   type: TextInputType.phone,
-                  save: (str) => _user.contatos.add(
+                  save: (str) => widget.user.addContato(
                     Contato(id: -1, contato: str!),
                   ),
                   valid: (text) {
@@ -79,7 +79,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   placeholder: 'Email',
                   type: TextInputType.emailAddress,
                   controller: _emailController,
-                  save: (str) => _user.usuario.login = str ?? '',
+                  save: (str) => widget.user.usuario.login = str ?? '',
                   valid: (text) {
                     var rgx = RegExp(r'[a-zA-Z0-9.]+@[a-z]+\.[a-z.]');
                     if (text == null || text.isEmpty || !(rgx.hasMatch(text))) {
@@ -106,7 +106,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   password: true,
                   last: true,
                   editingComplete: _validateForm,
-                  save: (str) => _user.usuario.senha = str ?? '',
+                  save: (str) => widget.user.usuario.senha = str ?? '',
                   valid: (text) => (text == null || text.length < 8)
                       ? 'Senha deve ter mais que 8 caracteres'
                       : null,
@@ -128,7 +128,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   dropdown({required String placeholder}) {
     return FutureBuilder<List<Curso>>(
-      future: GetIt.I.get<CursoRepository>().getCursos(),
+      future: widget.controller.getAllCursos(),
       builder: (BuildContext context, AsyncSnapshot<List<Curso>> snapshot) {
         var items = 0;
         if (snapshot.hasData) items = snapshot.data!.length;
@@ -158,7 +158,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       return;
     }
     _formKey.currentState!.save();
-    dev.log(_user.toString());
+    dev.log(widget.user.toString());
     Navigator.of(context).pushReplacementNamed('/signin');
   }
 }

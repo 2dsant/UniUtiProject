@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get_it/get_it.dart';
 import 'package:uniuti/components/inputs.dart';
-import 'package:uniuti/models/usuario.dart';
+import 'package:uniuti/models/models.dart';
 
 import '../components/buttons.dart';
 import '../styles.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({Key? key, required this.user}) : super(key: key);
+  final Usuario user;
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -21,7 +21,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var _user = GetIt.I.get<Usuario>();
     return Scaffold(
       body: Form(
         key: _formKey,
@@ -52,7 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(height: 148),
                   UniUtiInput(
                     placeholder: 'Login',
-                    save: (login) => _user.login = login ?? '',
+                    save: (login) => widget.user.login = login ?? '',
                     valid: (login) => (login == null || login.isEmpty)
                         ? 'Login Inválido'
                         : null,
@@ -61,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     placeholder: 'Senha',
                     password: true,
                     controller: _senhaController,
-                    save: (senha) => _user.senha = senha ?? '',
+                    save: (senha) => widget.user.senha = senha ?? '',
                     valid: (senha) =>
                         (senha == null || senha.isEmpty || senha.length < 9)
                             ? 'Senha Inválida'

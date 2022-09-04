@@ -7,35 +7,33 @@ import 'models.dart';
 class Instituicao {
   int id;
   String nome;
-  List<Curso> cursos;
-  List<Contato> contatos;
+  final List<int> _cursos = [];
+  final List<int> _contatos = [];
   Instituicao({
     required this.id,
     required this.nome,
-    required this.cursos,
-    required this.contatos,
   });
 
   Instituicao copyWith({
     int? id,
     String? nome,
-    List<Curso>? cursos,
-    List<Contato>? contatos,
+    List<int>? cursos,
+    List<int>? contatos,
   }) {
     return Instituicao(
       id: id ?? this.id,
       nome: nome ?? this.nome,
-      cursos: cursos ?? this.cursos,
-      contatos: contatos ?? this.contatos,
-    );
+    )
+      ..setContatosId(contatos ?? _contatos)
+      ..setCursosId(cursos ?? _cursos);
   }
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
       'nome': nome,
-      'cursos': cursos.map((x) => x.toMap()).toList(),
-      'contatos': contatos.map((x) => x.toMap()).toList(),
+      'cursos': _cursos,
+      'contatos': _contatos,
     };
   }
 
@@ -43,10 +41,9 @@ class Instituicao {
     return Instituicao(
       id: map['id']?.toInt() ?? 0,
       nome: map['nome'] ?? '',
-      cursos: List<Curso>.from(map['cursos']?.map((x) => Curso.fromMap(x))),
-      contatos:
-          List<Contato>.from(map['contatos']?.map((x) => Contato.fromMap(x))),
-    );
+    )
+      ..setContatosId(map['contatos']!)
+      ..setCursosId(map['cursos']);
   }
 
   String toJson() => json.encode(toMap());
@@ -56,7 +53,7 @@ class Instituicao {
 
   @override
   String toString() {
-    return 'Instituicao(id: $id, nome: $nome, cursos: $cursos, contatos: $contatos)';
+    return 'Instituicao(id: $id, nome: $nome, cursos: $_cursos, contatos: $_contatos)';
   }
 
   @override
@@ -66,12 +63,46 @@ class Instituicao {
     return other is Instituicao &&
         other.id == id &&
         other.nome == nome &&
-        listEquals(other.cursos, cursos) &&
-        listEquals(other.contatos, contatos);
+        listEquals(other._cursos, _cursos) &&
+        listEquals(other._contatos, _contatos);
   }
 
   @override
   int get hashCode {
-    return id.hashCode ^ nome.hashCode ^ cursos.hashCode ^ contatos.hashCode;
+    return id.hashCode ^ nome.hashCode ^ _cursos.hashCode ^ _contatos.hashCode;
+  }
+
+  void setCursosId(List<int> cursos) {
+    cursos.map((id) => _cursos.add(id));
+  }
+
+  void setCursos(List<Curso> cursos) {
+    for (var curso in cursos) {
+      _cursos.add(curso.id);
+    }
+  }
+
+  void addCurso(Curso curso) {
+    _cursos.add(curso.id);
+  }
+
+  void addIdCurso(int id) {
+    _cursos.add(id);
+  }
+
+  void setContatosId(List<int> contatos) {
+    contatos.map((id) => addIdContato(id));
+  }
+
+  void setContatos(List<Contato> contatos) {
+    contatos.map((id) => addContato(id));
+  }
+
+  void addContato(Contato contato) {
+    _contatos.add(contato.id);
+  }
+
+  void addIdContato(int id) {
+    _contatos.add(id);
   }
 }

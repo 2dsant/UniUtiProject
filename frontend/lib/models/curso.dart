@@ -8,21 +8,20 @@ class Curso {
   int id;
   String nome;
   String duracao;
-  Instituicao instituicao;
-  List<Disciplina> disciplinas;
+  int instituicao;
+  final List<int> _disciplinas = [];
   Curso({
     required this.id,
     required this.nome,
     required this.duracao,
     required this.instituicao,
-    required this.disciplinas,
   });
 
   Curso copyWith({
     int? id,
     String? nome,
     String? duracao,
-    Instituicao? instituicao,
+    int? instituicao,
     List<Disciplina>? disciplinas,
   }) {
     return Curso(
@@ -30,7 +29,6 @@ class Curso {
       nome: nome ?? this.nome,
       duracao: duracao ?? this.duracao,
       instituicao: instituicao ?? this.instituicao,
-      disciplinas: disciplinas ?? this.disciplinas,
     );
   }
 
@@ -39,8 +37,8 @@ class Curso {
       'id': id,
       'nome': nome,
       'duracao': duracao,
-      'instituicao': instituicao.toMap(),
-      'disciplinas': disciplinas.map((x) => x.toMap()).toList(),
+      'instituicao': instituicao,
+      'disciplinas': _disciplinas.toList(),
     };
   }
 
@@ -49,10 +47,8 @@ class Curso {
       id: map['id']?.toInt() ?? 0,
       nome: map['nome'] ?? '',
       duracao: map['duracao'] ?? '',
-      instituicao: Instituicao.fromMap(map['instituicao']),
-      disciplinas: List<Disciplina>.from(
-          map['disciplinas']?.map((x) => Disciplina.fromMap(x))),
-    );
+      instituicao: map['instituicao'],
+    )..setDisciplinasId(map['disciplinas']?.map((x) => x['id'] ?? -1));
   }
 
   String toJson() => json.encode(toMap());
@@ -61,7 +57,7 @@ class Curso {
 
   @override
   String toString() {
-    return 'Curso(id: $id, nome: $nome, duracao: $duracao, instituicao: $instituicao, disciplinas: $disciplinas)';
+    return 'Curso(id: $id, nome: $nome, duracao: $duracao, instituicao: $instituicao, disciplinas: $_disciplinas)';
   }
 
   @override
@@ -73,7 +69,7 @@ class Curso {
         other.nome == nome &&
         other.duracao == duracao &&
         other.instituicao == instituicao &&
-        listEquals(other.disciplinas, disciplinas);
+        listEquals(other._disciplinas, _disciplinas);
   }
 
   @override
@@ -82,6 +78,29 @@ class Curso {
         nome.hashCode ^
         duracao.hashCode ^
         instituicao.hashCode ^
-        disciplinas.hashCode;
+        _disciplinas.hashCode;
+  }
+
+  Instituicao getInstituicao() {
+    return Instituicao(
+      id: -1,
+      nome: 'Cesumar',
+    );
+  }
+
+  void setDisciplinas(List<Disciplina> disciplinas) {
+    disciplinas.map((e) => addDisciplina(e));
+  }
+
+  void setDisciplinasId(List<int> disciplinas) {
+    disciplinas.map((e) => addIdDisciplina(e));
+  }
+
+  void addDisciplina(Disciplina disciplina) {
+    _disciplinas.add(disciplina.id);
+  }
+
+  void addIdDisciplina(int disciplina) {
+    _disciplinas.add(disciplina);
   }
 }

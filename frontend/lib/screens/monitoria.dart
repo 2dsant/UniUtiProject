@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 import 'package:uniuti/styles.dart';
 
 import '../models/models.dart';
-
-void main() => runApp(const MonitoriaScreen());
 
 class MonitoriaScreen extends StatefulWidget {
   const MonitoriaScreen({Key? key}) : super(key: key);
@@ -19,6 +16,10 @@ class _MonitoriaScreenState extends State<MonitoriaScreen> {
   Widget build(BuildContext context) {
     final monitoria = ModalRoute.of(context)!.settings.arguments as Monitoria;
     final _th = Theme.of(context).textTheme;
+    String nome = '';
+    if (monitoria.solicitante != null) {
+      nome = monitoria.solicitante!.nome;
+    }
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -69,7 +70,7 @@ class _MonitoriaScreenState extends State<MonitoriaScreen> {
                       borderRadius: BorderRadius.circular(15),
                     ),
                   ),
-                  Text((monitoria.solicitante ?? GetIt.I.get<Aluno>()).nome),
+                  Text(nome),
                 ],
               ),
             ),
