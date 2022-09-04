@@ -15,7 +15,6 @@ namespace UniUti.Infra.Data.Identity
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IConfiguration _configuration;
 
-
         public AuthenticateRepository(SignInManager<ApplicationUser> signInManage,
             UserManager<ApplicationUser> userManager, IConfiguration configuration)
         {

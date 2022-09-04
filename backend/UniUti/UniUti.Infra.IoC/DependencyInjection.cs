@@ -21,15 +21,15 @@ namespace UniUti.Infra.IoC
         {
             string mySqlConnectionString = configuration.GetConnectionString("DefaultConnection");
 
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
             services.AddDbContext<ApplicationDbContext>
             (options => options.UseMySql(
                 mySqlConnectionString,
                 ServerVersion.AutoDetect(mySqlConnectionString))
             );
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
 
             IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
             services.AddSingleton(mapper);

@@ -9,12 +9,17 @@ namespace UniUti.Application.Services
     public class AuthenticateService : IAuthenticateService
     {
         private readonly IAuthenticateRepository _authentication;
+        private readonly ICursoRepository _cursoRepository;
+        private readonly IInstituicaoRepository _instituicaoRepository;
         private readonly IMapper _mapper;
 
-        public AuthenticateService(IAuthenticateRepository authentication, IMapper mapper)
+        public AuthenticateService(IAuthenticateRepository authentication, IMapper mapper,
+            ICursoRepository cursoRepository, IInstituicaoRepository instituicaoRepository)
         {
             _authentication = authentication;
             _mapper = mapper;
+            _cursoRepository = cursoRepository;
+            _instituicaoRepository = instituicaoRepository;
         }
 
         public async Task<UserToken> Authenticate(string email, string password)
@@ -28,8 +33,9 @@ namespace UniUti.Application.Services
                     Erros = new List<string> { "Não foi possivel realizar login, verifique suas credenciais." }
                 };
             }
+            result.Curso = await _cursoRepository.FindById((long)result.CursoId);
+            result.Instituicao = await _instituicaoRepository.FindById((long)result.InstituicaoId);
             var token = await GenerateToken(email);
-
             return new UserToken()
             {
                 Success = true,
