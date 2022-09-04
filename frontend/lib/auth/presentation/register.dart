@@ -13,10 +13,12 @@ import '../../shared/presentation/inputs.dart';
 import '../../shared/presentation/styles.dart';
 
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({Key? key, required this.controller, required this.user})
+  static const String route = '/register';
+
+  const RegisterScreen({Key? key, required this.controller, required this.aluno})
       : super(key: key);
   final RegisterController controller;
-  final Aluno user;
+  final Aluno aluno;
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
@@ -56,7 +58,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 dropdown(placeholder: 'Curso'),
                 UniUtiInput(
                   placeholder: 'Nome',
-                  save: (str) => widget.user.nome = str ?? '',
+                  save: (str) => widget.aluno.nome = str ?? '',
                   valid: (text) => (text == null ||
                           text.isEmpty ||
                           (text.split(' ').length < 2))
@@ -66,7 +68,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 UniUtiInput(
                   placeholder: 'Telefone',
                   type: TextInputType.phone,
-                  save: (str) => widget.user.addContato(
+                  save: (str) => widget.aluno.addContato(
                     Contato(id: -1, contato: str!),
                   ),
                   valid: (text) {
@@ -82,7 +84,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   placeholder: 'Email',
                   type: TextInputType.emailAddress,
                   controller: _emailController,
-                  save: (str) => widget.user.usuario.login = str ?? '',
+                  save: (str) => widget.aluno.usuario.login = str ?? '',
                   valid: (text) {
                     var rgx = RegExp(r'[a-zA-Z0-9.]+@[a-z]+\.[a-z.]');
                     if (text == null || text.isEmpty || !(rgx.hasMatch(text))) {
@@ -109,7 +111,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   password: true,
                   last: true,
                   editingComplete: _validateForm,
-                  save: (str) => widget.user.usuario.senha = str ?? '',
+                  save: (str) => widget.aluno.usuario.senha = str ?? '',
                   valid: (text) => (text == null || text.length < 8)
                       ? 'Senha deve ter mais que 8 caracteres'
                       : null,
@@ -161,7 +163,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       return;
     }
     _formKey.currentState!.save();
-    dev.log(widget.user.toString());
+    dev.log(widget.aluno.toString());
     Navigator.of(context).pushReplacementNamed('/signin');
   }
 }

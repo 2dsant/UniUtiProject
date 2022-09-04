@@ -1,6 +1,7 @@
 import 'dart:developer' as dev;
 
 import 'package:flutter/material.dart';
+import 'package:uniuti/monitoria/presentation/form_monitoria.dart';
 
 import '../../shared/presentation/fixed_menu_item.dart';
 import 'recents_list_item.dart';
@@ -10,6 +11,7 @@ class MonitoriasScreen extends StatelessWidget {
   const MonitoriasScreen({Key? key, required this.controller})
       : super(key: key);
   final MonitoriaController controller;
+  static const String route = '/monitorias';
   @override
   Widget build(BuildContext context) {
     final _th = Theme.of(context).textTheme;
@@ -45,12 +47,12 @@ class MonitoriasScreen extends StatelessWidget {
                     FixedMenuItem(
                       text: 'Ofertar ajuda',
                       icon: Icons.local_offer_outlined,
-                      onTap: () => _nav.pushNamed('/formMonitoria'),
+                      onTap: () => _nav.pushNamed(FormMonitoriaScreen.route),
                     ),
                     FixedMenuItem(
                       text: 'Pedir ajuda',
                       icon: Icons.local_offer_outlined,
-                      onTap: () => _nav.pushNamed('/formMonitoria'),
+                      onTap: () => _nav.pushNamed(FormMonitoriaScreen.route),
                     ),
                     FixedMenuItem(
                       text: 'Minhas solicitacoes',

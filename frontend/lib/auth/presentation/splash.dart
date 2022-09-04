@@ -6,6 +6,8 @@ import '../../shared/presentation/transicao.dart';
 import 'signin.dart';
 
 class SplashScreen extends StatefulWidget {
+  static const route = '/';
+
   const SplashScreen({Key? key}) : super(key: key);
 
   @override

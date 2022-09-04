@@ -9,6 +9,7 @@ import '../domain/usuario.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key, required this.user}) : super(key: key);
   final Usuario user;
+  static const String route = '/login';
 
   @override
   _LoginScreenState createState() => _LoginScreenState();

@@ -10,6 +10,7 @@ class FormMonitoriaScreen extends StatelessWidget {
   FormMonitoriaScreen({Key? key, required this.controller}) : super(key: key);
   final _form = GlobalKey<FormState>();
   final FormMonitoriaController controller;
+  static const String route = '/formMonitoria';
 
   @override
   Widget build(BuildContext context) {

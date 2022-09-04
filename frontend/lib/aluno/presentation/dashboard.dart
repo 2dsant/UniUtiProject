@@ -15,6 +15,8 @@ class DashboardScreen extends StatelessWidget {
 
   final DashboardStore controller;
 
+  static const String route = '/dashboard';
+
   @override
   Widget build(BuildContext context) {
     final _th = Theme.of(context).textTheme;

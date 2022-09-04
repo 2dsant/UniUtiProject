@@ -3,18 +3,12 @@ import 'package:flutter/material.dart';
 import '../../shared/presentation/styles.dart';
 import '../domain/monitoria.dart';
 
-class MonitoriaScreen extends StatefulWidget {
-  const MonitoriaScreen({Key? key}) : super(key: key);
-
-  @override
-  State<MonitoriaScreen> createState() => _MonitoriaScreenState();
-}
-
-// TODO: logica para mostrar botao de ajudar
-class _MonitoriaScreenState extends State<MonitoriaScreen> {
+class MonitoriaScreen extends StatelessWidget {
+  const MonitoriaScreen({Key? key, required this.monitoria}) : super(key: key);
+  static const String route = '/monitoria';
+  final Monitoria monitoria;
   @override
   Widget build(BuildContext context) {
-    final monitoria = ModalRoute.of(context)!.settings.arguments as Monitoria;
     final _th = Theme.of(context).textTheme;
     String nome = '';
     if (monitoria.solicitante != null) {
@@ -77,7 +71,7 @@ class _MonitoriaScreenState extends State<MonitoriaScreen> {
             Container(
               margin: const EdgeInsets.symmetric(vertical: 10),
               child: ElevatedButton(
-                onPressed: dialogoContatar,
+                onPressed: () => dialogoContatar(context),
                 child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 15),
                   child: Text(
@@ -93,7 +87,7 @@ class _MonitoriaScreenState extends State<MonitoriaScreen> {
     );
   }
 
-  void dialogoContatar() {
+  void dialogoContatar(BuildContext context) {
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(

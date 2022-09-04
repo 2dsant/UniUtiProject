@@ -3,14 +3,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../shared/presentation/buttons.dart';
 import '../../shared/presentation/styles.dart';
 
-class SigninScreen extends StatefulWidget {
+class SigninScreen extends StatelessWidget {
   const SigninScreen({Key? key}) : super(key: key);
-
-  @override
-  State<SigninScreen> createState() => _SigninScreenState();
-}
-
-class _SigninScreenState extends State<SigninScreen> {
+  static const String route = '/signin';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
