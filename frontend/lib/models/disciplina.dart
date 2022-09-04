@@ -9,7 +9,7 @@ class Disciplina {
   String nome;
   String descricao;
   String periodicidade;
-  List<Curso> cursos = [];
+  final List<int> _cursos = [];
   Disciplina({
     required this.id,
     required this.nome,
@@ -22,14 +22,14 @@ class Disciplina {
     String? nome,
     String? descricao,
     String? periodicidade,
-    List<Curso>? cursos,
+    List<int>? cursos,
   }) {
     return Disciplina(
       id: id ?? this.id,
       nome: nome ?? this.nome,
       descricao: descricao ?? this.descricao,
       periodicidade: periodicidade ?? this.periodicidade,
-    )..cursos = cursos ?? this.cursos;
+    )..setCursosId(cursos ?? _cursos);
   }
 
   Map<String, dynamic> toMap() {
@@ -38,7 +38,7 @@ class Disciplina {
       'nome': nome,
       'descricao': descricao,
       'periodicidade': periodicidade,
-      'cursos': cursos.map((x) => x.toMap()).toList(),
+      'cursos': _cursos,
     };
   }
 
@@ -48,7 +48,7 @@ class Disciplina {
       nome: map['nome'] ?? '',
       descricao: map['descricao'] ?? '',
       periodicidade: map['periodicidade'] ?? '',
-    )..cursos = List<Curso>.from(map['cursos']?.map((x) => Curso.fromMap(x)));
+    )..setCursosId(map['cursos']);
   }
 
   String toJson() => json.encode(toMap());
@@ -58,7 +58,7 @@ class Disciplina {
 
   @override
   String toString() {
-    return 'Disciplina(id: $id, nome: $nome, descricao: $descricao, periodicidade: $periodicidade, cursos: $cursos)';
+    return 'Disciplina(id: $id, nome: $nome, descricao: $descricao, periodicidade: $periodicidade, cursos: $_cursos)';
   }
 
   @override
@@ -70,7 +70,7 @@ class Disciplina {
         other.nome == nome &&
         other.descricao == descricao &&
         other.periodicidade == periodicidade &&
-        listEquals(other.cursos, cursos);
+        listEquals(other._cursos, _cursos);
   }
 
   @override
@@ -79,6 +79,22 @@ class Disciplina {
         nome.hashCode ^
         descricao.hashCode ^
         periodicidade.hashCode ^
-        cursos.hashCode;
+        _cursos.hashCode;
+  }
+
+  void setCursos(List<Curso> cursos) {
+    cursos.map((c) => addCurso(c));
+  }
+
+  void setCursosId(List<int> cursos) {
+    cursos.map((id) => addIdCurso(id));
+  }
+
+  void addCurso(Curso curso) {
+    _cursos.add(curso.id);
+  }
+
+  void addIdCurso(int id) {
+    _cursos.add(id);
   }
 }

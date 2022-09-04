@@ -8,7 +8,7 @@ class Monitoria {
   int id;
   String titulo;
   String descricao;
-  Disciplina disciplina;
+  late int _disciplina;
   Aluno? prestador;
   Aluno? solicitante;
   Status status;
@@ -17,7 +17,7 @@ class Monitoria {
     required this.id,
     required this.titulo,
     required this.descricao,
-    required this.disciplina,
+    required int disciplina,
     this.prestador,
     this.solicitante,
     required this.status,
@@ -26,6 +26,7 @@ class Monitoria {
     assert((prestador != null && solicitante != null) ||
         (prestador == null && solicitante != null) ||
         (prestador != null && solicitante == null));
+    setDisciplina(disciplina);
   }
 
   Monitoria copyWith({
@@ -42,7 +43,7 @@ class Monitoria {
       id: id ?? this.id,
       titulo: titulo ?? this.titulo,
       descricao: descricao ?? this.descricao,
-      disciplina: disciplina ?? this.disciplina,
+      disciplina: disciplina?.id ?? _disciplina,
       prestador: prestador ?? this.prestador,
       solicitante: solicitante ?? this.solicitante,
       status: status ?? this.status,
@@ -55,7 +56,7 @@ class Monitoria {
       'id': id,
       'titulo': titulo,
       'descricao': descricao,
-      'disciplina': disciplina.toMap(),
+      'disciplina': _disciplina,
       'prestador': prestador?.toMap(),
       'solicitante': solicitante?.toMap(),
       'status': status.toMap(),
@@ -68,7 +69,7 @@ class Monitoria {
       id: map['id']?.toInt() ?? 0,
       titulo: map['titulo'] ?? '',
       descricao: map['descricao'] ?? '',
-      disciplina: Disciplina.fromMap(map['disciplina']),
+      disciplina: map['disciplina'],
       prestador:
           map['prestador'] != null ? Aluno.fromMap(map['prestador']) : null,
       solicitante:
@@ -86,7 +87,7 @@ class Monitoria {
 
   @override
   String toString() {
-    return 'Monitoria(id: $id, titulo: $titulo, descricao: $descricao, disciplina: $disciplina, prestador: $prestador, solicitante: $solicitante, status: $status, pendencias: $pendencias)';
+    return 'Monitoria(id: $id, titulo: $titulo, descricao: $descricao, disciplina: $_disciplina, prestador: $prestador, solicitante: $solicitante, status: $status, pendencias: $pendencias)';
   }
 
   @override
@@ -97,7 +98,7 @@ class Monitoria {
         other.id == id &&
         other.titulo == titulo &&
         other.descricao == descricao &&
-        other.disciplina == disciplina &&
+        other._disciplina == _disciplina &&
         other.prestador == prestador &&
         other.solicitante == solicitante &&
         other.status == status &&
@@ -109,10 +110,14 @@ class Monitoria {
     return id.hashCode ^
         titulo.hashCode ^
         descricao.hashCode ^
-        disciplina.hashCode ^
+        _disciplina.hashCode ^
         prestador.hashCode ^
         solicitante.hashCode ^
         status.hashCode ^
         pendencias.hashCode;
+  }
+
+  void setDisciplina(int id) {
+    _disciplina = id;
   }
 }

@@ -1,25 +1,23 @@
-import 'dart:developer' as dev;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get_it/get_it.dart';
+import 'package:uniuti/models/instituicao.dart';
 import '../components/components.dart';
 import '../components/recents_list_item.dart';
 import '../models/aluno.dart';
 import '../stores/dashboard_store.dart';
 import '../styles.dart';
 
-class DashboardScreen extends StatefulWidget {
-  const DashboardScreen({Key? key}) : super(key: key);
+class DashboardScreen extends StatelessWidget {
+  const DashboardScreen(
+      {Key? key, required this.controller, required this.aluno})
+      : super(key: key);
+  final Aluno aluno;
 
-  @override
-  _DashboardScreenState createState() => _DashboardScreenState();
-}
+  final DashboardStore controller;
 
-class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     final _th = Theme.of(context).textTheme;
-    var _aluno = GetIt.I.get<Aluno>();
     var _menuItems = [
       const SizedBox(width: 30),
       FixedMenuItem(
@@ -44,10 +42,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 DrawerHeader(
                   child: SvgPicture.asset('assets/logo.svg'),
                 ),
-                Expanded(child: Container(child: Text('LOL'))),
+                Expanded(child: Container(child: const Text('LOL'))),
                 Container(
                   child: Column(
-                    children: [
+                    children: const [
                       Text('Sair'),
                     ],
                   ),
@@ -78,7 +76,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   children: [
                     const TextSpan(text: 'Bem-vindo, '),
                     TextSpan(
-                        text: _aluno.nome,
+                        text: aluno.nome,
                         style: _th.bodyLarge!.copyWith(
                             color: Colors.white, fontWeight: FontWeight.bold)),
                   ],
@@ -100,16 +98,26 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       child: const Center(child: Text('FOTO')),
                     ),
                     const SizedBox(height: 8),
-                    Text(_aluno.nome,
+                    Text(aluno.nome,
                         style: Theme.of(context)
                             .textTheme
                             .titleLarge!
                             .copyWith(color: Colors.white)),
-                    Text(_aluno.getInstituicao(),
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleMedium!
-                            .copyWith(color: Colors.white)),
+                    FutureBuilder<Instituicao?>(
+                      future: controller.getInstituicaoDoAluno(aluno),
+                      builder: (context, snap) {
+                        var nome = 'Sem Instituicao';
+                        if (snap.connectionState == ConnectionState.done &&
+                            snap.hasData) {
+                          nome = snap.data!.nome;
+                        }
+                        return Text(nome,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium!
+                                .copyWith(color: Colors.white));
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -149,7 +157,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
           ),
           FutureBuilder<List<RecentsListItem>>(
-            future: getRecentes(),
+            future: controller.getRecentes(),
             builder: (context, snap) {
               if (snap.connectionState == ConnectionState.done) {
                 if (snap.hasData && snap.data!.isNotEmpty) {
