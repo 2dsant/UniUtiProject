@@ -45,12 +45,12 @@ class MonitoriasScreen extends StatelessWidget {
                     FixedMenuItem(
                       text: 'Ofertar ajuda',
                       icon: Icons.local_offer_outlined,
-                      onTap: () => dev.log('nova_monitoria'),
+                      onTap: () => _nav.pushNamed('/formMonitoria'),
                     ),
                     FixedMenuItem(
                       text: 'Pedir ajuda',
                       icon: Icons.local_offer_outlined,
-                      onTap: () => dev.log('nova_monitoria'),
+                      onTap: () => _nav.pushNamed('/formMonitoria'),
                     ),
                     FixedMenuItem(
                       text: 'Minhas solicitacoes',

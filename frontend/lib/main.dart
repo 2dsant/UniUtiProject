@@ -38,6 +38,8 @@ class MyApp extends StatelessWidget {
               aluno: aluno,
             ),
         '/monitoria': (_) => const MonitoriaScreen(),
+        '/formMonitoria': (_) =>
+            FormMonitoriaScreen(controller: FormMonitoriaController(aluno)),
       },
       home: const SplashScreen(),
     );

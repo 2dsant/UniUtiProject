@@ -5,3 +5,4 @@ export 'login.dart';
 export 'dashboard.dart';
 export 'monitorias.dart';
 export 'monitoria.dart';
+export 'form_monitoria.dart';
