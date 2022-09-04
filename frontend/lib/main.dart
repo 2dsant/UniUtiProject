@@ -1,11 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:uniuti/stores/dashboard_store.dart';
-import 'package:uniuti/stores/monitorias_store.dart';
+
 import 'models/models.dart';
 import 'screens/screens.dart';
-
-import 'stores/register_store.dart';
+import 'stores/stores.dart';
 import 'styles.dart';
 
 void main() {
