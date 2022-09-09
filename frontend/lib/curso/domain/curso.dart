@@ -9,13 +9,11 @@ class Curso {
   int id;
   String nome;
   String duracao;
-  int instituicao;
   final List<int> _disciplinas = [];
   Curso({
     required this.id,
     required this.nome,
     required this.duracao,
-    required this.instituicao,
   });
 
   Curso copyWith({
@@ -29,7 +27,6 @@ class Curso {
       id: id ?? this.id,
       nome: nome ?? this.nome,
       duracao: duracao ?? this.duracao,
-      instituicao: instituicao ?? this.instituicao,
     );
   }
 
@@ -38,7 +35,6 @@ class Curso {
       'id': id,
       'nome': nome,
       'duracao': duracao,
-      'instituicao': instituicao,
       'disciplinas': _disciplinas.toList(),
     };
   }
@@ -48,7 +44,6 @@ class Curso {
       id: map['id']?.toInt() ?? 0,
       nome: map['nome'] ?? '',
       duracao: map['duracao'] ?? '',
-      instituicao: map['instituicao'],
     )..setDisciplinasId(map['disciplinas']?.map((x) => x['id'] ?? -1));
   }
 
@@ -58,7 +53,7 @@ class Curso {
 
   @override
   String toString() {
-    return 'Curso(id: $id, nome: $nome, duracao: $duracao, instituicao: $instituicao, disciplinas: $_disciplinas)';
+    return 'Curso(id: $id, nome: $nome, duracao: $duracao, disciplinas: $_disciplinas)';
   }
 
   @override
@@ -69,7 +64,6 @@ class Curso {
         other.id == id &&
         other.nome == nome &&
         other.duracao == duracao &&
-        other.instituicao == instituicao &&
         listEquals(other._disciplinas, _disciplinas);
   }
 
@@ -78,7 +72,6 @@ class Curso {
     return id.hashCode ^
         nome.hashCode ^
         duracao.hashCode ^
-        instituicao.hashCode ^
         _disciplinas.hashCode;
   }
 
