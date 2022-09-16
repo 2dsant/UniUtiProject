@@ -1,6 +1,3 @@
-import 'dart:io';
-import 'package:http/http.dart' as http;
-
 import 'package:uniuti/shared/data/repository.dart';
 import 'package:uniuti/shared/data/uniuti_client.dart';
 
@@ -57,9 +54,13 @@ class RemoteCursoRepository extends CursoRepository {
   }
 
   @override
-  Future<List<Curso>> getAll() {
-    // TODO: implement getAll
-    throw UnimplementedError();
+  Future<List<Curso>> getAll() async {
+    var response = await client.get(endpoint: '/curso/FindAll', params: {});
+    List<Curso> cursos = [];
+    for (Map<String, dynamic> json in response.body['items']) {
+      cursos.add(Curso.fromMap(json));
+    }
+    return cursos;
   }
 
   @override

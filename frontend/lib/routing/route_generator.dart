@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:uniuti/aluno/data/aluno_provider.dart';
-import 'package:uniuti/aluno/presentation/dashboard.dart';
-import 'package:uniuti/aluno/presentation/dashboard_store.dart';
-import 'package:uniuti/auth/data/usuario_provider.dart';
-import 'package:uniuti/auth/presentation/login.dart';
-import 'package:uniuti/auth/presentation/register.dart';
-import 'package:uniuti/auth/presentation/register_store.dart';
-import 'package:uniuti/auth/presentation/signin.dart';
-import 'package:uniuti/auth/presentation/splash.dart';
-import 'package:uniuti/monitoria/presentation/monitorias.dart';
-import 'package:uniuti/monitoria/presentation/monitorias_store.dart';
+import 'package:provider/provider.dart';
 
+import '../aluno/presentation/dashboard.dart';
+import '../aluno/presentation/dashboard_store.dart';
+import '../auth/presentation/login.dart';
+import '../auth/presentation/register.dart';
+import '../auth/presentation/register_store.dart';
+import '../auth/presentation/signin.dart';
+import '../auth/presentation/splash.dart';
 import '../monitoria/domain/monitoria.dart';
+import '../monitoria/presentation/monitorias.dart';
+import '../monitoria/presentation/monitorias_store.dart';
 import '../monitoria/presentation/form_monitoria.dart';
 import '../monitoria/presentation/form_monitoria_store.dart';
 import '../monitoria/presentation/monitoria.dart';
@@ -33,13 +32,11 @@ class RouteGenerator {
       case RegisterScreen.route:
         builder = (context) => RegisterScreen(
               controller: RegisterController(),
-              aluno: AlunoProvider.of(context)!.aluno,
+              aluno: context.read(),
             );
         break;
       case LoginScreen.route:
-        builder = (context) => LoginScreen(
-              user: UsuarioProvider.of(context)!.usuario,
-            );
+        builder = (context) => LoginScreen(user: context.read());
         break;
       case MonitoriasScreen.route:
         builder =
@@ -53,15 +50,11 @@ class RouteGenerator {
         break;
       case DashboardScreen.route:
         builder = (context) => DashboardScreen(
-              controller: DashboardStore(),
-              aluno: AlunoProvider.of(context)!.aluno,
-            );
+            controller: DashboardStore(), aluno: context.read());
         break;
       case FormMonitoriaScreen.route:
         builder = (context) => FormMonitoriaScreen(
-              controller: FormMonitoriaController(
-                AlunoProvider.of(context)!.aluno,
-              ),
+              controller: FormMonitoriaController(context.read()),
             );
         break;
       default:

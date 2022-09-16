@@ -1,3 +1,1 @@
-class LoginController {
-  Future performLogin() async {}
-}
+class LoginController {}

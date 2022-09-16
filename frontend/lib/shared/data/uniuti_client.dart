@@ -5,6 +5,8 @@ import 'package:http/http.dart' as http;
 import 'package:http_interceptor/http_interceptor.dart';
 
 import '../../auth/domain/usuario.dart';
+import '../../auth/data/usuario_repository.dart';
+import '../exceptions/uniuti_exceptions.dart';
 
 class UniUtiHttpClient {
   final client = http.Client();
@@ -24,7 +26,8 @@ class UniUtiHttpClient {
       interceptors: [
         UniUtiAuthInterceptor(getToken: () async => usuario.token),
       ],
-      retryPolicy: UniUtiRetryPolicy(client: this, usuario: usuario),
+      retryPolicy: UniUtiRetryPolicy(
+          userRepo: RemoteUsuarioRepository(this), usuario: usuario),
     ).get(Uri(host: host, path: '/api' + endpoint), params: params);
 
     var body = json.decode(response.body);
@@ -45,7 +48,8 @@ class UniUtiHttpClient {
       interceptors: [
         UniUtiAuthInterceptor(getToken: () async => usuario.token),
       ],
-      retryPolicy: UniUtiRetryPolicy(client: this, usuario: usuario),
+      retryPolicy: UniUtiRetryPolicy(
+          userRepo: RemoteUsuarioRepository(this), usuario: usuario),
     ).get(Uri(), params: params);
 
     var body = json.decode(response.body);
@@ -59,14 +63,6 @@ class UniUtiHttpClient {
 
   // Future<Response> put() async {}
   // Future<Response> patch() async {}
-
-  Future<String> performTokenRefresh() async {
-    var response = await post(endpoint: '/refresh-login', body: {});
-    if (response.statusCode >= 500) {
-      throw HttpException(response.reasonPhrase ?? 'Erro inesperado');
-    }
-    return response.body['token'];
-  }
 }
 
 typedef ApiToken = Future<String> Function();
@@ -92,15 +88,15 @@ class UniUtiAuthInterceptor implements InterceptorContract {
 }
 
 class UniUtiRetryPolicy extends RetryPolicy {
-  final UniUtiHttpClient client;
+  final UsuarioRepository userRepo;
   final Usuario usuario;
 
-  UniUtiRetryPolicy({required this.usuario, required this.client});
+  UniUtiRetryPolicy({required this.usuario, required this.userRepo});
   @override
   Future<bool> shouldAttemptRetryOnResponse(ResponseData response) async {
     var should = false;
     if (response.statusCode == 401) {
-      usuario.token = await client.performTokenRefresh();
+      await userRepo.performRefreshToken(usuario);
     }
     return should;
   }
@@ -124,4 +120,10 @@ class Response {
       reasonPhrase: response.reasonPhrase,
     );
   }
+}
+
+class RemoteClientException extends UniUtiException {
+  final Response response;
+  RemoteClientException(this.response)
+      : super(response.reasonPhrase ?? 'Erro inesperado');
 }
