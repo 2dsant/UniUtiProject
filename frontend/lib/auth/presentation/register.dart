@@ -3,7 +3,6 @@ import 'dart:developer' as dev;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:uniuti/auth/presentation/register_store.dart';
 
 import '../../aluno/domain/aluno.dart';
 import '../../contato/domain/contato.dart';
@@ -11,11 +10,13 @@ import '../../curso/domain/curso.dart';
 import '../../shared/presentation/buttons.dart';
 import '../../shared/presentation/inputs.dart';
 import '../../shared/presentation/styles.dart';
+import 'register_store.dart';
 
 class RegisterScreen extends StatefulWidget {
   static const String route = '/register';
 
-  const RegisterScreen({Key? key, required this.controller, required this.aluno})
+  const RegisterScreen(
+      {Key? key, required this.controller, required this.aluno})
       : super(key: key);
   final RegisterController controller;
   final Aluno aluno;
@@ -25,7 +26,6 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
 
   var _autoValidMode = AutovalidateMode.disabled;
   @override
@@ -68,9 +68,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 UniUtiInput(
                   placeholder: 'Telefone',
                   type: TextInputType.phone,
-                  save: (str) => widget.aluno.addContato(
-                    Contato(id: -1, contato: str!),
-                  ),
+                  save: (str) => widget.aluno.celular.contato = str ?? '',
                   valid: (text) {
                     var rgx = RegExp(r'.*\D+.*');
                     return (text == null ||
@@ -83,7 +81,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 UniUtiInput(
                   placeholder: 'Email',
                   type: TextInputType.emailAddress,
-                  controller: _emailController,
+                  onChanged: (email) => widget.aluno.usuario.login = email,
                   save: (str) => widget.aluno.usuario.login = str ?? '',
                   valid: (text) {
                     var rgx = RegExp(r'[a-zA-Z0-9.]+@[a-z]+\.[a-z.]');
@@ -100,7 +98,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     var rgx = RegExp(r'[a-zA-Z0-9.]+@[a-z]+\.[a-z.]');
                     if (text == null || text.isEmpty || !(rgx.hasMatch(text))) {
                       return 'Email inválido';
-                    } else if (_emailController.text != text) {
+                    } else if (widget.aluno.usuario.login != text) {
                       return 'Email não corresponde';
                     }
                     return null;
@@ -155,15 +153,53 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  _validateForm() {
+  _validateForm() async {
     if (!_formKey.currentState!.validate()) {
       setState(() {
         _autoValidMode = AutovalidateMode.onUserInteraction;
       });
       return;
     }
-    _formKey.currentState!.save();
-    dev.log(widget.aluno.toString());
-    Navigator.of(context).pushReplacementNamed('/signin');
+    showModalBottomSheet(context: context, builder: modalBuilder);
+    // _formKey.currentState!.save();
+    // dev.log(widget.aluno.toString());
+    // Navigator.of(context).pushReplacementNamed('/signin');
   }
+
+  Widget modalBuilder(BuildContext context) {
+    return FutureBuilder<RegisterState>(
+        future: widget.controller.register(widget.aluno),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return (snapshot.data is RegisterSuccess)
+                ? Success(snapshot.data as RegisterSuccess)
+                : Fail(snapshot.data as RegisterFail);
+          }
+          return const Loader();
+        });
+  }
+}
+
+class Success extends StatelessWidget {
+  const Success(this.state, {Key? key}) : super(key: key);
+  final RegisterSuccess state;
+
+  @override
+  Widget build(BuildContext context) => const Center(child: Text('Sucesso'));
+}
+
+class Fail extends StatelessWidget {
+  const Fail(this.state, {Key? key}) : super(key: key);
+  final RegisterFail state;
+
+  @override
+  Widget build(BuildContext context) => Center(child: Text(state.message));
+}
+
+class Loader extends StatelessWidget {
+  const Loader({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) =>
+      const Center(child: CircularProgressIndicator());
 }

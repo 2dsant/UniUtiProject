@@ -1,16 +1,9 @@
 import 'dart:convert';
 
 abstract class Repository<T> {
-  LastStatus lastStatus = LastStatus.none;
   Future<T?> byId(int id);
   Future<List<T>> getAll();
   Future<List<T>> getMany(RepoFilter filter);
-}
-
-enum LastStatus {
-  none,
-  found,
-  notFound,
 }
 
 class RepoFilter {

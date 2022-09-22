@@ -30,7 +30,7 @@ class DashboardStore {
     late Instituicao? instituicao;
     for (var repo in _instituicaoRepos.values) {
       instituicao = await repo.byId(aluno.instituicaoId!);
-      if (repo.lastStatus == LastStatus.found) {
+      if (instituicao != null) {
         break;
       }
     }

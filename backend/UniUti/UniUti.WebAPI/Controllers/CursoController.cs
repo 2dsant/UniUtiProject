@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace UniUti.Controllers
 {
-    [Authorize]
+    // [Authorize]
     [ApiController]
     [Route("api/v1/[controller]")]
     public class CursoController : ControllerBase

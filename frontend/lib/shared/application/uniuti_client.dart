@@ -13,7 +13,9 @@ class UniUtiHttpClient {
   final host = 'localhost';
   final Usuario usuario;
 
-  UniUtiHttpClient(this.usuario);
+  final String version;
+
+  UniUtiHttpClient({required this.version, required this.usuario});
 
   Future<Response> get({
     required String endpoint,

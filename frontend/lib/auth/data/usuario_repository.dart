@@ -1,8 +1,9 @@
 import 'dart:math';
 
 import 'package:uniuti/auth/domain/usuario.dart';
+import 'package:uniuti/shared/application/uniuti_client_mixin.dart';
 import 'package:uniuti/shared/data/repository.dart';
-import 'package:uniuti/shared/data/uniuti_client.dart';
+import 'package:uniuti/shared/application/uniuti_client.dart';
 
 abstract class UsuarioRepository extends Repository<Usuario> {
   Future<bool> performLogin(Usuario usuario);
@@ -39,10 +40,9 @@ class MockUsuarioRepository extends UsuarioRepository {
   }
 }
 
-class RemoteUsuarioRepository extends UsuarioRepository {
-  final UniUtiHttpClient client;
-
-  RemoteUsuarioRepository(this.client);
+class RemoteUsuarioRepository extends UniUtiHttpRemoteRepository
+    implements UsuarioRepository {
+  RemoteUsuarioRepository(UniUtiHttpClient client) : super(client);
 
   @override
   Future<bool> performRefreshToken(Usuario usuario) async {

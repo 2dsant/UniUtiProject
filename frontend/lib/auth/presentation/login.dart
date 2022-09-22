@@ -60,7 +60,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   UniUtiInput(
                     placeholder: 'Senha',
                     password: true,
-                    controller: _senhaController,
                     save: (senha) => widget.user.senha = senha ?? '',
                     valid: (senha) =>
                         (senha == null || senha.isEmpty || senha.length < 9)

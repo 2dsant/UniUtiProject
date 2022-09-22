@@ -20,7 +20,7 @@ class FormMonitoriaController {
         operation: FilterOperation.equals,
         value: _aluno.getCursos().first.toString(),
       ));
-      if (repo.lastStatus == LastStatus.notFound) {
+      if (disciplinas.isNotEmpty) {
         break;
       }
     }

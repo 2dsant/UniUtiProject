@@ -1,16 +1,11 @@
-import 'package:uniuti/shared/data/repository.dart';
-import 'package:uniuti/shared/data/uniuti_client.dart';
-
+import '../../shared/application/uniuti_client.dart';
+import '../../shared/data/repository.dart';
 import '../domain/curso.dart';
+import '../exceptions/curso_exceptions.dart';
 
 abstract class CursoRepository extends Repository<Curso> {}
 
 class MockCursoRepository extends CursoRepository {
-  static late final MockCursoRepository _instance =
-      MockCursoRepository._internal();
-  MockCursoRepository._internal();
-  factory MockCursoRepository() => _instance;
-
   @override
   Future<List<Curso>> getAll() async {
     return [
@@ -33,9 +28,8 @@ class MockCursoRepository extends CursoRepository {
   }
 
   @override
-  Future<List<Curso>> getMany(RepoFilter filter) {
-    // TODO: implement getMany
-    throw UnimplementedError();
+  Future<List<Curso>> getMany(RepoFilter filter) async {
+    return await getAll();
   }
 }
 
@@ -64,8 +58,12 @@ class RemoteCursoRepository extends CursoRepository {
   }
 
   @override
-  Future<List<Curso>> getMany(RepoFilter filter) {
-    // TODO: implement getMany
-    throw UnimplementedError();
+  Future<List<Curso>> getMany(RepoFilter filter) async {
+    final response = await client.get(endpoint: 'Curso/FindAll', params: {});
+    final cursos = <Curso>[];
+    if (response.statusCode == 204) {
+      throw CursoNaoEncontradoException();
+    }
+    return cursos;
   }
 }

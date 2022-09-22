@@ -1,4 +1,3 @@
-import '../../shared/data/repository.dart';
 import '../data/monitoria_repository.dart';
 import '../domain/monitoria.dart';
 import 'recents_list_item.dart';
@@ -13,7 +12,7 @@ class MonitoriaController {
     Monitoria? monitoria;
     for (var repo in _monitoriaRepos.values) {
       monitoria = await repo.byId(-1);
-      if (repo.lastStatus == LastStatus.found) {
+      if (monitoria != null) {
         break;
       }
     }

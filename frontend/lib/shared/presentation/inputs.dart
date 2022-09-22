@@ -3,23 +3,24 @@ import 'package:flutter/material.dart';
 import 'styles.dart';
 
 class UniUtiInput extends StatelessWidget {
+  final ValueChanged<String>? onChanged;
+
   const UniUtiInput({
     Key? key,
     required this.placeholder,
     this.password = false,
     this.type,
-    this.controller,
     this.save,
     this.valid,
     this.last = false,
     this.editingComplete,
+    this.onChanged,
   }) : super(key: key);
 
   final String placeholder;
   final bool password;
   final bool last;
   final TextInputType? type;
-  final TextEditingController? controller;
   final FormFieldSetter<String>? save;
   final FormFieldValidator<String>? valid;
   final VoidCallback? editingComplete;
@@ -31,7 +32,7 @@ class UniUtiInput extends StatelessWidget {
       child: TextFormField(
         textInputAction: last ? TextInputAction.go : TextInputAction.next,
         decoration: uniUtiInputDecoration(placeholder),
-        controller: controller,
+        onChanged: onChanged,
         obscureText: password,
         keyboardType: type,
         onSaved: save,
