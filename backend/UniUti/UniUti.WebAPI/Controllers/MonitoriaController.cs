@@ -1,8 +1,8 @@
-using UniUti.Application.ValueObjects.Responses;
 using Microsoft.AspNetCore.Authorization;
 using UniUti.Application.ValueObjects;
 using UniUti.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using UniUti.WebAPI.ViewModels;
 
 namespace UniUti.Controllers
 {
@@ -26,12 +26,17 @@ namespace UniUti.Controllers
             {
                 var monitorias = await _service.FindAll();
                 if (monitorias == null) return NotFound();
-                return Ok(monitorias);
+                return Ok(new ResultViewModel
+                {
+                    Success = true,
+                    Data = monitorias
+                });
             }
             catch(Exception ex)
             {
-                return BadRequest(new ErrorResponse()
+                return BadRequest(new ResultViewModel
                 {
+                    Success = false,
                     Errors = new List<string>()
                         {
                             ex.Message
@@ -41,18 +46,23 @@ namespace UniUti.Controllers
         }
 
         [HttpGet("GetById/{id}")]
-        public async Task<ActionResult<MonitoriaResponseVO>> FindById(long id)
+        public async Task<ActionResult<MonitoriaResponseVO>> FindById(string id)
         {
             try
             {
                 var monitoria = await _service.FindById(id);
                 if (monitoria == null) return NotFound();
-                return Ok(monitoria);
+                return Ok(new ResultViewModel
+                {
+                    Success = true,
+                    Data = monitoria
+                });
             }
             catch(Exception ex)
             {
-                return BadRequest(new ErrorResponse()
+                return BadRequest(new ResultViewModel
                 {
+                    Success = false,
                     Errors = new List<string>()
                         {
                             ex.Message
@@ -68,12 +78,17 @@ namespace UniUti.Controllers
             {
                 var monitoria = await _service.FindByStatus(status);
                 if (monitoria == null) return NotFound();
-                return Ok(monitoria);
+                return Ok(new ResultViewModel
+                {
+                    Success = true,
+                    Data = monitoria
+                });
             }
             catch (Exception ex)
             {
-                return BadRequest(new ErrorResponse()
+                return BadRequest(new ResultViewModel
                 {
+                    Success = false,
                     Errors = new List<string>()
                         {
                             ex.Message
@@ -89,12 +104,17 @@ namespace UniUti.Controllers
             {
                 var monitoria = await _service.FindByUser(idUser);
                 if (monitoria == null) return NotFound();
-                return Ok(monitoria);
+                return Ok(new ResultViewModel
+                {
+                    Success = true,
+                    Data = monitoria
+                });
             }
             catch (Exception ex)
             {
-                return BadRequest(new ErrorResponse()
+                return BadRequest(new ResultViewModel
                 {
+                    Success = false,
                     Errors = new List<string>()
                         {
                             ex.Message
@@ -112,12 +132,17 @@ namespace UniUti.Controllers
                 try
                 {
                     await _service.Create(vo);
-                    return Ok(vo);
+                    return Ok(new ResultViewModel
+                    {
+                        Success = true,
+                        Data = vo
+                    });
                 }
                 catch (Exception ex)
                 {
-                    return BadRequest(new ErrorResponse()
+                    return BadRequest(new ResultViewModel
                     {
+                        Success = false,
                         Errors = new List<string>()
                         {
                             ex.Message
@@ -140,12 +165,17 @@ namespace UniUti.Controllers
                 try
                 {
                     await _service.Update(vo);
-                    return Ok(vo);
+                    return Ok(new ResultViewModel
+                    {
+                        Success = true,
+                        Data = vo
+                    });
                 }
                 catch (Exception ex)
                 {
-                    return BadRequest(new ErrorResponse()
+                    return BadRequest(new ResultViewModel
                     {
+                        Success = false,
                         Errors = new List<string>()
                         {
                             ex.Message

@@ -2,9 +2,11 @@
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using UniUti.Domain.Interfaces;
 using System.Security.Claims;
 using UniUti.Domain.Models;
+using UniUti.Database;
 using System.Text;
 
 namespace UniUti.Infra.Data.Identity
@@ -13,14 +15,16 @@ namespace UniUti.Infra.Data.Identity
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly ApplicationDbContext _context;
         private readonly IConfiguration _configuration;
 
         public AuthenticateRepository(SignInManager<ApplicationUser> signInManage,
-            UserManager<ApplicationUser> userManager, IConfiguration configuration)
+            UserManager<ApplicationUser> userManager, IConfiguration configuration, ApplicationDbContext context)
         {
             _signInManager = signInManage;
             _userManager = userManager;
             _configuration = configuration;
+            _context = context;
         }
 
         public async Task<Usuario> Authenticate(string email, string password)
@@ -30,61 +34,39 @@ namespace UniUti.Infra.Data.Identity
 
             if (result.Succeeded)
             {
-                var usuario = await _userManager.FindByEmailAsync(email);
-                return new Usuario
-                {
-                    Id = usuario.Id,
-                    NomeCompleto = usuario.NomeCompleto,
-                    Email = usuario.Email,
-                    Celular = usuario.Celular,
-                    InstituicaoId = usuario.InstituicaoId,
-                    CursoId = usuario.CursoId,
-                    Instituicao = usuario.Instituicao,
-                    Curso = usuario.Curso,
-                    Deletado = usuario.Deletado
-                };
+                var user = await _userManager.FindByEmailAsync(email);
+                user.Endereco = _context.EnderecosUsuario.AsNoTracking().First(x => x.ApplicationUserId == user.Id && x.Deletado == false);
+                return new Usuario(Guid.Parse(user.Id), user.NomeCompleto, user.PasswordHash, user.Email,
+                    null, null, user.Celular, user.Enderecos?.ToList(), user.Endereco, user.Instituicao, user.Curso, user.Deletado);
             }
 
-            return new Usuario();
+            return null;
         }
 
         public async Task<Usuario> RegisterUser(Usuario usuario)
         {
             try
             {
-                var applicationUser = new ApplicationUser
-                {
-                    NomeCompleto = usuario.NomeCompleto,
-                    UserName = usuario.Email,
-                    Email = usuario.Email,
-                    Celular = usuario.Celular,
-                    PhoneNumber = usuario.Celular,
-                    InstituicaoId = usuario.InstituicaoId.Value,
-                    CursoId = usuario.CursoId.Value,
-                    EmailConfirmed = true
-                };
+                var applicationUser = new ApplicationUser(usuario.Id.ToString(), usuario.NomeCompleto, usuario.Email, usuario.Celular, 
+                    usuario.InstituicaoId, usuario.CursoId, usuario.MonitoriasSolicitadas, usuario.MonitoriasOfertadas, usuario.Enderecos, 
+                    usuario.Endereco, usuario.Instituicao, usuario.Curso, usuario.Deletado);
+                
                 var result = await _userManager.CreateAsync(applicationUser, usuario.Password);
 
                 if (result.Succeeded)
                 {
+                    usuario.Endereco.SetId();
+                    usuario.Endereco.SetApplicationUserId(usuario.Id.ToString());
+                    await _context.EnderecosUsuario.AddAsync(usuario.Endereco);
                     await _userManager.SetLockoutEnabledAsync(applicationUser, false);
                     await _signInManager.SignInAsync(applicationUser, isPersistent: false);
+                    await _context.SaveChangesAsync();
                 }
 
                 var user = await _userManager.FindByEmailAsync(usuario.Email);
 
-                return new Usuario
-                {
-                    Id = user.Id,
-                    NomeCompleto = user.NomeCompleto,
-                    Email = user.Email,
-                    Celular = user.Celular,
-                    InstituicaoId = user.InstituicaoId,
-                    CursoId = user.CursoId,
-                    Instituicao = user.Instituicao,
-                    Curso = user.Curso,
-                    Deletado = user.Deletado
-                };
+                return new Usuario(Guid.Parse(user.Id), user.NomeCompleto, user.PasswordHash, user.Email,
+                    null, null, user.Celular, user.Enderecos?.ToList(), user.Endereco, user.Instituicao, user.Curso, user.Deletado);
             }
             catch (Exception ex)
             {
@@ -92,46 +74,31 @@ namespace UniUti.Infra.Data.Identity
             }
         }
 
-        public async Task<Usuario> GetApplicationUser(string email)
+        public async Task<Usuario>? GetApplicationUser(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
-
-            return new Usuario
-            {
-                Id = user.Id,
-                NomeCompleto = user.NomeCompleto,
-                Email = user.Email,
-                Celular = user.Celular,
-                InstituicaoId = user.InstituicaoId,
-                CursoId = user.CursoId,
-                Instituicao = user.Instituicao,
-                Curso = user.Curso,
-                Deletado = user.Deletado
-            };
+            user.Id = await _userManager.GetUserIdAsync(user);
+            if (user == null) return null;
+            return new Usuario(Guid.Parse(user.Id), user.NomeCompleto, user.PasswordHash, user.Email,
+                null, null, user.Celular, user.Enderecos?.ToList(), user.Endereco, user.Instituicao, user.Curso, user.Deletado);
         }
 
         public async Task<Usuario> GetApplicationUserById(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
-
-            return new Usuario
-            {
-                Id = user.Id,
-                NomeCompleto = user.NomeCompleto,
-                Email = user.Email,
-                Celular = user.Celular,
-                InstituicaoId = user.InstituicaoId,
-                CursoId = user.CursoId,
-                Instituicao = user.Instituicao,
-                Curso = user.Curso,
-                Deletado = user.Deletado
-            };
+            user.Id = await _userManager.GetUserIdAsync(user);
+            return new Usuario(Guid.Parse(user.Id), user.NomeCompleto, user.PasswordHash, user.Email,
+                null, null, user.Celular, user.Enderecos?.ToList(), user.Endereco, user.Instituicao, user.Curso, user.Deletado);
         }
 
         public async Task<string> GenerateToken(string email)
         {
             var userInfo = await _userManager.FindByEmailAsync(email);
-
+            userInfo.Id = await _userManager.GetUserIdAsync(userInfo);
+            if (userInfo is null)
+            {
+                throw new InvalidOperationException("Email não registrado.");
+            }
             //Declarações do usuario
             var claims = new[]
             {

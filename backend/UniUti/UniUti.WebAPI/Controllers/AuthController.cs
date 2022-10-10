@@ -6,6 +6,7 @@ using UniUti.Infra.Data.Identity;
 using Microsoft.AspNetCore.Mvc;
 using UniUti.WebAPI.ViewModels;
 using System.Security.Claims;
+using System.Collections.Generic;
 
 namespace UniUti.Controllers
 {
@@ -24,15 +25,34 @@ namespace UniUti.Controllers
 
         [AllowAnonymous]
         [HttpPost("LoginUser")]
-        public async Task<ActionResult<UserToken>> Login([FromBody] LoginModel userInfo)
+        public async Task<ActionResult<ResultViewModel>> Login([FromBody] LoginModel userInfo)
         {
-            var result = await _authentication.Authenticate(userInfo.Email, userInfo.Password);
-            if (!result.Success)
+            try
             {
-                ModelState.AddModelError(String.Empty, "Tentativa de login inválida.");
-                return BadRequest(ModelState);
+                var result = await _authentication.Authenticate(userInfo.Email, userInfo.Password);
+                if (!result.Success)
+                {
+                    return BadRequest(new ResultViewModel
+                    {
+                        Success = false,
+                        Errors = new List<string> { "Credenciais incorretas." }
+                    });
+                }
+                return new ResultViewModel
+                {
+                    Success = true,
+                    Data = result
+                };
             }
-            return result;
+            catch(Exception ex)
+            {
+                return BadRequest(new ResultViewModel
+                {
+                    Success = false,
+                    Data = null,
+                    Errors = new List<string>{ ex.Message }
+                }) ;
+            }
         }
 
         [HttpPost("CreateUser")]
@@ -40,17 +60,18 @@ namespace UniUti.Controllers
         {
             try
             {
+                var existUser = await _authentication.GetUserByEmail(userInfo.Email);
+                if(existUser is not null) return BadRequest("Email jÃ¡ cadastrado.");
                 var result = await _authentication.RegisterUser(userInfo);
-                return Ok($"Usuário {userInfo.Email} foi criado com sucesso.");
+                return Ok($"UsuÃ¡rio {userInfo.Email} foi criado com sucesso.");
             }
             catch(Exception)
             {
-                ModelState.AddModelError(String.Empty, "Tentativa de criar usuário inválida.");
+                ModelState.AddModelError(String.Empty, "Tentativa de criar usuÃ¡rio invÃ¡lida.");
                 return BadRequest(ModelState);
             }
         }
 
-        [Authorize]
         [HttpPost("refresh-login")]
         public async Task<ActionResult<UserToken>> RefreshLogin()
         {

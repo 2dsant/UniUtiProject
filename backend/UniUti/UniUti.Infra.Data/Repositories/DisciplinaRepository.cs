@@ -21,10 +21,10 @@ namespace UniUti.Infra.Data.Repositories
             return disciplinas;
         }
 
-        public async Task<Disciplina> FindById(long id)
+        public async Task<Disciplina> FindById(string id)
         {
             Disciplina disciplina = await _context.Disciplinas.Where(i =>
-                i.Id == id && !i.Deletado).FirstOrDefaultAsync();
+                i.Id == Guid.Parse(id) && !i.Deletado).FirstOrDefaultAsync();
 
             return disciplina;
         }
@@ -43,9 +43,9 @@ namespace UniUti.Infra.Data.Repositories
             return disciplina;
         }
 
-        public async Task<bool> Delete(long id)
+        public async Task<bool> Delete(string id)
         {
-            Disciplina curso = await _context.Disciplinas.Where(i => i.Id == id)
+            Disciplina curso = await _context.Disciplinas.Where(i => i.Id == Guid.Parse(id))
                 .FirstOrDefaultAsync();
 
             if (curso == null)
@@ -53,7 +53,7 @@ namespace UniUti.Infra.Data.Repositories
                 throw new NullReferenceException("Disciplina não encontrado.");
             }
 
-            curso.Deletado = true;
+            curso.SetDeletado(true);
             await _context.SaveChangesAsync();
             return true;
         }
