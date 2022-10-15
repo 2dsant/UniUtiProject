@@ -105,21 +105,11 @@ class DashboardScreen extends StatelessWidget {
                             .textTheme
                             .titleLarge!
                             .copyWith(color: Colors.white)),
-                    FutureBuilder<Instituicao?>(
-                      future: controller.getInstituicaoDoAluno(aluno),
-                      builder: (context, snap) {
-                        var nome = 'Sem Instituicao';
-                        if (snap.connectionState == ConnectionState.done &&
-                            snap.hasData) {
-                          nome = snap.data!.nome;
-                        }
-                        return Text(nome,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium!
-                                .copyWith(color: Colors.white));
-                      },
-                    ),
+                    Text(aluno.instituicao!.nome,
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium!
+                            .copyWith(color: Colors.white)),
                   ],
                 ),
               ),

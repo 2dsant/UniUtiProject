@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         Provider<Aluno>(create: (_) => aluno),
-        Provider<Usuario>(create: (_) => aluno.usuario),
+        Provider<Usuario>(create: (_) => aluno.usuario!),
       ],
       child: MaterialApp(
         title: 'UniUti',

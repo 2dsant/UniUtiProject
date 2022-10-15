@@ -24,16 +24,4 @@ class DashboardStore {
     }
     return list;
   }
-
-  Future<Instituicao?> getInstituicaoDoAluno(Aluno aluno) async {
-    if (aluno.instituicaoId == null) return null;
-    late Instituicao? instituicao;
-    for (var repo in _instituicaoRepos.values) {
-      instituicao = await repo.byId(aluno.instituicaoId!);
-      if (instituicao != null) {
-        break;
-      }
-    }
-    return instituicao;
-  }
 }

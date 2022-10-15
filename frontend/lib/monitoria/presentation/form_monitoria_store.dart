@@ -18,7 +18,7 @@ class FormMonitoriaController {
       disciplinas = await repo.getMany(RepoFilter(
         property: 'disciplina',
         operation: FilterOperation.equals,
-        value: _aluno.getCursos().first.toString(),
+        value: _aluno.curso.toString(),
       ));
       if (disciplinas.isNotEmpty) {
         break;

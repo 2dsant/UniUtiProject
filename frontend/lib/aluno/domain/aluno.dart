@@ -6,16 +6,16 @@ import '../../instituicao/domain/instituicao.dart';
 class Aluno {
   int id;
   String nome;
-  Curso cursoId;
-  Contato celular;
-  Usuario usuario;
-  Instituicao instituicaoId;
+  Curso? curso;
+  Contato? celular;
+  Usuario? usuario;
+  Instituicao? instituicao;
   Aluno({
     required this.id,
     required this.nome,
-    required this.cursoId,
+    required this.curso,
     required this.celular,
-    required this.usuario,
-    required this.instituicaoId,
+    required this.instituicao,
+    this.usuario,
   });
 }
