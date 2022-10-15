@@ -9,13 +9,22 @@ import '../../auth/data/usuario_repository.dart';
 import '../exceptions/uniuti_exceptions.dart';
 
 class UniUtiHttpClient {
-  final client = http.Client();
-  final host = 'localhost';
+  // TODO: Implement client close
+  late final InterceptedClient client;
+  final host = '192.168.0.6:7223';
   final Usuario usuario;
 
   final String version;
 
-  UniUtiHttpClient({required this.version, required this.usuario});
+  UniUtiHttpClient({required this.version, required this.usuario}) {
+    client = InterceptedClient.build(
+      interceptors: [
+        UniUtiAuthInterceptor(getToken: () async => usuario.token),
+      ],
+      retryPolicy: UniUtiRetryPolicy(
+          userRepo: RemoteUsuarioRepository(this), usuario: usuario),
+    );
+  }
 
   Future<Response> get({
     required String endpoint,
@@ -24,13 +33,18 @@ class UniUtiHttpClient {
     if (!endpoint.startsWith('/')) {
       endpoint = '/$endpoint';
     }
-    var response = await InterceptedHttp.build(
-      interceptors: [
-        UniUtiAuthInterceptor(getToken: () async => usuario.token),
-      ],
-      retryPolicy: UniUtiRetryPolicy(
-          userRepo: RemoteUsuarioRepository(this), usuario: usuario),
-    ).get(Uri(host: host, path: '/api' + endpoint), params: params);
+    late http.Response response;
+    try {
+      response = await client.get(
+        Uri.parse('https://$host/$endpoint'),
+        params: params,
+      );
+    } catch (e) {
+      throw RemoteClientException(Response(
+        statusCode: 500,
+        body: {'reason': e.toString()},
+      ));
+    }
 
     var body = json.decode(response.body);
     if (body.runtimeType == List) {
@@ -46,13 +60,18 @@ class UniUtiHttpClient {
     required Map<String, dynamic> body,
     Map<String, dynamic> params = const {},
   }) async {
-    var response = await InterceptedHttp.build(
-      interceptors: [
-        UniUtiAuthInterceptor(getToken: () async => usuario.token),
-      ],
-      retryPolicy: UniUtiRetryPolicy(
-          userRepo: RemoteUsuarioRepository(this), usuario: usuario),
-    ).get(Uri(), params: params);
+    late http.Response response;
+    try {
+      response = await client.get(
+        Uri.parse('https://$host/$endpoint'),
+        params: params,
+      );
+    } catch (e) {
+      throw RemoteClientException(Response(
+        statusCode: 500,
+        body: {'reason': e.toString()},
+      ));
+    }
 
     var body = json.decode(response.body);
     if (body.runtimeType == List) {
@@ -99,6 +118,7 @@ class UniUtiRetryPolicy extends RetryPolicy {
     var should = false;
     if (response.statusCode == 401) {
       await userRepo.performRefreshToken(usuario);
+      should = !should;
     }
     return should;
   }
