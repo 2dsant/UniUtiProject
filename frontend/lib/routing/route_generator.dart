@@ -31,7 +31,7 @@ class RouteGenerator {
         break;
       case RegisterScreen.route:
         builder = (context) => RegisterScreen(
-              controller: RegisterController(),
+              controller: RegisterController(context.read()),
               aluno: context.read(),
             );
         break;

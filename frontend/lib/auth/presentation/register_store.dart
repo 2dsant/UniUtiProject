@@ -1,4 +1,5 @@
-import 'package:uniuti/shared/application/uniuti_client.dart';
+import '../../aluno/exceptions/aluno_exceptions.dart';
+import '../../shared/application/uniuti_client.dart';
 
 import '../../aluno/data/aluno_repository.dart';
 import '../../aluno/domain/aluno.dart';
@@ -17,8 +18,9 @@ class RegisterController {
   };
 
   RegisterController(this.aluno) {
+    if (aluno.usuario == null) throw AlunoSemUsuarioException(aluno);
     _alunoRepos['remote'] = RemoteAlunoRepository(
-        UniUtiHttpClient(version: '/v1', usuario: aluno.usuario));
+        UniUtiHttpClient(version: '/v1', usuario: aluno.usuario!));
   }
 
   Future<List<Curso>> getAllCursos() async {
@@ -33,8 +35,8 @@ class RegisterController {
   }
 
   Future<RegisterState> register(Aluno aluno) async {
-    _alunoRepos['remote'];
-    return RegisterSuccess(aluno);
+    final registered = await _alunoRepos['remote']!.performRegister(aluno);
+    return RegisterSuccess(registered);
   }
 }
 

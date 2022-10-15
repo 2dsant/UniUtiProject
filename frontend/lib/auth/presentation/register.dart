@@ -68,7 +68,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 UniUtiInput(
                   placeholder: 'Telefone',
                   type: TextInputType.phone,
-                  save: (str) => widget.aluno.celular.contato = str ?? '',
+                  save: (str) => widget.aluno.celular!.contato = str ?? '',
                   valid: (text) {
                     var rgx = RegExp(r'.*\D+.*');
                     return (text == null ||
@@ -81,8 +81,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 UniUtiInput(
                   placeholder: 'Email',
                   type: TextInputType.emailAddress,
-                  onChanged: (email) => widget.aluno.usuario.login = email,
-                  save: (str) => widget.aluno.usuario.login = str ?? '',
+                  onChanged: (email) => widget.aluno.usuario!.login = email,
+                  save: (str) => widget.aluno.usuario!.login = str ?? '',
                   valid: (text) {
                     var rgx = RegExp(r'[a-zA-Z0-9.]+@[a-z]+\.[a-z.]');
                     if (text == null || text.isEmpty || !(rgx.hasMatch(text))) {
@@ -98,7 +98,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     var rgx = RegExp(r'[a-zA-Z0-9.]+@[a-z]+\.[a-z.]');
                     if (text == null || text.isEmpty || !(rgx.hasMatch(text))) {
                       return 'Email inválido';
-                    } else if (widget.aluno.usuario.login != text) {
+                    } else if (widget.aluno.usuario!.login != text) {
                       return 'Email não corresponde';
                     }
                     return null;
@@ -109,7 +109,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   password: true,
                   last: true,
                   editingComplete: _validateForm,
-                  save: (str) => widget.aluno.usuario.senha = str ?? '',
+                  save: (str) => widget.aluno.usuario!.senha = str ?? '',
                   valid: (text) => (text == null || text.length < 8)
                       ? 'Senha deve ter mais que 8 caracteres'
                       : null,
