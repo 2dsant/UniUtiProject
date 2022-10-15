@@ -1,20 +1,22 @@
 import '../../aluno/data/aluno_repository.dart';
+import '../../disciplina/data/disciplina_repository.dart';
 import '../../shared/data/repository.dart';
 import '../domain/monitoria.dart';
 import '../domain/status.dart';
 
-abstract class MonitoriaRepository extends Repository<Monitoria> {}
+abstract class MonitoriaRepository implements Repository<Monitoria> {}
 
-class MockMonitoriaRepository extends MonitoriaRepository {
+class MockMonitoriaRepository implements MonitoriaRepository {
   @override
   Future<Monitoria> byId(int id) async {
     final aluno = await MockAlunoRepository().byId(-1);
+    final disciplina = await MockDisciplinaRepository().byId(-1);
     return Monitoria(
       id: -1,
       titulo: 'TITULO',
       descricao:
           'Um produto/monitoria com uma Descricao bem descrita e que parece que nao acaba nunca',
-      disciplina: -1,
+      disciplina: disciplina,
       pendencias: [],
       solicitante: aluno,
       status: Status(id: 0, descricao: 'OK'),

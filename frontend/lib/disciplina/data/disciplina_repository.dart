@@ -1,15 +1,9 @@
-import 'package:uniuti/shared/data/repository.dart';
-
+import '../../shared/data/repository.dart';
 import '../domain/disciplina.dart';
 
-abstract class DisciplinaRepository extends Repository<Disciplina> {}
+abstract class DisciplinaRepository implements Repository<Disciplina> {}
 
-class MockDisciplinaRepository extends DisciplinaRepository {
-  static late final MockDisciplinaRepository _instance =
-      MockDisciplinaRepository._internal();
-  MockDisciplinaRepository._internal();
-  factory MockDisciplinaRepository() => _instance;
-
+class MockDisciplinaRepository implements DisciplinaRepository {
   @override
   Future<Disciplina> byId(int id) async {
     return Disciplina.fromMap({

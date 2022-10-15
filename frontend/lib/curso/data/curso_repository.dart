@@ -3,27 +3,19 @@ import '../../shared/data/repository.dart';
 import '../domain/curso.dart';
 import '../exceptions/curso_exceptions.dart';
 
-abstract class CursoRepository extends Repository<Curso> {}
+abstract class CursoRepository implements Repository<Curso> {}
 
-class MockCursoRepository extends CursoRepository {
+class MockCursoRepository implements CursoRepository {
   @override
   Future<List<Curso>> getAll() async {
     return [
-      Curso(
-        id: 01,
-        nome: 'ADS',
-        duracao: 'SIM',
-      ),
-      Curso(
-        id: 02,
-        nome: 'ADM',
-        duracao: 'SIM',
-      ),
+      Curso(id: 01, nome: 'ADS', duracao: 'SIM'),
+      Curso(id: 02, nome: 'ADM', duracao: 'SIM'),
     ];
   }
 
   @override
-  Future<Curso> byId(int id) async {
+  Future<Curso?> byId(int id) async {
     return Curso(id: id, nome: 'Curso', duracao: '1');
   }
 

@@ -1,5 +1,8 @@
 import 'dart:developer' as dev;
 
+import '../../contato/data/curso_repository.dart';
+import '../../curso/data/curso_repository.dart';
+import '../../instituicao/data/instituicao_repository.dart';
 import '../domain/aluno.dart';
 import '../../auth/data/usuario_repository.dart';
 import '../../shared/data/repository.dart';
@@ -14,13 +17,16 @@ class MockAlunoRepository implements AlunoRepository {
   @override
   Future<Aluno?> byId(int id) async {
     final usuario = await MockUsuarioRepository().byId(-1);
+    final contato = await MockContatoRepository().byId(-1);
+    final curso = await MockCursoRepository().byId(-1);
+    final instituicao = await MockInstituicaoRepository().byId(-1);
     return Aluno(
       id: -1,
       nome: 'Mock',
       usuario: usuario!,
-      celular: null,
-      cursoId: null,
-      instituicaoId: null,
+      celular: contato!,
+      curso: curso!,
+      instituicao: instituicao!,
     );
   }
 
@@ -66,26 +72,26 @@ class RemoteAlunoRepository extends UniUtiHttpRemoteRepository
 
   @override
   Future<Aluno> performRegister(Aluno aluno) async {
+    late Aluno novo;
     final response = await client.post(endpoint: '/Auth/CreateUser', body: {
       "nomeCompleto": aluno.nome,
-      "email": aluno.usuario.login,
-      "password": aluno.usuario.senha,
-      "celular": aluno.contato,
-      "instituicaoId": aluno.instituicaoId,
-      "cursoId": aluno.cursoId
+      "email": aluno.usuario!.login,
+      "password": aluno.usuario!.senha,
+      "celular": aluno.celular,
+      "instituicaoId": aluno.instituicao,
+      "cursoId": aluno.curso
     });
 
     if (response.statusCode == 200) {
       final obj = response.body;
-      final novo = Aluno(
-         celular: ,
-         cursoId: ,
-         id: obj['id'],
-         instituicaoId: ,
-         nome: obj['nomeCompleto'],
-         usuario: U,
-
+      novo = Aluno(
+        celular: aluno.celular,
+        curso: aluno.curso,
+        id: obj['id'],
+        instituicao: aluno.instituicao,
+        nome: obj['nomeCompleto'],
       );
-    }
+    } else {}
+    return novo;
   }
 }
