@@ -11,51 +11,60 @@ using UniUti.Database;
 namespace UniUti.Infra.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220808231921_Initial")]
+    [Migration("20220914014524_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.7")
+                .HasAnnotation("ProductVersion", "6.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("CursoDisciplina", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
-                    b.Property<long>("CursosId")
-                        .HasColumnType("bigint");
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
 
-                    b.Property<long>("DisciplinasId")
-                        .HasColumnType("bigint");
+                    b.Property<string>("ConcurrencyStamp")
+                        .HasColumnType("longtext");
 
-                    b.HasKey("CursosId", "DisciplinasId");
+                    b.Property<string>("Name")
+                        .HasColumnType("longtext");
 
-                    b.HasIndex("DisciplinasId");
+                    b.Property<string>("NormalizedName")
+                        .HasColumnType("longtext");
 
-                    b.ToTable("CursoDisciplina");
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("CursoInstituicao", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.Property<long>("CursosId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.Property<long>("InstituicoesId")
-                        .HasColumnType("bigint");
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("longtext");
 
-                    b.HasKey("CursosId", "InstituicoesId");
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("longtext");
 
-                    b.HasIndex("InstituicoesId");
+                    b.Property<string>("RoleId")
+                        .HasColumnType("longtext");
 
-                    b.ToTable("CursoInstituicao");
+                    b.HasKey("Id");
+
+                    b.ToTable("RoleClaims");
                 });
 
             modelBuilder.Entity("UniUti.Domain.Models.Curso", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
+                        .HasColumnType("char(36)")
                         .HasColumnName("id");
 
                     b.Property<bool>("Deletado")
@@ -70,14 +79,14 @@ namespace UniUti.Infra.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("cursos");
+                    b.ToTable("Cursos");
                 });
 
             modelBuilder.Entity("UniUti.Domain.Models.Disciplina", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
+                        .HasColumnType("char(36)")
                         .HasColumnName("id");
 
                     b.Property<bool>("Deletado")
@@ -85,10 +94,7 @@ namespace UniUti.Infra.Data.Migrations
                         .HasColumnName("deletado");
 
                     b.Property<string>("Descricao")
-                        .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("varchar(300)")
-                        .HasColumnName("descricao");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Nome")
                         .IsRequired()
@@ -98,14 +104,14 @@ namespace UniUti.Infra.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("disciplinas");
+                    b.ToTable("Disciplinas");
                 });
 
             modelBuilder.Entity("UniUti.Domain.Models.Endereco", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
+                        .HasColumnType("char(36)")
                         .HasColumnName("id");
 
                     b.Property<string>("Cep")
@@ -120,16 +126,23 @@ namespace UniUti.Infra.Data.Migrations
                         .HasColumnType("varchar(50)")
                         .HasColumnName("cidade");
 
+                    b.Property<bool?>("Deletado")
+                        .HasColumnType("tinyint(1)")
+                        .HasColumnName("deletado");
+
                     b.Property<string>("Estado")
                         .IsRequired()
                         .HasMaxLength(2)
                         .HasColumnType("varchar(2)")
                         .HasColumnName("estado");
 
+                    b.Property<Guid?>("InstituicaoId")
+                        .HasColumnType("char(36)");
+
                     b.Property<string>("Numero")
                         .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("varchar(8)")
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)")
                         .HasColumnName("numero");
 
                     b.Property<string>("Pais")
@@ -146,14 +159,16 @@ namespace UniUti.Infra.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("enderecos");
+                    b.HasIndex("InstituicaoId");
+
+                    b.ToTable("Enderecos");
                 });
 
             modelBuilder.Entity("UniUti.Domain.Models.Instituicao", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
+                        .HasColumnType("char(36)")
                         .HasColumnName("id");
 
                     b.Property<string>("Celular")
@@ -171,9 +186,6 @@ namespace UniUti.Infra.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)")
                         .HasColumnName("email");
-
-                    b.Property<long>("EnderecoId")
-                        .HasColumnType("bigint");
 
                     b.Property<string>("Nome")
                         .IsRequired()
@@ -189,22 +201,19 @@ namespace UniUti.Infra.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EnderecoId");
-
-                    b.ToTable("instituicoes");
+                    b.ToTable("Instituicoes");
                 });
 
             modelBuilder.Entity("UniUti.Domain.Models.Monitoria", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
+                        .HasColumnType("char(36)")
                         .HasColumnName("id");
 
                     b.Property<DateTime?>("DataCriacao")
                         .IsRequired()
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("data_solicitacao");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Descricao")
                         .IsRequired()
@@ -212,14 +221,18 @@ namespace UniUti.Infra.Data.Migrations
                         .HasColumnType("varchar(500)")
                         .HasColumnName("descricao");
 
-                    b.Property<long>("DisciplinaId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid?>("DisciplinaId")
+                        .HasColumnType("char(36)");
 
-                    b.Property<long?>("PrestadorId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid?>("InstituicaoId")
+                        .HasColumnType("char(36)");
 
-                    b.Property<long>("SolicitanteId")
-                        .HasColumnType("bigint");
+                    b.Property<string>("PrestadorId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("SolicitanteId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
 
                     b.Property<int>("StatusSolicitacaco")
                         .HasColumnType("int")
@@ -233,19 +246,22 @@ namespace UniUti.Infra.Data.Migrations
 
                     b.HasIndex("DisciplinaId");
 
+                    b.HasIndex("InstituicaoId");
+
                     b.HasIndex("PrestadorId");
 
                     b.HasIndex("SolicitanteId");
 
-                    b.ToTable("monitorias");
+                    b.ToTable("Monitorias");
                 });
 
-            modelBuilder.Entity("UniUti.Domain.Models.Usuario", b =>
+            modelBuilder.Entity("UniUti.Infra.Data.Identity.ApplicationUser", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("id");
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
 
                     b.Property<string>("Celular")
                         .IsRequired()
@@ -253,36 +269,60 @@ namespace UniUti.Infra.Data.Migrations
                         .HasColumnType("varchar(11)")
                         .HasColumnName("celular");
 
-                    b.Property<long?>("CursoId")
-                        .HasColumnType("bigint");
+                    b.Property<string>("ConcurrencyStamp")
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid>("CursoId")
+                        .HasColumnType("char(36)");
 
                     b.Property<bool>("Deletado")
                         .HasColumnType("tinyint(1)")
                         .HasColumnName("deletado");
 
                     b.Property<string>("Email")
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<Guid>("InstituicaoId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("NomeCompleto")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("email");
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)")
+                        .HasColumnName("nomeCompleto");
 
-                    b.Property<long?>("InstituicaoId")
-                        .HasColumnType("bigint");
+                    b.Property<string>("NormalizedEmail")
+                        .HasColumnType("longtext");
 
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("nome");
+                    b.Property<string>("NormalizedUserName")
+                        .HasColumnType("longtext");
 
-                    b.Property<byte[]>("SenhaHash")
-                        .IsRequired()
-                        .HasColumnType("longblob")
-                        .HasColumnName("senha_hash");
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("longtext");
 
-                    b.Property<byte[]>("SenhaSalt")
-                        .HasColumnType("longblob")
-                        .HasColumnName("]senha_salt");
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -290,93 +330,79 @@ namespace UniUti.Infra.Data.Migrations
 
                     b.HasIndex("InstituicaoId");
 
-                    b.ToTable("usuarios");
+                    b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("CursoDisciplina", b =>
+            modelBuilder.Entity("UniUti.Domain.Models.Endereco", b =>
                 {
-                    b.HasOne("UniUti.Domain.Models.Curso", null)
-                        .WithMany()
-                        .HasForeignKey("CursosId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("UniUti.Domain.Models.Instituicao", "Instituicao")
+                        .WithMany("Enderecos")
+                        .HasForeignKey("InstituicaoId");
 
-                    b.HasOne("UniUti.Domain.Models.Disciplina", null)
-                        .WithMany()
-                        .HasForeignKey("DisciplinasId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("CursoInstituicao", b =>
-                {
-                    b.HasOne("UniUti.Domain.Models.Curso", null)
-                        .WithMany()
-                        .HasForeignKey("CursosId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("UniUti.Domain.Models.Instituicao", null)
-                        .WithMany()
-                        .HasForeignKey("InstituicoesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("UniUti.Domain.Models.Instituicao", b =>
-                {
-                    b.HasOne("UniUti.Domain.Models.Endereco", "Endereco")
-                        .WithMany()
-                        .HasForeignKey("EnderecoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Endereco");
+                    b.Navigation("Instituicao");
                 });
 
             modelBuilder.Entity("UniUti.Domain.Models.Monitoria", b =>
                 {
                     b.HasOne("UniUti.Domain.Models.Disciplina", "Disciplina")
-                        .WithMany()
-                        .HasForeignKey("DisciplinaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Monitorias")
+                        .HasForeignKey("DisciplinaId");
 
-                    b.HasOne("UniUti.Domain.Models.Usuario", "Prestador")
-                        .WithMany()
+                    b.HasOne("UniUti.Domain.Models.Instituicao", "Instituicao")
+                        .WithMany("Monitorias")
+                        .HasForeignKey("InstituicaoId");
+
+                    b.HasOne("UniUti.Infra.Data.Identity.ApplicationUser", null)
+                        .WithMany("MonitoriasOfertadas")
                         .HasForeignKey("PrestadorId");
 
-                    b.HasOne("UniUti.Domain.Models.Usuario", "Solicitante")
-                        .WithMany()
+                    b.HasOne("UniUti.Infra.Data.Identity.ApplicationUser", null)
+                        .WithMany("MonitoriasSolicitadas")
                         .HasForeignKey("SolicitanteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Disciplina");
 
-                    b.Navigation("Prestador");
-
-                    b.Navigation("Solicitante");
+                    b.Navigation("Instituicao");
                 });
 
-            modelBuilder.Entity("UniUti.Domain.Models.Usuario", b =>
+            modelBuilder.Entity("UniUti.Infra.Data.Identity.ApplicationUser", b =>
                 {
                     b.HasOne("UniUti.Domain.Models.Curso", "Curso")
                         .WithMany()
-                        .HasForeignKey("CursoId");
+                        .HasForeignKey("CursoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("UniUti.Domain.Models.Instituicao", "Instituicao")
-                        .WithMany("Usuarios")
-                        .HasForeignKey("InstituicaoId");
+                        .WithMany()
+                        .HasForeignKey("InstituicaoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Curso");
 
                     b.Navigation("Instituicao");
                 });
 
+            modelBuilder.Entity("UniUti.Domain.Models.Disciplina", b =>
+                {
+                    b.Navigation("Monitorias");
+                });
+
             modelBuilder.Entity("UniUti.Domain.Models.Instituicao", b =>
                 {
-                    b.Navigation("Usuarios");
+                    b.Navigation("Enderecos");
+
+                    b.Navigation("Monitorias");
+                });
+
+            modelBuilder.Entity("UniUti.Infra.Data.Identity.ApplicationUser", b =>
+                {
+                    b.Navigation("MonitoriasOfertadas");
+
+                    b.Navigation("MonitoriasSolicitadas");
                 });
 #pragma warning restore 612, 618
         }

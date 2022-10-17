@@ -1,25 +1,57 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using UniUti.Domain.Models.Validator;
 using UniUti.Domain.Models.Base;
 
 namespace UniUti.Domain.Models
 {
-    [Table("disciplinas")]
     public class Disciplina : EntidadeBase
     {
-        [Column("nome")]
-        [Required]
-        [StringLength(100)]
-        public string? Nome { get; set; }
+        public string? Nome { get; private set; }
+        public string? Descricao { get; private set; }
+        public ICollection<Monitoria>? Monitorias { get; private set; }
+        public Boolean Deletado { get; private set; } = false;
 
-        [Column("descricao")]
-        [Required]
-        [StringLength(300)]
-        public string? Descricao { get; set; }
+        protected Disciplina() { }
 
-        public virtual ICollection<Curso>? Cursos { get; set; }
+        public Disciplina(Guid? id, string nome, string descricao, List<Monitoria>? monitorias, bool? deletado = false)
+        {
+            Id = id == Guid.Empty ? Guid.NewGuid() : id.Value;
+            Nome = nome;
+            Descricao = descricao;
+            Monitorias = monitorias;
+            Deletado = deletado.Value;
+            Validate();
+        }
 
-        [Column("deletado")]
-        public Boolean Deletado { get; set; } = false;
+        public bool Validate()
+            => base.Validate<DisciplinaValidator, Disciplina>(new DisciplinaValidator(), this);
+
+        public void SetNome(string nome)
+        {
+            Nome = nome;
+            Validate();
+        }
+
+        public void SetDescricao(string descricao)
+        {
+            Descricao = descricao;
+            Validate();
+        }
+
+        public void SetId()
+        {
+            Id = Guid.NewGuid();
+        }
+
+        public void SetMonitoria(List<Monitoria> monitorias)
+        {
+            Monitorias = monitorias;
+            Validate();
+        }
+
+        public void SetDeletado(bool value)
+        {
+            Deletado = value;
+            Validate();
+        }
     }
 }

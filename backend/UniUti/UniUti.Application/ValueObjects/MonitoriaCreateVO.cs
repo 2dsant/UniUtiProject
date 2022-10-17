@@ -6,7 +6,7 @@ namespace UniUti.Application.ValueObjects
     public class MonitoriaCreateVO
     {
         [Required(ErrorMessage = "Solicitante é obrigatório.")]
-        public string SolicitanteId { get; set; }
+        public string? SolicitanteId { get; set; }
 
         [Required(ErrorMessage = "Descrição é obrigatório.")]
         [MaxLength(500, ErrorMessage = "Descrição inválida. Descrição deve possuir até 500 caracteres.")]
@@ -17,6 +17,8 @@ namespace UniUti.Application.ValueObjects
         public TipoSolicitacao TipoSolicitacao { get; set; }
 
         [Required(ErrorMessage = "Disciplina é obrigatório.")]
-        public long DisciplinaId { get; set; }
+        public string? DisciplinaId { get; set; }
+
+        public string? InstituicaoId { get; set; }
     }
 }

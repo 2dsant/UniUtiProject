@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using UniUti.Application.ValueObjects;
 using UniUti.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using UniUti.WebAPI.ViewModels;
 
 namespace UniUti.Controllers
 {
@@ -26,12 +27,17 @@ namespace UniUti.Controllers
             {
                 var instituicoes = await _service.FindAll();
                 if (instituicoes == null) return NotFound();
-                return Ok(instituicoes);
+                return Ok(new ResultViewModel
+                {
+                    Success = true,
+                    Data = instituicoes
+                });
             }
             catch(Exception ex)
             {
-                return BadRequest(new ErrorResponse()
+                return BadRequest(new ResultViewModel
                 {
+                    Success = false,
                     Errors = new List<string>()
                         {
                             ex.Message
@@ -41,18 +47,23 @@ namespace UniUti.Controllers
         }
 
         [HttpGet("FindById/{id}")]
-        public async Task<ActionResult<InstituicaoResponseVO>> FindById(long id)
+        public async Task<ActionResult<InstituicaoResponseVO>> FindById(string id)
         {
             try
             {
                 var instituicao = await _service.FindById(id);
                 if (instituicao == null) return NotFound();
-                return Ok(instituicao);
+                return Ok(new ResultViewModel
+                {
+                    Success = true,
+                    Data = instituicao
+                });
             }
             catch(Exception ex)
             {
-                return BadRequest(new ErrorResponse()
+                return BadRequest(new ResultViewModel
                 {
+                    Success = false,
                     Errors = new List<string>()
                         {
                             ex.Message
@@ -70,12 +81,17 @@ namespace UniUti.Controllers
                 try
                 {
                     await _service.Create(vo);
-                    return Ok(vo);
+                    return Ok(new ResultViewModel
+                    {
+                        Success = true,
+                        Data = vo
+                    });
                 }
                 catch (Exception ex)
                 {
-                    return BadRequest(new ErrorResponse()
+                    return BadRequest(new ResultViewModel
                     {
+                        Success = false,
                         Errors = new List<string>()
                         {
                             ex.Message
@@ -98,12 +114,17 @@ namespace UniUti.Controllers
                 try
                 {
                     await _service.Update(vo);
-                    return Ok(vo);
+                    return Ok(new ResultViewModel
+                    {
+                        Success = true,
+                        Data = vo
+                    });
                 }
                 catch (Exception ex)
                 {
-                    return BadRequest(new ErrorResponse()
+                    return BadRequest(new ResultViewModel
                     {
+                        Success = false,
                         Errors = new List<string>()
                         {
                             ex.Message
@@ -118,7 +139,7 @@ namespace UniUti.Controllers
         }
 
         [HttpDelete("Delete/{id}")]
-        public async Task<ActionResult<GenericResponse>> Delete(long id)
+        public async Task<ActionResult<GenericResponse>> Delete(string id)
         {
             var response = await _service.Delete(id);
             if (!response) return BadRequest();

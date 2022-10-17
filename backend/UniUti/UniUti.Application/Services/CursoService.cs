@@ -25,7 +25,7 @@ namespace UniUti.Application.Services
             return _mapper.Map<IEnumerable<CursoResponseVO>>(cursos);
         }
 
-        public async Task<CursoResponseVO> FindById(long id)
+        public async Task<CursoResponseVO> FindById(string id)
         {
             var curso = await _cursoRepository.FindById(id);
             return _mapper.Map<CursoResponseVO>(curso);
@@ -43,7 +43,7 @@ namespace UniUti.Application.Services
             await _cursoRepository.Update(curso);
         }
 
-        public async Task<bool> Delete(long id)
+        public async Task<bool> Delete(string id)
         {
             var result = await _cursoRepository.Delete(id);
             return result;

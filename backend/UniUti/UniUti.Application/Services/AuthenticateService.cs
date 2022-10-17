@@ -25,16 +25,20 @@ namespace UniUti.Application.Services
         public async Task<UserToken> Authenticate(string email, string password)
         {
             var result = await _authentication.Authenticate(email, password);
-            if(result.Id == null)
+            if (result == null || !result.IsValid)
             {
                 return new UserToken()
                 {
                     Success = false,
-                    Erros = new List<string> { "Não foi possivel realizar login, verifique suas credenciais." }
+                    Erros = result?.Errors
                 };
             }
-            result.Curso = await _cursoRepository.FindById((long)result.CursoId);
-            result.Instituicao = await _instituicaoRepository.FindById((long)result.InstituicaoId);
+            if (result.CursoId != null)
+                result.SetCurso(await _cursoRepository.FindById(result.CursoId.ToString()));
+            
+            if (result.InstituicaoId != null)
+                result.SetInstituicao(await _instituicaoRepository.FindById(result.InstituicaoId.ToString()));
+
             var token = await GenerateToken(email);
             return new UserToken()
             {
@@ -49,10 +53,24 @@ namespace UniUti.Application.Services
             try
             {
                 var userMap = _mapper.Map<Usuario>(usuario);
+                userMap.SetId();
                 var result = await _authentication.RegisterUser(userMap);
                 return _mapper.Map<UsuarioResponseVO>(result);
             }
             catch(Exception ex)
+            {
+                throw new Exception(ex.Message, ex);
+            }
+        }
+
+        public async Task<UsuarioResponseVO> GetUserByEmail(string email)
+        {
+            try
+            {
+                var result = await _authentication.GetApplicationUser(email);
+                return _mapper.Map<UsuarioResponseVO>(result);
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message, ex);
             }

@@ -22,10 +22,10 @@ namespace UniUti.Infra.Data.Repositories
             return cursos;
         }
 
-        public async Task<Curso> FindById(long id)
+        public async Task<Curso> FindById(string id)
         {
             Curso curso = await _context.Cursos.Where(i =>
-                i.Id == id && i.Deletado == false).FirstOrDefaultAsync();
+                i.Id == Guid.Parse(id) && i.Deletado == false).FirstOrDefaultAsync();
 
             return curso;
         }
@@ -44,9 +44,9 @@ namespace UniUti.Infra.Data.Repositories
             return curso;
         }
 
-        public async Task<bool> Delete(long id)
+        public async Task<bool> Delete(string id)
         {
-            Curso curso = await _context.Cursos.Where(i => i.Id == id)
+            Curso curso = await _context.Cursos.Where(i => i.Id == Guid.Parse(id))
                 .FirstOrDefaultAsync();
 
             if (curso == null)
@@ -54,7 +54,7 @@ namespace UniUti.Infra.Data.Repositories
                 throw new NullReferenceException("Curso não encontrado.");
             }
 
-            curso.Deletado = true;
+            curso.SetDeletado(true);
             await _context.SaveChangesAsync();
             return true;
         }

@@ -21,10 +21,10 @@ namespace UniUti.Infra.Data.Repositories
             return instituicoes;
         }
 
-        public async Task<Instituicao> FindById(long id)
+        public async Task<Instituicao> FindById(string id)
         {
             Instituicao instituicao = await _context.Instituicoes.Where(i =>
-                i.Id == id && i.Deletado == false).FirstOrDefaultAsync();
+                i.Id == Guid.Parse(id) && i.Deletado == false).FirstOrDefaultAsync();
             return instituicao;
         }
 
@@ -42,9 +42,9 @@ namespace UniUti.Infra.Data.Repositories
             return instituicao;
         }
 
-        public async Task<bool> Delete(long id)
+        public async Task<bool> Delete(string id)
         {
-            Instituicao instituicao = await _context.Instituicoes.Where(i => i.Id == id)
+            Instituicao instituicao = await _context.Instituicoes.Where(i => i.Id == Guid.Parse(id))
                 .FirstOrDefaultAsync();
 
             if (instituicao == null)
@@ -52,7 +52,7 @@ namespace UniUti.Infra.Data.Repositories
                 throw new NullReferenceException("Instituição não encontrada.");
             }
 
-            instituicao.Deletado = true;
+            instituicao.SetDeletado(true);
             await _context.SaveChangesAsync();
             return true;
         }

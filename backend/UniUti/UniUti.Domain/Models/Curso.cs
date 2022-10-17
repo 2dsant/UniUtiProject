@@ -1,22 +1,41 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using UniUti.Domain.Models.Validator;
 using UniUti.Domain.Models.Base;
 
 namespace UniUti.Domain.Models
 {
-    [Table("cursos")]
     public class Curso : EntidadeBase
     {
-        [Column("nome")]
-        [Required]
-        [StringLength(100)]
-        public string? Nome { get; set; }
+        public string? Nome { get; private set; }
+        public Boolean Deletado { get; private set; } = false;
 
-        public virtual ICollection<Disciplina>? Disciplinas { get; set; }
+        protected Curso() { }
 
-        public virtual ICollection<Instituicao>? Instituicoes { get; set; }
+        public Curso(Guid? id, string? nome, bool? deletado = false)
+        {
+            Id = id == Guid.Empty ? Guid.NewGuid() : id.Value;
+            Nome = nome;
+            Deletado = deletado.Value;
+            _errors = new List<string>();
+            this.Validate();
+        }
 
-        [Column("deletado")]
-        public Boolean Deletado { get; set; } = false;
+        public bool Validate()
+            => base.Validate<CursoValidator, Curso>(new CursoValidator(), this);
+
+        public void SetNome(string nome)
+        {
+            Nome = nome;
+            Validate();
+        }
+
+        public void SetId()
+        {
+            Id = Guid.NewGuid();
+        }
+        public void SetDeletado(bool value)
+        {
+            Deletado = value;
+            Validate();
+        }
     }
 }
