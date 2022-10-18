@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:uniuti_core/uniuti_core.dart';
 
 import '../../shared/presentation/buttons.dart';
 import '../../shared/presentation/inputs.dart';
 import '../../shared/presentation/styles.dart';
-import '../domain/usuario.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key, required this.user}) : super(key: key);

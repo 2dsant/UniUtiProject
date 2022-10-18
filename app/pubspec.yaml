@@ -4,7 +4,8 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.16.1 <3.0.0"
+  sdk: ">=2.18.1 <3.0.0"
+  flutter: ">=1.17.0"
 dependencies:
   flutter:
     sdk: flutter
@@ -14,11 +15,13 @@ dependencies:
   http: ^0.13.5
   http_interceptor: ^1.0.2
   provider: ^6.0.3
+  uniuti_core:
+    path: ../uniuti_core
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^1.0.0
+  flutter_lints: ^2.0.0
 
 flutter:
   uses-material-design: true

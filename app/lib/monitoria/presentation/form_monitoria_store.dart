@@ -1,7 +1,4 @@
-import '../../aluno/domain/aluno.dart';
-import '../../disciplina/data/disciplina_repository.dart';
-import '../../disciplina/domain/disciplina.dart';
-import '../../shared/data/repository.dart';
+import 'package:uniuti_core/uniuti_core.dart';
 
 class FormMonitoriaController {
   final _disciplinaRepos = <String, DisciplinaRepository>{

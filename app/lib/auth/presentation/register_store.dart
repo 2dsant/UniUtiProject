@@ -1,14 +1,11 @@
-import '../../aluno/exceptions/aluno_exceptions.dart';
+import 'package:uniuti_core/uniuti_core.dart';
+
 import '../../shared/application/uniuti_client.dart';
 
 import '../../aluno/data/aluno_repository.dart';
-import '../../aluno/domain/aluno.dart';
-import '../../curso/data/curso_repository.dart';
-import '../../curso/domain/curso.dart';
 
 class RegisterController {
   RegisterState state = RegisterInitial();
-  final Aluno aluno;
   final _cursoRepos = <String, CursoRepository>{
     'localDb': MockCursoRepository(),
     'remote': MockCursoRepository()
@@ -17,10 +14,8 @@ class RegisterController {
     'localDb': MockAlunoRepository(),
   };
 
-  RegisterController(this.aluno) {
-    if (aluno.usuario == null) throw AlunoSemUsuarioException(aluno);
-    _alunoRepos['remote'] = RemoteAlunoRepository(
-        UniUtiHttpClient(version: '/v1', usuario: aluno.usuario!));
+  RegisterController(UniUtiHttpClient client) {
+    _alunoRepos['remote'] = RemoteAlunoRepository(client);
   }
 
   Future<List<Curso>> getAllCursos() async {

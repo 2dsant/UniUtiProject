@@ -1,18 +1,15 @@
-import '../../shared/data/repository.dart';
-import '../domain/disciplina.dart';
+import '../../shared/application/uniuti_client_mixin.dart';
 
-abstract class DisciplinaRepository implements Repository<Disciplina> {}
+import 'package:uniuti_core/uniuti_core.dart';
 
-class MockDisciplinaRepository implements DisciplinaRepository {
+class DisciplinaRemoteRepository extends UniUtiHttpRemoteRepository
+    implements DisciplinaRepository {
+  DisciplinaRemoteRepository(super.client);
+
   @override
-  Future<Disciplina> byId(int id) async {
-    return Disciplina.fromMap({
-      'id': id,
-      'nome': 'DisciplinaMock',
-      'descricao': 'Disciplina teste',
-      'periodicidade': 'tempos em tempos',
-      'cursos': [01]
-    });
+  Future<Disciplina?> byId(int id) {
+    // TODO: implement byId
+    throw UnimplementedError();
   }
 
   @override
@@ -22,14 +19,8 @@ class MockDisciplinaRepository implements DisciplinaRepository {
   }
 
   @override
-  Future<List<Disciplina>> getMany(RepoFilter filter) async {
-    return [
-      await byId(0),
-      await byId(1),
-      await byId(2),
-      await byId(3),
-      await byId(4),
-    ];
+  Future<List<Disciplina>> getMany(RepoFilter filter) {
+    // TODO: implement getMany
+    throw UnimplementedError();
   }
 }
-  // TODO: Buscar na API/SQLite

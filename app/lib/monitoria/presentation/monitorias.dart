@@ -1,7 +1,7 @@
 import 'dart:developer' as dev;
 
 import 'package:flutter/material.dart';
-import 'package:uniuti/monitoria/presentation/form_monitoria.dart';
+import 'form_monitoria.dart';
 
 import '../../shared/presentation/fixed_menu_item.dart';
 import 'recents_list_item.dart';

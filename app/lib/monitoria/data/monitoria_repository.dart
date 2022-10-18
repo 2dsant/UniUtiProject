@@ -1,39 +1,25 @@
-import '../../aluno/data/aluno_repository.dart';
-import '../../disciplina/data/disciplina_repository.dart';
-import '../../shared/data/repository.dart';
-import '../domain/monitoria.dart';
-import '../domain/status.dart';
+import '../../shared/application/uniuti_client_mixin.dart';
+import 'package:uniuti_core/uniuti_core.dart';
 
-abstract class MonitoriaRepository implements Repository<Monitoria> {}
+class MonitoriaRemoteRepository extends UniUtiHttpRemoteRepository
+    implements MonitoriaRepository {
+  MonitoriaRemoteRepository(super.client);
 
-class MockMonitoriaRepository implements MonitoriaRepository {
   @override
-  Future<Monitoria> byId(int id) async {
-    final aluno = await MockAlunoRepository().byId(-1);
-    final disciplina = await MockDisciplinaRepository().byId(-1);
-    return Monitoria(
-      id: -1,
-      titulo: 'TITULO',
-      descricao:
-          'Um produto/monitoria com uma Descricao bem descrita e que parece que nao acaba nunca',
-      disciplina: disciplina,
-      pendencias: [],
-      solicitante: aluno,
-      status: Status(id: 0, descricao: 'OK'),
-    );
+  Future<Monitoria?> byId(int id) {
+    // TODO: implement byId
+    throw UnimplementedError();
   }
 
   @override
-  Future<List<Monitoria>> getAll() async {
-    final monitorias = <Monitoria>[];
-    for (var i = 0; i < 5; i++) {
-      monitorias.add(await MockMonitoriaRepository().byId(-1));
-    }
-    return monitorias;
+  Future<List<Monitoria>> getAll() {
+    // TODO: implement getAll
+    throw UnimplementedError();
   }
 
   @override
-  Future<List<Monitoria>> getMany(RepoFilter filter) async {
-    return await getAll();
+  Future<List<Monitoria>> getMany(RepoFilter filter) {
+    // TODO: implement getMany
+    throw UnimplementedError();
   }
 }

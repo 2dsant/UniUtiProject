@@ -1,9 +1,6 @@
-import '../../instituicao/data/instituicao_repository.dart';
-import '../../instituicao/domain/instituicao.dart';
-import '../../monitoria/data/monitoria_repository.dart';
+import 'package:uniuti_core/uniuti_core.dart';
+
 import '../../monitoria/presentation/recents_list_item.dart';
-import '../../shared/data/repository.dart';
-import '../domain/aluno.dart';
 
 class DashboardStore {
   final _instituicaoRepos = <String, InstituicaoRepository>{

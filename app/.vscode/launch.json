@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-          "name": "flutter_application",
+          "name": "Mobile Debug",
           "request": "launch",
           "type": "dart"
         }

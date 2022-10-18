@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:uniuti/instituicao/domain/instituicao.dart';
+import 'package:uniuti_core/uniuti_core.dart';
 import '../../monitoria/presentation/recents_list_item.dart';
 import '../../shared/presentation/fixed_menu_item.dart';
 import '../../shared/presentation/styles.dart';
-import '../domain/aluno.dart';
 import 'dashboard_store.dart';
 
 class DashboardScreen extends StatelessWidget {

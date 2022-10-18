@@ -4,9 +4,9 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:http_interceptor/http_interceptor.dart';
 
-import '../../auth/domain/usuario.dart';
+import 'package:uniuti_core/uniuti_core.dart';
+
 import '../../auth/data/usuario_repository.dart';
-import '../exceptions/uniuti_exceptions.dart';
 
 class UniUtiHttpClient {
   // TODO: Implement client close
@@ -24,6 +24,9 @@ class UniUtiHttpClient {
       retryPolicy: UniUtiRetryPolicy(
           userRepo: RemoteUsuarioRepository(this), usuario: usuario),
     );
+    void close() {
+      client.close();
+    }
   }
 
   Future<Response> get({

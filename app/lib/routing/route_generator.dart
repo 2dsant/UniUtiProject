@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:uniuti_core/uniuti_core.dart';
 
 import '../aluno/presentation/dashboard.dart';
 import '../aluno/presentation/dashboard_store.dart';
@@ -8,7 +9,6 @@ import '../auth/presentation/register.dart';
 import '../auth/presentation/register_store.dart';
 import '../auth/presentation/signin.dart';
 import '../auth/presentation/splash.dart';
-import '../monitoria/domain/monitoria.dart';
 import '../monitoria/presentation/monitorias.dart';
 import '../monitoria/presentation/monitorias_store.dart';
 import '../monitoria/presentation/form_monitoria.dart';
@@ -39,8 +39,8 @@ class RouteGenerator {
         builder = (context) => LoginScreen(user: context.read());
         break;
       case MonitoriasScreen.route:
-        builder =
-            (context) => MonitoriasScreen(controller: MonitoriaController());
+        builder = (context) =>
+            MonitoriasScreen(controller: MonitoriaController(context.read()));
         break;
       case MonitoriaScreen.route:
         if (settings.arguments.runtimeType != Monitoria) return null;

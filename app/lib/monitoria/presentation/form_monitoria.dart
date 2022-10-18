@@ -1,7 +1,7 @@
 import 'dart:developer' as dev;
 import 'package:flutter/material.dart';
 
-import '../../disciplina/domain/disciplina.dart';
+import 'package:uniuti_core/uniuti_core.dart';
 import '../../shared/presentation/inputs.dart';
 import '../../shared/presentation/styles.dart';
 import 'form_monitoria_store.dart';

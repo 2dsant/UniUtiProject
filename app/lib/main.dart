@@ -1,10 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:uniuti/shared/application/uniuti_client.dart';
+import 'package:uniuti_core/uniuti_core.dart';
 
-import 'aluno/data/aluno_repository.dart';
-import 'aluno/domain/aluno.dart';
-import 'auth/domain/usuario.dart';
 import 'routing/route_generator.dart';
 import 'shared/presentation/styles.dart';
 
@@ -25,10 +24,12 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final client = UniUtiHttpClient(usuario: aluno.usuario!, version: 'v1');
     return MultiProvider(
       providers: [
         Provider<Aluno>(create: (_) => aluno),
         Provider<Usuario>(create: (_) => aluno.usuario!),
+        Provider<UniUtiHttpClient>(create: (_) => client),
       ],
       child: MaterialApp(
         title: 'UniUti',

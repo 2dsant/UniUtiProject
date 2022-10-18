@@ -3,10 +3,8 @@ import 'dart:developer' as dev;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:uniuti_core/uniuti_core.dart';
 
-import '../../aluno/domain/aluno.dart';
-import '../../contato/domain/contato.dart';
-import '../../curso/domain/curso.dart';
 import '../../shared/presentation/buttons.dart';
 import '../../shared/presentation/inputs.dart';
 import '../../shared/presentation/styles.dart';
