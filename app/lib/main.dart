@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:http_client/http_client.dart';
 import 'package:uniuti_core/uniuti_core.dart';
+import 'package:uniuti_styles/uniuti_styles.dart';
 
 import 'auth/data/usuario_repository.dart';
 import 'routing/route_generator.dart';
-import 'shared/presentation/styles.dart';
+import 'shared/presentation/transicao.dart';
 
 Future<void> main() async {
   final aluno = await MockAlunoRepository().byId(-1);
@@ -61,7 +62,14 @@ class _MyAppState extends State<MyApp> {
       ],
       child: MaterialApp(
         title: 'UniUti',
-        theme: uniUtiThemeData,
+        theme: uniUtiThemeData.copyWith(
+          pageTransitionsTheme: PageTransitionsTheme(
+            builders: Map<TargetPlatform, PageTransitionsBuilder>.fromIterable(
+              TargetPlatform.values,
+              value: (dynamic _) => UniUtiSlideTransition(),
+            ),
+          ),
+        ),
         scrollBehavior: const CupertinoScrollBehavior(),
         onGenerateRoute: RouteGenerator.generateRoute,
         onUnknownRoute: RouteGenerator.unknownRoute,

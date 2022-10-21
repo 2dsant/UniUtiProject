@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import '../../shared/presentation/buttons.dart';
-import '../../shared/presentation/styles.dart';
+import 'package:uniuti_styles/uniuti_styles.dart';
 
 class SigninScreen extends StatelessWidget {
   const SigninScreen({Key? key}) : super(key: key);
@@ -16,7 +14,7 @@ class SigninScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SvgPicture.asset('assets/logo.svg'),
+            const UniUtiLogo(),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 30),
               child: Text(

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:uniuti_core/uniuti_core.dart';
 import '../../monitoria/presentation/recents_list_item.dart';
-import '../../shared/presentation/fixed_menu_item.dart';
-import '../../shared/presentation/styles.dart';
+import 'package:uniuti_styles/uniuti_styles.dart';
 import 'dashboard_store.dart';
 
 class DashboardScreen extends StatelessWidget {
@@ -18,8 +16,8 @@ class DashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _th = Theme.of(context).textTheme;
-    var _menuItems = [
+    final th = Theme.of(context).textTheme;
+    var menuItems = [
       const SizedBox(width: 30),
       FixedMenuItem(
         text: 'Monitorias',
@@ -40,16 +38,14 @@ class DashboardScreen extends StatelessWidget {
             ),
             child: Column(
               children: [
-                DrawerHeader(
-                  child: SvgPicture.asset('assets/logo.svg'),
+                const DrawerHeader(
+                  child: UniUtiLogo(),
                 ),
-                Expanded(child: Container(child: const Text('LOL'))),
-                Container(
-                  child: Column(
-                    children: const [
-                      Text('Sair'),
-                    ],
-                  ),
+                const Expanded(child: Text('LOL')),
+                Column(
+                  children: const [
+                    Text('Sair'),
+                  ],
                 )
               ],
             ),
@@ -73,12 +69,12 @@ class DashboardScreen extends StatelessWidget {
               collapseMode: CollapseMode.pin,
               title: RichText(
                 text: TextSpan(
-                  style: _th.bodyLarge!.copyWith(color: Colors.white),
+                  style: th.bodyLarge!.copyWith(color: Colors.white),
                   children: [
                     const TextSpan(text: 'Bem-vindo, '),
                     TextSpan(
                         text: aluno.nome,
-                        style: _th.bodyLarge!.copyWith(
+                        style: th.bodyLarge!.copyWith(
                             color: Colors.white, fontWeight: FontWeight.bold)),
                   ],
                 ),
@@ -124,12 +120,12 @@ class DashboardScreen extends StatelessWidget {
                     padding: const EdgeInsets.only(left: 40, bottom: 10),
                     child: Text(
                       'Para onde deseja ir?',
-                      style: _th.headlineSmall,
+                      style: th.headlineSmall,
                     ),
                   ),
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
-                    child: Row(children: _menuItems),
+                    child: Row(children: menuItems),
                   ),
                 ],
               ),
@@ -142,7 +138,7 @@ class DashboardScreen extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 40, bottom: 10),
                 child: Text(
                   'Ultimos itens vistos',
-                  style: _th.headlineSmall,
+                  style: th.headlineSmall,
                 ),
               ),
             ),

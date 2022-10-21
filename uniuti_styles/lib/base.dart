@@ -1,7 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-
-import 'transicao.dart';
+part of 'uniuti_styles.dart';
 
 MaterialColor createMaterialColor(Color color) {
   List strengths = <double>[.05];
@@ -79,6 +76,12 @@ class UniUtiBgGradient4 extends LinearGradient {
         );
 }
 
+final uniUtiSloganTextStyle = TextStyle(
+  fontSize: 18,
+  fontFamily: GoogleFonts.inter().fontFamily,
+  color: Colors.white,
+);
+
 final uniUtiThemeData = ThemeData(
   textTheme: GoogleFonts.rajdhaniTextTheme().copyWith(
     displaySmall: GoogleFonts.rajdhaniTextTheme().displaySmall!.copyWith(
@@ -118,12 +121,6 @@ final uniUtiThemeData = ThemeData(
     ),
   ),
   primarySwatch: UniUtiColors.green,
-  pageTransitionsTheme: PageTransitionsTheme(
-    builders: Map<TargetPlatform, PageTransitionsBuilder>.fromIterable(
-      TargetPlatform.values,
-      value: (dynamic _) => UniUtiSlideTransition(),
-    ),
-  ),
 );
 
 final uniUtiPrimaryBtn = ElevatedButton.styleFrom(

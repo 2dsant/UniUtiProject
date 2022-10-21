@@ -1,13 +1,9 @@
 import 'dart:developer' as dev;
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:uniuti_core/uniuti_core.dart';
 
-import '../../shared/presentation/buttons.dart';
-import '../../shared/presentation/inputs.dart';
-import '../../shared/presentation/styles.dart';
+import 'package:uniuti_styles/uniuti_styles.dart';
 import 'register_store.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -40,17 +36,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                SvgPicture.asset('assets/logo.svg'),
+                const UniUtiLogo(),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   margin: const EdgeInsets.only(bottom: 40),
                   child: Text(
                     'Bora fazer teu registro? Preencha os dados abaixo e faça parte da comunidade.',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontFamily: GoogleFonts.inter().fontFamily,
-                      color: Colors.white,
-                    ),
+                    style: uniUtiSloganTextStyle,
                   ),
                 ),
                 dropdown(placeholder: 'Curso'),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uniuti_core/uniuti_core.dart';
-
-import '../../shared/presentation/styles.dart';
+import 'package:uniuti_styles/uniuti_styles.dart';
 
 class RecentsListItem extends StatelessWidget {
   const RecentsListItem({Key? key, required this.model}) : super(key: key);

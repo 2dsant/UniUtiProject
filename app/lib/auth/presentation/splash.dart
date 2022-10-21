@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-
-import '../../shared/presentation/styles.dart';
+import 'package:uniuti_styles/uniuti_styles.dart';
 import '../../shared/presentation/transicao.dart';
 import 'signin.dart';
 
@@ -41,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 ),
               );
             }
-            return Center(child: SvgPicture.asset('assets/logo.svg'));
+            return const Center(child: UniUtiLogo());
           },
         ),
       ),

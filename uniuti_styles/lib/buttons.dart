@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-
-import 'styles.dart';
+part of 'uniuti_styles.dart';
 
 class UniUtiPrimaryButton extends StatelessWidget {
   const UniUtiPrimaryButton(

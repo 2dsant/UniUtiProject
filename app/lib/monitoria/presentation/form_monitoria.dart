@@ -2,8 +2,7 @@ import 'dart:developer' as dev;
 import 'package:flutter/material.dart';
 
 import 'package:uniuti_core/uniuti_core.dart';
-import '../../shared/presentation/inputs.dart';
-import '../../shared/presentation/styles.dart';
+import 'package:uniuti_styles/uniuti_styles.dart';
 import 'form_monitoria_store.dart';
 
 class FormMonitoriaScreen extends StatelessWidget {

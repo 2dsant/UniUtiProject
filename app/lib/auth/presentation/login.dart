@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:uniuti_core/uniuti_core.dart';
-
-import '../../shared/presentation/buttons.dart';
-import '../../shared/presentation/inputs.dart';
-import '../../shared/presentation/styles.dart';
+import 'package:uniuti_styles/uniuti_styles.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key, required this.user}) : super(key: key);
@@ -38,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  SvgPicture.asset('assets/logo.svg'),
+                  const UniUtiLogo(),
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 30),
                     child: Text(
