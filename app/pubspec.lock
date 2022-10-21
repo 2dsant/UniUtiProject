@@ -103,14 +103,21 @@ packages:
     source: hosted
     version: "2.3.3"
   http:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: http
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.13.5"
-  http_interceptor:
+  http_client:
     dependency: "direct main"
+    description:
+      path: "../http_client"
+      relative: true
+    source: path
+    version: "0.0.1"
+  http_interceptor:
+    dependency: transitive
     description:
       name: http_interceptor
       url: "https://pub.dartlang.org"

@@ -1,16 +1,13 @@
+import 'package:http_client/http_client.dart';
 import 'package:uniuti_core/uniuti_core.dart';
 
-import '../../shared/application/uniuti_client.dart';
-
-class RemoteCursoRepository extends CursoRepository {
-  final Uri uri;
-  final UniUtiHttpClient client;
-  RemoteCursoRepository(this.uri, {required this.client}) : super();
+class RemoteCursoRepository implements CursoRepository {
+  final RemoteClient client;
+  RemoteCursoRepository(this.client) : super();
 
   @override
   Future<Curso?> byId(int id) async {
-    var response =
-        await client.get(endpoint: '/curso/findbyid/$id', params: {});
+    var response = await client.get('/v1/Curso/findbyid/$id', params: {});
     Curso? curso;
     curso = CursoParser.fromMap(response.body);
     return curso;
@@ -18,9 +15,9 @@ class RemoteCursoRepository extends CursoRepository {
 
   @override
   Future<List<Curso>> getAll() async {
-    var response = await client.get(endpoint: '/curso/FindAll', params: {});
+    var response = await client.get('/v1/Curso/FindAll', params: {});
     List<Curso> cursos = [];
-    for (Map<String, dynamic> json in response.body['items']) {
+    for (Map<String, dynamic> json in response.body['data']) {
       cursos.add(CursoParser.fromMap(json));
     }
     return cursos;
@@ -28,7 +25,7 @@ class RemoteCursoRepository extends CursoRepository {
 
   @override
   Future<List<Curso>> getMany(RepoFilter filter) async {
-    final response = await client.get(endpoint: 'Curso/FindAll', params: {});
+    final response = await client.get('/v1/Curso/FindAll', params: {});
     final cursos = <Curso>[];
     if (response.statusCode == 204) {
       throw CursoNaoEncontradoException();

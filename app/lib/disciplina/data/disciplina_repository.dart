@@ -1,10 +1,9 @@
-import '../../shared/application/uniuti_client_mixin.dart';
-
+import 'package:http_client/http_client.dart';
 import 'package:uniuti_core/uniuti_core.dart';
 
-class DisciplinaRemoteRepository extends UniUtiHttpRemoteRepository
-    implements DisciplinaRepository {
-  DisciplinaRemoteRepository(super.client);
+class DisciplinaRemoteRepository implements DisciplinaRepository {
+  DisciplinaRemoteRepository(this.client);
+  RemoteClient client;
 
   @override
   Future<Disciplina?> byId(int id) {

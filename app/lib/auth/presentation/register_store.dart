@@ -1,32 +1,29 @@
+import 'dart:collection';
+
+import 'package:http_client/http_client.dart';
 import 'package:uniuti_core/uniuti_core.dart';
 
-import '../../shared/application/uniuti_client.dart';
-
 import '../../aluno/data/aluno_repository.dart';
+import '../../curso/data/curso_repository.dart';
 
 class RegisterController {
   RegisterState state = RegisterInitial();
   final _cursoRepos = <String, CursoRepository>{
     'localDb': MockCursoRepository(),
-    'remote': MockCursoRepository()
   };
   final _alunoRepos = <String, AlunoRepository>{
     'localDb': MockAlunoRepository(),
   };
 
-  RegisterController(UniUtiHttpClient client) {
+  RegisterController(RemoteClient client) {
     _alunoRepos['remote'] = RemoteAlunoRepository(client);
+    _cursoRepos['remote'] = RemoteCursoRepository(client);
   }
 
   Future<List<Curso>> getAllCursos() async {
     List<Curso> cursos = [];
-    for (var repo in _cursoRepos.values) {
-      cursos = await repo.getAll();
-      if (cursos.isNotEmpty) {
-        break;
-      }
-    }
-    return cursos;
+    return await ((_cursoRepos['remote']! as RemoteCursoRepository).getAll());
+    // return cursos;
   }
 
   Future<RegisterState> register(Aluno aluno) async {

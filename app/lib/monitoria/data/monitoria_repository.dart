@@ -1,9 +1,9 @@
-import '../../shared/application/uniuti_client_mixin.dart';
+import 'package:http_client/http_client.dart';
 import 'package:uniuti_core/uniuti_core.dart';
 
-class MonitoriaRemoteRepository extends UniUtiHttpRemoteRepository
-    implements MonitoriaRepository {
-  MonitoriaRemoteRepository(super.client);
+class MonitoriaRemoteRepository implements MonitoriaRepository {
+  MonitoriaRemoteRepository(this.client);
+  RemoteClient client;
 
   @override
   Future<Monitoria?> byId(int id) {

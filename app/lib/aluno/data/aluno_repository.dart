@@ -1,10 +1,9 @@
 import 'package:uniuti_core/uniuti_core.dart';
-import '../../shared/application/uniuti_client.dart';
-import '../../shared/application/uniuti_client_mixin.dart';
+import 'package:http_client/http_client.dart';
 
-class RemoteAlunoRepository extends UniUtiHttpRemoteRepository
-    implements AlunoRepository {
-  RemoteAlunoRepository(UniUtiHttpClient client) : super(client);
+class RemoteAlunoRepository implements AlunoRepository {
+  RemoteAlunoRepository(this.client);
+  final RemoteClient client;
 
   @override
   Future<Aluno?> byId(int id) {
@@ -27,14 +26,17 @@ class RemoteAlunoRepository extends UniUtiHttpRemoteRepository
   @override
   Future<Aluno> performRegister(Aluno aluno) async {
     late Aluno novo;
-    final response = await client.post(endpoint: '/Auth/CreateUser', body: {
-      "nomeCompleto": aluno.nome,
-      "email": aluno.usuario!.login,
-      "password": aluno.usuario!.senha,
-      "celular": aluno.celular,
-      "instituicaoId": aluno.instituicao,
-      "cursoId": aluno.curso
-    });
+    final response = await client.post(
+      '/Auth/CreateUser',
+      body: {
+        "nomeCompleto": aluno.nome,
+        "email": aluno.usuario!.login,
+        "password": aluno.usuario!.senha,
+        "celular": aluno.celular,
+        "instituicaoId": aluno.instituicao,
+        "cursoId": aluno.curso
+      },
+    );
 
     if (response.statusCode == 200) {
       final obj = response.body;
